@@ -127,7 +127,7 @@ class StaticDataLayer:
         :param str sql: The SQL statement.
         :param iterable params: The arguments for the statement.
 
-        :rtype: list[dict[str,Object]]
+        :rtype: list[dict[str,*]]
         """
         cursor = MySQLCursorBufferedDict(StaticDataLayer.connection)
         StaticDataLayer.last_sql = sql
@@ -206,7 +206,7 @@ class StaticDataLayer:
         :param str sql: The SQL statement for calling the stored routine.
         :param iterable params: The arguments for calling the stored routine.
 
-        :rtype: list[list[dict[str,object]]]
+        :rtype: list[list[dict[str,*]]]
         """
         cursor = MySQLCursorBufferedDict(StaticDataLayer.connection)
         StaticDataLayer.last_sql = sql
@@ -252,7 +252,7 @@ class StaticDataLayer:
         :param str sql: The SQL call the the stored procedure.
         :param iterable params: The arguments for the stored procedure.
 
-        :rtype: None|dict[str,object]
+        :rtype: None|dict[str,*]
         """
         cursor = MySQLCursorBufferedDict(StaticDataLayer.connection)
         StaticDataLayer.last_sql = sql
@@ -280,7 +280,7 @@ class StaticDataLayer:
         :param str sql: The SQL calling the the stored procedure.
         :param iterable params: The arguments for the stored procedure.
 
-        :rtype: dict[str,object]
+        :rtype: dict[str,*]
         """
         cursor = MySQLCursorBufferedDict(StaticDataLayer.connection)
         StaticDataLayer.last_sql = sql
@@ -309,7 +309,7 @@ class StaticDataLayer:
         :param str sql: The SQL statement.
         :param iterable params: The arguments for the statement.
 
-        :rtype: list[dict[str,object]]
+        :rtype: list[dict[str,*]]
         """
         cursor = MySQLCursorBufferedDict(StaticDataLayer.connection)
         itr = cursor.execute(sql, params, multi=True)
@@ -329,7 +329,7 @@ class StaticDataLayer:
         :param str sql: The SQL calling the stored procedure.
         :param iterable params: The arguments for the stored procedure.
 
-        :rtype: object
+        :rtype: *
         """
         cursor = MySQLCursorBuffered(StaticDataLayer.connection)
         itr = cursor.execute(sql, params, multi=True)
@@ -358,7 +358,7 @@ class StaticDataLayer:
         :param str sql: The SQL calling the the stored procedure.
         :param iterable params: The arguments for the stored procedure.
 
-        :rtype: object The value of the selected column.
+        :rtype: * The value of the selected column.
         """
         cursor = MySQLCursorBuffered(StaticDataLayer.connection)
         StaticDataLayer.last_sql = sql

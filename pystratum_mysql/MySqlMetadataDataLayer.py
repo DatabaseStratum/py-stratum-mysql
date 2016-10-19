@@ -69,7 +69,7 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
 
         :param str table_name: The name of the table.
 
-        :rtype: list[dict[str,Object]]
+        :rtype: list[dict[str,*]]
         """
         sql = 'describe `{0}`'.format(table_name)
 
@@ -130,7 +130,7 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
 
         :param str query: The query.
 
-        :rtype: list[dict[str,Object]]
+        :rtype: list[dict[str,*]]
         """
         MySqlMetadataDataLayer._log_query(query)
 
@@ -144,7 +144,7 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
 
         :param str query: The query.
 
-        :rtype: Object
+        :rtype: *
         """
         MySqlMetadataDataLayer._log_query(query)
 
@@ -156,7 +156,7 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
         """
         Selects metadata of all columns of all tables.
 
-        :rtype: list[dict[str,Object]]
+        :rtype: list[dict[str,*]]
         """
         sql = """
 (
@@ -222,7 +222,7 @@ union all
 
         :param str regex: The regular expression for columns which we want to use.
 
-        :rtype: list[dict[str,Object]]
+        :rtype: list[dict[str,*]]
         """
         sql = """
 select t1.TABLE_NAME  table_name
@@ -247,7 +247,7 @@ and   t2.COLUMN_NAME rlike '{0}'""".format(regex)
         :param str id_column_name: The name of the auto increment column.
         :param str label_column_name: The name of the column with labels.
 
-        :rtype: list[dict[str,Object]]
+        :rtype: list[dict[str,*]]
         """
         sql = """
 select `{0}`  as `id`
@@ -277,7 +277,7 @@ where   nullif(`{1}`,'') is not null""".format(id_column_name,
 
         :param str routine_name: The name of the routine.
 
-        :rtype: list[dict[str,Object]]
+        :rtype: list[dict[str,*]]
         """
         sql = """
 select t2.PARAMETER_NAME      parameter_name
@@ -302,7 +302,7 @@ and   t1.ROUTINE_NAME   = '{0}'""".format(routine_name)
         """
         Selects metadata of all routines in the current schema.
 
-        :rtype: list[dict[str,Object]]
+        :rtype: list[dict[str,*]]
         """
         sql = """
 select ROUTINE_NAME           routine_name
