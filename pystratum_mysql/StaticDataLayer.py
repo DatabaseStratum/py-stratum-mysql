@@ -114,9 +114,10 @@ class StaticDataLayer:
         cursor = MySQLCursor(StaticDataLayer.connection)
         StaticDataLayer.last_sql = sql
         cursor.execute(sql, params)
+        rowcount = cursor.rowcount
         cursor.close()
 
-        return cursor.rowcount
+        return rowcount
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
