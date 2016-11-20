@@ -6,9 +6,8 @@ Copyright 2015-2016 Set Based IT Consultancy
 Licence MIT
 """
 from pystratum.RoutineLoader import RoutineLoader
-from pystratum_mysql.MySqlMetadataDataLayer import MySqlMetadataDataLayer
-
 from pystratum_mysql.MySqlConnection import MySqlConnection
+from pystratum_mysql.MySqlMetadataDataLayer import MySqlMetadataDataLayer
 from pystratum_mysql.MySqlRoutineLoaderHelper import MySqlRoutineLoaderHelper
 
 
@@ -34,14 +33,13 @@ class MySqlRoutineLoader(MySqlConnection, RoutineLoader):
         """
         rows = MySqlMetadataDataLayer.get_all_table_columns()
         for row in rows:
-            key = '@' + row['table_name'] + '.' + row['column_name'] + '%type@'
-            key = key.lower()
-            value = row['column_type']
+            key = row['table_name'] + '.' + row['column_name'] + '%type'
 
+            value = row['column_type']
             if row['character_set_name']:
                 value += ' character set ' + row['character_set_name']
 
-            self._replace_pairs[key] = value
+            self._add_replace_pair(key, value, False)
 
         self._io.text('Selected {0} column types for substitution'.format(len(rows)))
 

@@ -25,7 +25,7 @@ class AAATest(unittest.TestCase):
         command = application.find('stratum')
         command_tester = CommandTester(command)
         status = command_tester.execute([('command', command.get_name()),
-                                         ('config_file', 'test/etc/stratum.cfg')])
+                                         ('config_file', 'pystratum_test/etc/stratum.cfg')])
 
         self.assertEqual(0, status)
 

@@ -7,8 +7,8 @@ Licence MIT
 """
 import sys
 
-from test.DataLayer import DataLayer
-from test.StratumTestCase import StratumTestCase
+from pystratum_test.TestDataLayer import TestDataLayer
+from pystratum_test.StratumTestCase import StratumTestCase
 
 
 class TableTest(StratumTestCase):
@@ -27,7 +27,7 @@ class TableTest(StratumTestCase):
 +---------+---------+---------+---------+---------------------+------+------+
 """
 
-        DataLayer.tst_test_table()
+        TestDataLayer.tst_test_table()
         table = sys.stdout
         self.assertEqual(table, template_table)
 

@@ -9,24 +9,24 @@ import sys
 import unittest
 from io import StringIO
 
-from test.DataLayer import DataLayer
+from pystratum_test.TestDataLayer import TestDataLayer
 
 
 class StratumTestCase(unittest.TestCase):
     # ------------------------------------------------------------------------------------------------------------------
     def setUp(self):
-        DataLayer.config['host'] = 'localhost'
-        DataLayer.config['user'] = 'test'
-        DataLayer.config['password'] = 'test'
-        DataLayer.config['database'] = 'test'
+        TestDataLayer.config['host'] = 'localhost'
+        TestDataLayer.config['user'] = 'test'
+        TestDataLayer.config['password'] = 'test'
+        TestDataLayer.config['database'] = 'test'
 
-        DataLayer.connect()
+        TestDataLayer.connect()
 
         self.held, sys.stdout = sys.stdout, StringIO()
 
     # ------------------------------------------------------------------------------------------------------------------
     def tearDown(self):
         sys.stdout = self.held
-        DataLayer.disconnect()
+        TestDataLayer.disconnect()
 
 # ----------------------------------------------------------------------------------------------------------------------

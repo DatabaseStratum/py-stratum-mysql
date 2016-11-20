@@ -2,18 +2,28 @@ from pystratum_mysql.StaticDataLayer import StaticDataLayer
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-class DataLayer(StaticDataLayer):
+class TestDataLayer(StaticDataLayer):
     """
     The stored routines wrappers.
     """
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
+    def tst_constant01():
+        """
+        Test for constant.
+
+        :rtype: dict[str,*]
+        """
+        return StaticDataLayer.execute_sp_row1("call tst_constant01()")
+
+    # ------------------------------------------------------------------------------------------------------------------
+    @staticmethod
     def tst_magic_constant01():
         """
         Test for magic constant.
-         
-        :rtype: object
+
+        :rtype: *
         """
         return StaticDataLayer.execute_sp_singleton1("call tst_magic_constant01()")
 
@@ -22,8 +32,8 @@ class DataLayer(StaticDataLayer):
     def tst_magic_constant02():
         """
         Test for magic constant.
-         
-        :rtype: object
+
+        :rtype: *
         """
         return StaticDataLayer.execute_sp_singleton1("call tst_magic_constant02()")
 
@@ -32,8 +42,8 @@ class DataLayer(StaticDataLayer):
     def tst_magic_constant03():
         """
         Test for magic constant.
-         
-        :rtype: object
+
+        :rtype: *
         """
         return StaticDataLayer.execute_sp_singleton1("call tst_magic_constant03()")
 
@@ -42,8 +52,8 @@ class DataLayer(StaticDataLayer):
     def tst_magic_constant04():
         """
         Test for magic constant.
-         
-        :rtype: object
+
+        :rtype: *
         """
         return StaticDataLayer.execute_sp_singleton1("call tst_magic_constant04()")
 
@@ -52,7 +62,7 @@ class DataLayer(StaticDataLayer):
     def tst_parameter_types01(p_param00, p_param01, p_param02, p_param03, p_param04, p_param05, p_param06, p_param07, p_param08, p_param09, p_param10, p_param11, p_param12, p_param13, p_param14, p_param15, p_param16, p_param17, p_param26, p_param27):
         """
         Test for all possible types of parameters excluding LOB's.
-         
+
         :param int p_param00: Test parameter 00.
                               int(11)
         :param int p_param01: Test parameter 01.
@@ -93,7 +103,7 @@ class DataLayer(StaticDataLayer):
                               enum('a','b') character set latin1 collation latin1_swedish_ci
         :param str p_param27: Test parameter 27.
                               set('a','b') character set latin1 collation latin1_swedish_ci
-         
+
         :rtype: int
         """
         return StaticDataLayer.execute_sp_none("call tst_parameter_types01(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", p_param00, p_param01, p_param02, p_param03, p_param04, p_param05, p_param06, p_param07, p_param08, p_param09, p_param10, p_param11, p_param12, p_param13, p_param14, p_param15, p_param16, p_param17, p_param26, p_param27)
@@ -103,7 +113,7 @@ class DataLayer(StaticDataLayer):
     def tst_parameter_types02(p_param00, p_param01, p_param02, p_param03, p_param04, p_param05, p_param06, p_param07, p_param08, p_param09, p_param10, p_param11, p_param12, p_param13, p_param14, p_param15, p_param16, p_param17, p_param18, p_param19, p_param20, p_param21, p_param22, p_param23, p_param24, p_param25, p_param26, p_param27):
         """
         Test for all possible types of parameters including LOB's.
-         
+
         :param int p_param00: Test parameter 00.
                               int(11)
         :param int p_param01: Test parameter 01.
@@ -160,7 +170,7 @@ class DataLayer(StaticDataLayer):
                               enum('a','b') character set latin1 collation latin1_swedish_ci
         :param str p_param27: Test parameter 27.
                               set('a','b') character set latin1 collation latin1_swedish_ci
-         
+
         :rtype: int
         """
         return StaticDataLayer.execute_sp_none("call tst_parameter_types02(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", p_param00, p_param01, p_param02, p_param03, p_param04, p_param05, p_param06, p_param07, p_param08, p_param09, p_param10, p_param11, p_param12, p_param13, p_param14, p_param15, p_param16, p_param17, p_param18, p_param19, p_param20, p_param21, p_param22, p_param23, p_param24, p_param25, p_param26, p_param27)
@@ -170,12 +180,12 @@ class DataLayer(StaticDataLayer):
     def tst_test_function(p_a, p_b):
         """
         Test for stored function wrapper.
-         
+
         :param int p_a: Parameter A.
                         int(11)
         :param int p_b: Parameter B.
                         int(11)
-         
+
         :rtype: *
         """
         return StaticDataLayer.execute_singleton1("select tst_test_function(%s, %s)", p_a, p_b)
@@ -185,7 +195,7 @@ class DataLayer(StaticDataLayer):
     def tst_test_log():
         """
         Test for designation type log.
-         
+
         :rtype: int
         """
         return StaticDataLayer.execute_sp_log("call tst_test_log()")
@@ -195,11 +205,11 @@ class DataLayer(StaticDataLayer):
     def tst_test_max_allowed_packet(p_tmp_blob):
         """
         Test for sending data larger than max_allowed_packet.
-         
+
         :param bytes p_tmp_blob: The BLOB larger than max_allowed_packet.
                                  longblob
-         
-        :rtype: object
+
+        :rtype: *
         """
         return StaticDataLayer.execute_sp_singleton1("call tst_test_max_allowed_packet(%s)", p_tmp_blob)
 
@@ -208,7 +218,7 @@ class DataLayer(StaticDataLayer):
     def tst_test_multi():
         """
         Test for designation type multi.
-         
+
         :rtype: int
         """
         return StaticDataLayer.execute_sp_multi("call tst_test_multi()")
@@ -218,10 +228,10 @@ class DataLayer(StaticDataLayer):
     def tst_test_none(p_count):
         """
         Test for designation type none.
-         
+
         :param int p_count: The number of iterations.
                             bigint(20)
-         
+
         :rtype: int
         """
         return StaticDataLayer.execute_sp_none("call tst_test_none(%s)", p_count)
@@ -231,12 +241,12 @@ class DataLayer(StaticDataLayer):
     def tst_test_none_with_lob(p_count, p_blob):
         """
         Test for designation type none with BLOB.
-         
+
         :param int p_count: The number of iterations.
                             bigint(20)
         :param bytes p_blob: The BLOB.
                              blob
-         
+
         :rtype: int
         """
         return StaticDataLayer.execute_sp_none("call tst_test_none_with_lob(%s, %s)", p_count, p_blob)
@@ -246,8 +256,8 @@ class DataLayer(StaticDataLayer):
     def tst_test_percent_symbol():
         """
         Test for stored function with percent symbols.
-         
-        :rtype: list[dict[str,object]]
+
+        :rtype: list[dict[str,*]]
         """
         return StaticDataLayer.execute_sp_rows("call tst_test_percent_symbol()")
 
@@ -256,14 +266,14 @@ class DataLayer(StaticDataLayer):
     def tst_test_row0a(p_count):
         """
         Test for designation type row0.
-         
+
         :param int p_count: The number of rows selected.
                             * 0 For a valid test.
                             * 1 For a valid test.
                             * 2 For a invalid test.
                             int(11)
-         
-        :rtype: None|dict[str,object]
+
+        :rtype: None|dict[str,*]
         """
         return StaticDataLayer.execute_sp_row0("call tst_test_row0a(%s)", p_count)
 
@@ -272,7 +282,7 @@ class DataLayer(StaticDataLayer):
     def tst_test_row0a_with_lob(p_count, p_blob):
         """
         Test for designation type row0 with BLOB.
-         
+
         :param int p_count: The number of rows selected.
                             * 0 For a valid test.
                             * 1 For a valid test.
@@ -280,8 +290,8 @@ class DataLayer(StaticDataLayer):
                             int(11)
         :param bytes p_blob: The BLOB.
                              blob
-         
-        :rtype: None|dict[str,object]
+
+        :rtype: None|dict[str,*]
         """
         return StaticDataLayer.execute_sp_row0("call tst_test_row0a_with_lob(%s, %s)", p_count, p_blob)
 
@@ -290,14 +300,14 @@ class DataLayer(StaticDataLayer):
     def tst_test_row1a(p_count):
         """
         Test for designation type row1.
-         
+
         :param int p_count: The number of rows selected.
                             * 0 For a invalid test.
                             * 1 For a valid test.
                             * 2 For a invalid test.
                             int(11)
-         
-        :rtype: dict[str,object]
+
+        :rtype: dict[str,*]
         """
         return StaticDataLayer.execute_sp_row1("call tst_test_row1a(%s)", p_count)
 
@@ -306,7 +316,7 @@ class DataLayer(StaticDataLayer):
     def tst_test_row1a_with_lob(p_count, p_blob):
         """
         Test for designation type row1 with BLOB.
-         
+
         :param int p_count: The number of rows selected.
                             * 0 For a invalid test.
                             * 1 For a valid test.
@@ -314,8 +324,8 @@ class DataLayer(StaticDataLayer):
                             int(11)
         :param bytes p_blob: The BLOB.
                              blob
-         
-        :rtype: dict[str,object]
+
+        :rtype: dict[str,*]
         """
         return StaticDataLayer.execute_sp_row1("call tst_test_row1a_with_lob(%s, %s)", p_count, p_blob)
 
@@ -324,14 +334,14 @@ class DataLayer(StaticDataLayer):
     def tst_test_rows1(p_count):
         """
         Test for designation type row1.
-         
+
         :param int p_count: The number of rows selected.
                             * 0 For a invalid test.
                             * 1 For a valid test.
                             * 2 For a invalid test.
                             int(11)
-         
-        :rtype: list[dict[str,object]]
+
+        :rtype: list[dict[str,*]]
         """
         return StaticDataLayer.execute_sp_rows("call tst_test_rows1(%s)", p_count)
 
@@ -340,13 +350,13 @@ class DataLayer(StaticDataLayer):
     def tst_test_rows1_with_lob(p_count, p_blob):
         """
         Test for designation type rows.
-         
+
         :param int p_count: The number of rows selected.
                             int(11)
         :param bytes p_blob: The BLOB.
                              blob
-         
-        :rtype: list[dict[str,object]]
+
+        :rtype: list[dict[str,*]]
         """
         return StaticDataLayer.execute_sp_rows("call tst_test_rows1_with_lob(%s, %s)", p_count, p_blob)
 
@@ -355,10 +365,10 @@ class DataLayer(StaticDataLayer):
     def tst_test_rows_with_index1(p_count):
         """
         Test for designation type rows_with_index.
-         
+
         :param int p_count: The number of rows selected.
                             int(11)
-         
+
         :rtype: dict
         """
         ret = {}
@@ -379,12 +389,12 @@ class DataLayer(StaticDataLayer):
     def tst_test_rows_with_index1_with_lob(p_count, p_blob):
         """
         Test for designation type rows_with_index with BLOB..
-         
+
         :param int p_count: The number of rows selected.
                             int(11)
         :param bytes p_blob: The BLOB.
                              blob
-         
+
         :rtype: dict
         """
         ret = {}
@@ -405,10 +415,10 @@ class DataLayer(StaticDataLayer):
     def tst_test_rows_with_key1(p_count):
         """
         Test for designation type rows_with_key.
-         
+
         :param int p_count: Number of rows selected.
                             int(11)
-         
+
         :rtype: dict
         """
         ret = {}
@@ -432,12 +442,12 @@ class DataLayer(StaticDataLayer):
     def tst_test_rows_with_key1_with_lob(p_count, p_blob):
         """
         Test for designation type rows_with_key with BLOB.
-         
+
         :param int p_count: The number of rows selected.
                             int(11)
         :param bytes p_blob: The BLOB.
                              blob
-         
+
         :rtype: dict
         """
         ret = {}
@@ -461,14 +471,14 @@ class DataLayer(StaticDataLayer):
     def tst_test_singleton0a(p_count):
         """
         Test for designation type singleton0.
-         
+
         :param int p_count: The number of rows selected.
                             * 0 For a valid test.
                             * 1 For a valid test.
                             * 2 For a invalid test.
                             int(11)
-         
-        :rtype: object
+
+        :rtype: *
         """
         return StaticDataLayer.execute_sp_singleton0("call tst_test_singleton0a(%s)", p_count)
 
@@ -477,7 +487,7 @@ class DataLayer(StaticDataLayer):
     def tst_test_singleton0a_with_lob(p_count, p_blob):
         """
         Test for designation type singleton0 with BLOB..
-         
+
         :param int p_count: The number of rows selected.
                             * 0 For a valid test.
                             * 1 For a valid test.
@@ -485,8 +495,8 @@ class DataLayer(StaticDataLayer):
                             int(11)
         :param bytes p_blob: The BLOB.
                              blob
-         
-        :rtype: object
+
+        :rtype: *
         """
         return StaticDataLayer.execute_sp_singleton0("call tst_test_singleton0a_with_lob(%s, %s)", p_count, p_blob)
 
@@ -495,14 +505,14 @@ class DataLayer(StaticDataLayer):
     def tst_test_singleton1a(p_count):
         """
         Test for designation type singleton1.
-         
+
         :param int p_count: The number of rows selected.
                             * 0 For a invalid test.
                             * 1 For a valid test.
                             * 2 For a invalid test.
                             int(11)
-         
-        :rtype: object
+
+        :rtype: *
         """
         return StaticDataLayer.execute_sp_singleton1("call tst_test_singleton1a(%s)", p_count)
 
@@ -511,7 +521,7 @@ class DataLayer(StaticDataLayer):
     def tst_test_singleton1a_with_lob(p_count, p_blob):
         """
         Test for designation type singleton1 with BLOB.
-         
+
         :param int p_count: The number of rows selected.
                             * 0 For a invalid test.
                             * 1 For a valid test.
@@ -519,8 +529,8 @@ class DataLayer(StaticDataLayer):
                             int(11)
         :param bytes p_blob: The BLOB.
                              blob
-         
-        :rtype: object
+
+        :rtype: *
         """
         return StaticDataLayer.execute_sp_singleton1("call tst_test_singleton1a_with_lob(%s, %s)", p_count, p_blob)
 

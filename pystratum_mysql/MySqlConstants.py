@@ -29,6 +29,13 @@ class MySqlConstants(MySqlConnection, Constants):
         Constants.__init__(self, io)
         MySqlConnection.__init__(self, io)
 
+        self._columns = {}
+        """
+        All columns in the MySQL schema.
+
+        :type: dict
+        """
+
     # ------------------------------------------------------------------------------------------------------------------
     def _get_old_columns(self):
         """

@@ -5,8 +5,8 @@ Copyright 2015-2016 Set Based IT Consultancy
 
 Licence MIT
 """
-from test.DataLayer import DataLayer
-from test.StratumTestCase import StratumTestCase
+from pystratum_test.TestDataLayer import TestDataLayer
+from pystratum_test.StratumTestCase import StratumTestCase
 
 
 class MultiTest(StratumTestCase):
@@ -15,7 +15,7 @@ class MultiTest(StratumTestCase):
         """
         Stored routine with designation type multi must return a list of list.
         """
-        ret = DataLayer.tst_test_multi()
+        ret = TestDataLayer.tst_test_multi()
         self.assertIsInstance(ret, list)
 
         # We must have 2 result sets.

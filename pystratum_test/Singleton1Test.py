@@ -6,8 +6,8 @@ Copyright 2015-2016 Set Based IT Consultancy
 Licence MIT
 """
 from pystratum.exception.ResultException import ResultException
-from test.DataLayer import DataLayer
-from test.StratumTestCase import StratumTestCase
+from pystratum_test.TestDataLayer import TestDataLayer
+from pystratum_test.StratumTestCase import StratumTestCase
 
 
 class Singleton1Test(StratumTestCase):
@@ -16,8 +16,8 @@ class Singleton1Test(StratumTestCase):
         """
         Stored routine with designation type singleton1 must return 1 value and 1 value only.
         """
-        from test.DataLayer import DataLayer
-        ret = DataLayer.tst_test_singleton1a(1)
+        from pystratum_test.TestDataLayer import TestDataLayer
+        ret = TestDataLayer.tst_test_singleton1a(1)
         self.assertEqual(1, ret)
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ class Singleton1Test(StratumTestCase):
         @expectedException Exception
         """
         with self.assertRaises(ResultException):
-            DataLayer.tst_test_singleton1a(0)
+            TestDataLayer.tst_test_singleton1a(0)
 
     # ------------------------------------------------------------------------------------------------------------------
     def test3(self):
@@ -36,6 +36,6 @@ class Singleton1Test(StratumTestCase):
         @expectedException Exception
         """
         with self.assertRaises(ResultException):
-            DataLayer.tst_test_singleton1a(2)
+            TestDataLayer.tst_test_singleton1a(2)
 
 # ----------------------------------------------------------------------------------------------------------------------

@@ -6,34 +6,37 @@ Copyright 2015-2016 Set Based IT Consultancy
 Licence MIT
 """
 from pystratum.exception.ResultException import ResultException
-from test.DataLayer import DataLayer
-from test.StratumTestCase import StratumTestCase
+from pystratum_test.TestDataLayer import TestDataLayer
+from pystratum_test.StratumTestCase import StratumTestCase
 
 
-class Row0Test(StratumTestCase):
+class Row1Test(StratumTestCase):
     # ------------------------------------------------------------------------------------------------------------------
     def test1(self):
         """
-        Stored routine with designation type row0 must return null.
+        Stored routine with designation type row1 must return 1 row and 1 row only.
         """
-        ret = DataLayer.tst_test_row0a(0)
-        self.assertIsNone(ret)
+        # ???
+        ret = TestDataLayer.tst_test_row1a(1)
+        ret = TestDataLayer.tst_test_row1a(1)
+        self.assertIsInstance(ret, dict)
 
     # ------------------------------------------------------------------------------------------------------------------
     def test2(self):
         """
-        Stored routine with designation type row0 must return 1 row.
+        An exception must be thrown when a stored routine with designation type row1 returns 0 rows.
+        @expectedException Exception
         """
-        ret = DataLayer.tst_test_row0a(1)
-        self.assertIsInstance(ret, dict)
+        with self.assertRaises(ResultException):
+            TestDataLayer.tst_test_row1a(0)
 
     # ------------------------------------------------------------------------------------------------------------------
     def test3(self):
         """
-        An exception must be thrown when a stored routine with designation type row0 returns more than 1 rows.
+        An exception must be thrown when a stored routine with designation type row1 returns more than 1 rows.
         @expectedException Exception
         """
         with self.assertRaises(ResultException):
-            DataLayer.tst_test_row0a(2)
+            TestDataLayer.tst_test_row1a(2)
 
 # ----------------------------------------------------------------------------------------------------------------------
