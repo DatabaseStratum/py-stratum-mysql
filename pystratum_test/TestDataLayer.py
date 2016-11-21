@@ -177,6 +177,56 @@ class TestDataLayer(StaticDataLayer):
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
+    def tst_test_find_designation_type01():
+        """
+        Test for designation type.
+
+        :rtype: dict[str,*]
+        """
+        return StaticDataLayer.execute_sp_row1("call tst_test_find_designation_type01()")
+
+    # ------------------------------------------------------------------------------------------------------------------
+    @staticmethod
+    def tst_test_find_designation_type02():
+        """
+        Test for designation type.
+
+        :rtype: dict[str,*]
+        """
+        return StaticDataLayer.execute_sp_row1("call tst_test_find_designation_type02()")
+
+    # ------------------------------------------------------------------------------------------------------------------
+    @staticmethod
+    def tst_test_find_designation_type03():
+        """
+        Test for designation type.
+
+        :rtype: dict[str,*]
+        """
+        return StaticDataLayer.execute_sp_row1("call tst_test_find_designation_type03()")
+
+    # ------------------------------------------------------------------------------------------------------------------
+    @staticmethod
+    def tst_test_find_designation_type04():
+        """
+        Test for designation type.
+
+        :rtype: dict[str,*]
+        """
+        return StaticDataLayer.execute_sp_row1("call tst_test_find_designation_type04()")
+
+    # ------------------------------------------------------------------------------------------------------------------
+    @staticmethod
+    def tst_test_find_designation_type05():
+        """
+        Test for designation type.
+
+        :rtype: dict[str,*]
+        """
+        return StaticDataLayer.execute_sp_row1("call tst_test_find_designation_type05()")
+
+    # ------------------------------------------------------------------------------------------------------------------
+    @staticmethod
     def tst_test_function(p_a, p_b):
         """
         Test for stored function wrapper.

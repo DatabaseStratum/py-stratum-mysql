@@ -33,7 +33,7 @@
         "replace": {},
         "routine_name": "tst_magic_constant01",
         "table_name": null,
-        "timestamp": 1475074360
+        "timestamp": 1479722461
     },
     "tst_magic_constant02": {
         "column_types": null,
@@ -788,6 +788,81 @@
         "table_name": null,
         "timestamp": 1427642405
     },
+    "tst_test_find_designation_type01": {
+        "column_types": null,
+        "columns": null,
+        "designation": "row1",
+        "fields": null,
+        "parameters": [],
+        "pydoc": {
+            "description": "Test for designation type.",
+            "parameters": []
+        },
+        "replace": {},
+        "routine_name": "tst_test_find_designation_type01",
+        "table_name": null,
+        "timestamp": 1479722870
+    },
+    "tst_test_find_designation_type02": {
+        "column_types": null,
+        "columns": null,
+        "designation": "row1",
+        "fields": null,
+        "parameters": [],
+        "pydoc": {
+            "description": "Test for designation type.",
+            "parameters": []
+        },
+        "replace": {},
+        "routine_name": "tst_test_find_designation_type02",
+        "table_name": null,
+        "timestamp": 1479722864
+    },
+    "tst_test_find_designation_type03": {
+        "column_types": null,
+        "columns": null,
+        "designation": "row1",
+        "fields": null,
+        "parameters": [],
+        "pydoc": {
+            "description": "Test for designation type.",
+            "parameters": []
+        },
+        "replace": {},
+        "routine_name": "tst_test_find_designation_type03",
+        "table_name": null,
+        "timestamp": 1479722864
+    },
+    "tst_test_find_designation_type04": {
+        "column_types": null,
+        "columns": null,
+        "designation": "row1",
+        "fields": null,
+        "parameters": [],
+        "pydoc": {
+            "description": "Test for designation type.",
+            "parameters": []
+        },
+        "replace": {},
+        "routine_name": "tst_test_find_designation_type04",
+        "table_name": null,
+        "timestamp": 1479722864
+    },
+    "tst_test_find_designation_type05": {
+        "column_types": null,
+        "columns": null,
+        "designation": "row1",
+        "fields": null,
+        "parameters": [],
+        "pydoc": {
+            "description": "Test for designation type.",
+            "parameters": []
+        },
+        "replace": {},
+        "routine_name": "tst_test_find_designation_type05",
+        "table_name": null,
+        "timestamp": 1479722864
+    },
     "tst_test_function": {
         "column_types": null,
         "columns": null,
@@ -1022,7 +1097,7 @@
         "replace": {},
         "routine_name": "tst_test_row0a",
         "table_name": null,
-        "timestamp": 1422608903
+        "timestamp": 1479722461
     },
     "tst_test_row0a_with_lob": {
         "column_types": null,
