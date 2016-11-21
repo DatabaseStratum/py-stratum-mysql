@@ -92,17 +92,17 @@ class TestDataLayer(StaticDataLayer):
         :param int p_param13: Test parameter 13.
                               year(4)
         :param str p_param14: Test parameter 14.
-                              char(10) character set utf8 collation utf8_general_ci
+                              char(10) character set latin1 collation latin1_swedish_ci
         :param str p_param15: Test parameter 15.
-                              varchar(10) character set utf8 collation utf8_general_ci
+                              varchar(10) character set latin1 collation latin1_swedish_ci
         :param bytes p_param16: Test parameter 16.
                                 binary(10)
         :param bytes p_param17: Test parameter 17.
                                 varbinary(10)
         :param str p_param26: Test parameter 26.
-                              enum('a','b') character set utf8 collation utf8_general_ci
+                              enum('a','b') character set latin1 collation latin1_swedish_ci
         :param str p_param27: Test parameter 27.
-                              set('a','b') character set utf8 collation utf8_general_ci
+                              set('a','b') character set latin1 collation latin1_swedish_ci
 
         :rtype: int
         """
@@ -143,9 +143,9 @@ class TestDataLayer(StaticDataLayer):
         :param int p_param13: Test parameter 13.
                               year(4)
         :param str p_param14: Test parameter 14.
-                              char(10) character set utf8 collation utf8_general_ci
+                              char(10) character set latin1 collation latin1_swedish_ci
         :param str p_param15: Test parameter 15.
-                              varchar(10) character set utf8 collation utf8_general_ci
+                              varchar(10) character set latin1 collation latin1_swedish_ci
         :param bytes p_param16: Test parameter 16.
                                 binary(10)
         :param bytes p_param17: Test parameter 17.
@@ -159,17 +159,17 @@ class TestDataLayer(StaticDataLayer):
         :param bytes p_param21: Test parameter 21.
                                 longblob
         :param str p_param22: Test parameter 22.
-                              tinytext character set utf8 collation utf8_general_ci
+                              tinytext character set latin1 collation latin1_swedish_ci
         :param str p_param23: Test parameter 23.
-                              text character set utf8 collation utf8_general_ci
+                              text character set latin1 collation latin1_swedish_ci
         :param str p_param24: Test parameter 24.
-                              mediumtext character set utf8 collation utf8_general_ci
+                              mediumtext character set latin1 collation latin1_swedish_ci
         :param str p_param25: Test parameter 25.
-                              longtext character set utf8 collation utf8_general_ci
+                              longtext character set latin1 collation latin1_swedish_ci
         :param str p_param26: Test parameter 26.
-                              enum('a','b') character set utf8 collation utf8_general_ci
+                              enum('a','b') character set latin1 collation latin1_swedish_ci
         :param str p_param27: Test parameter 27.
-                              set('a','b') character set utf8 collation utf8_general_ci
+                              set('a','b') character set latin1 collation latin1_swedish_ci
 
         :rtype: int
         """
@@ -180,8 +180,8 @@ class TestDataLayer(StaticDataLayer):
     def tst_test_find_designation_type01():
         """
         Test for designation type.
-         
-        :rtype: dict[str,object]
+
+        :rtype: dict[str,*]
         """
         return StaticDataLayer.execute_sp_row1("call tst_test_find_designation_type01()")
 
@@ -190,8 +190,8 @@ class TestDataLayer(StaticDataLayer):
     def tst_test_find_designation_type02():
         """
         Test for designation type.
-         
-        :rtype: dict[str,object]
+
+        :rtype: dict[str,*]
         """
         return StaticDataLayer.execute_sp_row1("call tst_test_find_designation_type02()")
 
@@ -200,8 +200,8 @@ class TestDataLayer(StaticDataLayer):
     def tst_test_find_designation_type03():
         """
         Test for designation type.
-         
-        :rtype: dict[str,object]
+
+        :rtype: dict[str,*]
         """
         return StaticDataLayer.execute_sp_row1("call tst_test_find_designation_type03()")
 
@@ -210,10 +210,20 @@ class TestDataLayer(StaticDataLayer):
     def tst_test_find_designation_type04():
         """
         Test for designation type.
-         
-        :rtype: dict[str,object]
+
+        :rtype: dict[str,*]
         """
         return StaticDataLayer.execute_sp_row1("call tst_test_find_designation_type04()")
+
+    # ------------------------------------------------------------------------------------------------------------------
+    @staticmethod
+    def tst_test_find_designation_type05():
+        """
+        Test for designation type.
+
+        :rtype: dict[str,*]
+        """
+        return StaticDataLayer.execute_sp_row1("call tst_test_find_designation_type05()")
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod

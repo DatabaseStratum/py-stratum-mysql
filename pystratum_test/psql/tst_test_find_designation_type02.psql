@@ -4,7 +4,7 @@
 create procedure tst_test_find_designation_type02()
 reads sql data
 
--- type: row1
+ -- type: row1
 begin
-  select 'Test finding deignation type';
+  select 'Test finding designation type';
 end
