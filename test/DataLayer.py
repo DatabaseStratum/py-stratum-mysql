@@ -222,16 +222,6 @@ class DataLayer(StaticDataLayer):
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def tst_test_label():
-        """
-        Test for labels.
-         
-        :rtype: list[dict[str,object]]
-        """
-        return StaticDataLayer.execute_sp_rows("call tst_test_label()")
-
-    # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
     def tst_test_log():
         """
         Test for designation type log.
