@@ -177,6 +177,18 @@ class TestDataLayer(StaticDataLayer):
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
+    def tst_test_bulk(bulk_handler):
+        """
+        Test for designation type bulk.
+
+        :param pystratum.BulkHandler.BulkHandler bulk_handler: The bulk handler for processing the selected rows.
+
+        :rtype: int
+        """
+        return StaticDataLayer.execute_sp_bulk(bulk_handler, "call tst_test_bulk()")
+
+    # ------------------------------------------------------------------------------------------------------------------
+    @staticmethod
     def tst_test_find_designation_type01():
         """
         Test for designation type.

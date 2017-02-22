@@ -1,3 +1,4 @@
+from pystratum_mysql.wrapper.MySqlBulkWrapper import MySqlBulkWrapper
 from pystratum_mysql.wrapper.MySqlFunctionsWrapper import MySqlFunctionsWrapper
 from pystratum_mysql.wrapper.MySqlLogWrapper import MySqlLogWrapper
 from pystratum_mysql.wrapper.MySqlMultiWrapper import MySqlMultiWrapper
@@ -21,28 +22,30 @@ def create_routine_wrapper(routine, lob_as_string_flag):
 
     :rtype: pystratum_mysql.wrapper.MySqlWrapper.MySqlWrapper
     """
-    if routine['designation'] == 'none':
-        wrapper = MySqlNoneWrapper(routine, lob_as_string_flag)
-    elif routine['designation'] == 'row0':
-        wrapper = MySqlRow0Wrapper(routine, lob_as_string_flag)
-    elif routine['designation'] == 'row1':
-        wrapper = MySqlRow1Wrapper(routine, lob_as_string_flag)
-    elif routine['designation'] == 'rows':
-        wrapper = MySqlRowsWrapper(routine, lob_as_string_flag)
-    elif routine['designation'] == 'rows_with_index':
-        wrapper = MySqlRowsWithIndexWrapper(routine, lob_as_string_flag)
-    elif routine['designation'] == 'rows_with_key':
-        wrapper = MySqlRowsWithKeyWrapper(routine, lob_as_string_flag)
-    elif routine['designation'] == 'singleton0':
-        wrapper = MySqlSingleton0Wrapper(routine, lob_as_string_flag)
-    elif routine['designation'] == 'singleton1':
-        wrapper = MySqlSingleton1Wrapper(routine, lob_as_string_flag)
+    if routine['designation'] == 'bulk':
+        wrapper = MySqlBulkWrapper(routine, lob_as_string_flag)
     elif routine['designation'] == 'function':
         wrapper = MySqlFunctionsWrapper(routine, lob_as_string_flag)
     elif routine['designation'] == 'log':
         wrapper = MySqlLogWrapper(routine, lob_as_string_flag)
     elif routine['designation'] == 'multi':
         wrapper = MySqlMultiWrapper(routine, lob_as_string_flag)
+    elif routine['designation'] == 'none':
+        wrapper = MySqlNoneWrapper(routine, lob_as_string_flag)
+    elif routine['designation'] == 'row0':
+        wrapper = MySqlRow0Wrapper(routine, lob_as_string_flag)
+    elif routine['designation'] == 'row1':
+        wrapper = MySqlRow1Wrapper(routine, lob_as_string_flag)
+    elif routine['designation'] == 'rows_with_index':
+        wrapper = MySqlRowsWithIndexWrapper(routine, lob_as_string_flag)
+    elif routine['designation'] == 'rows_with_key':
+        wrapper = MySqlRowsWithKeyWrapper(routine, lob_as_string_flag)
+    elif routine['designation'] == 'rows':
+        wrapper = MySqlRowsWrapper(routine, lob_as_string_flag)
+    elif routine['designation'] == 'singleton0':
+        wrapper = MySqlSingleton0Wrapper(routine, lob_as_string_flag)
+    elif routine['designation'] == 'singleton1':
+        wrapper = MySqlSingleton1Wrapper(routine, lob_as_string_flag)
     else:
         raise Exception("Unknown routine type '{0!s}'.".format(routine['designation']))
 

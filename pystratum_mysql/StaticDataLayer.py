@@ -166,6 +166,38 @@ class StaticDataLayer:
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
+    def execute_sp_bulk(bulk_handler, sql, *params):
+        """
+        Executes a stored routine with designation type "log". Returns the number of log messages.
+
+        :param pystratum.BulkHandler.BulkHandler bulk_handler: The bulk handler for processing the selected rows.
+        :param str sql: The SQL statement for calling the stored routine.
+        :param iterable params: The arguments for calling the stored routine.
+
+        :rtype: int
+        """
+        cursor = MySQLCursor(StaticDataLayer.connection)
+        StaticDataLayer.last_sql = sql
+        itr = cursor.execute(sql, params, multi=True)
+        bulk_handler.start()
+
+        rowcount = 0
+        try:
+            result = next(itr)
+            for row in result:
+                rowcount += 1
+                bulk_handler.row(row)
+
+        except StopIteration:
+            pass
+
+        cursor.close()
+        bulk_handler.stop()
+
+        return rowcount
+
+    # ------------------------------------------------------------------------------------------------------------------
+    @staticmethod
     def execute_sp_log(sql, *params):
         """
         Executes a stored routine with designation type "log". Returns the number of log messages.
