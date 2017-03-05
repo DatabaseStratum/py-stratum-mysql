@@ -8,7 +8,7 @@ Licence MIT
 from time import strftime, gmtime
 
 from mysql.connector import MySQLConnection, InterfaceError
-from mysql.connector.cursor import MySQLCursorBufferedDict, MySQLCursorBuffered, MySQLCursor
+from mysql.connector.cursor import MySQLCursorBufferedDict, MySQLCursorBuffered, MySQLCursor, MySQLCursorDict
 
 from pystratum.exception.ResultException import ResultException
 
@@ -168,7 +168,7 @@ class StaticDataLayer:
     @staticmethod
     def execute_sp_bulk(bulk_handler, sql, *params):
         """
-        Executes a stored routine with designation type "log". Returns the number of log messages.
+        Executes a stored routine with designation type "bulk". Returns the number of rows processed.
 
         :param pystratum.BulkHandler.BulkHandler bulk_handler: The bulk handler for processing the selected rows.
         :param str sql: The SQL statement for calling the stored routine.
@@ -176,18 +176,24 @@ class StaticDataLayer:
 
         :rtype: int
         """
-        cursor = MySQLCursor(StaticDataLayer.connection)
+        cursor = MySQLCursorDict(StaticDataLayer.connection)
         StaticDataLayer.last_sql = sql
         itr = cursor.execute(sql, params, multi=True)
         bulk_handler.start()
 
         rowcount = 0
         try:
-            result = next(itr)
-            for row in result:
-                rowcount += 1
-                bulk_handler.row(row)
-
+            result = itr.__next__()
+            while result:
+                try:
+                    row = result.__next__()
+                    while row:
+                        rowcount += 1
+                        bulk_handler.row(row)
+                        row = result.__next__()
+                except StopIteration:
+                    pass
+                result = itr.__next__()
         except StopIteration:
             pass
 

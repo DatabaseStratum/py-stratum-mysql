@@ -10,6 +10,7 @@ import re
 from mysql import connector
 
 from pystratum.RoutineLoaderHelper import RoutineLoaderHelper
+from pystratum.exception.LoaderException import LoaderException
 from pystratum_mysql.MySqlMetadataDataLayer import MySqlMetadataDataLayer
 from pystratum_mysql.helper.MySqlDataTypeHelper import MySqlDataTypeHelper
 
@@ -43,7 +44,6 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
         :param str collate: The default collate under which the stored routine must be loaded and run.
         :param pystratum.style.PyStratumStyle.PyStratumStyle io: The output decorator.
         """
-
         RoutineLoaderHelper.__init__(self,
                                      routine_filename,
                                      routine_file_encoding,
@@ -109,11 +109,7 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
     def _get_name(self):
         """
         Extracts the name of the stored routine and the stored routine type (i.e. procedure or function) source.
-        Returns True on success, False otherwise.
-
-        :rtype: bool
         """
-        ret = True
         prog = re.compile("create\\s+(procedure|function)\\s+([a-zA-Z0-9_]+)")
         matches = prog.findall(self._routine_source_code)
 
@@ -121,17 +117,12 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
             self._routine_type = matches[0][0].lower()
 
             if self._routine_name != matches[0][1]:
-                self._io.error('Stored routine name {0} does not match filename in file {1}'.
-                               format(matches[0][1], self._source_filename))
-                ret = False
-        else:
-            ret = False
+                raise LoaderException('Stored routine name {0} does not match filename in file {1}'.
+                                      format(matches[0][1], self._source_filename))
 
         if not self._routine_type:
-            self._io.error('Unable to find the stored routine name and type in file {0}'.
-                           format(self._source_filename))
-
-        return ret
+            raise LoaderException('Unable to find the stored routine name and type in file {0}'.
+                                  format(self._source_filename))
 
     # ------------------------------------------------------------------------------------------------------------------
     def _get_data_type_helper(self):
@@ -210,7 +201,7 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
                     self._print_sql_with_error(sql, error_line)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def get_bulk_insert_table_columns_info(self):
+    def _get_bulk_insert_table_columns_info(self):
         """
         Gets the column names and column types of the current table for bulk insert.
         """
@@ -238,7 +229,7 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
             MySqlMetadataDataLayer.drop_temporary_table(self._table_name)
 
         if n1 != n2:
-            raise Exception("Number of fields %d and number of columns %d don't match." % (n1, n2))
+            raise LoaderException("Number of fields %d and number of columns %d don't match." % (n1, n2))
 
         self._columns_types = tmp_column_types
         self._fields = tmp_fields
@@ -246,12 +237,8 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
     # ------------------------------------------------------------------------------------------------------------------
     def _get_designation_type(self):
         """
-        Extracts the designation type of the stored routine. Returns True on success. Otherwise returns False.
-
-        :rtype: bool
+        Extracts the designation type of the stored routine.
         """
-        ret = True
-
         positions = self._get_create_begin_block_positions()
         if positions[0] != -1:
             prog = re.compile(r'\s*--\s+type:\s*(\w+)\s*(.+)?\s*')
@@ -263,10 +250,9 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
                     if self._designation_type == 'bulk_insert':
                         n = re.compile(r'([a-zA-Z0-9_]+)\s+([a-zA-Z0-9_,]+)')
                         info = n.findall(tmp)
-
                         if not info:
-                            self._io.error('Expected: -- type: bulk_insert <table_name> <columns> in file {0}'.
-                                           format(self._source_filename))
+                            raise LoaderException('Expected: -- type: bulk_insert <table_name> <columns> in file {0}'.
+                                                  format(self._source_filename))
                         self._table_name = info[0][0]
                         self._columns = str(info[0][1]).split(',')
 
@@ -274,15 +260,11 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
                         self._columns = str(matches[0][1]).split(',')
                     else:
                         if matches[0][1]:
-                            ret = False
-        else:
-            ret = False
+                            raise LoaderException('Expected: -- type: {}'.format(self._designation_type))
 
-        if not ret:
-            self._io.error("Unable to find the designation type of the stored routine in file {0}".
-                           format(self._source_filename))
-
-        return ret
+        if not self._designation_type:
+            raise LoaderException("Unable to find the designation type of the stored routine in file {0}".
+                                  format(self._source_filename))
 
     # ------------------------------------------------------------------------------------------------------------------
     def _get_create_begin_block_positions(self):
@@ -315,11 +297,11 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
                     if routine_parameter['character_set_name']:
                         value += ' collation %s' % routine_parameter['collation']
 
-                self._parameters.append({'name': routine_parameter['parameter_name'],
-                                         'data_type': routine_parameter['parameter_type'],
+                self._parameters.append({'name': routine_parameter             ['parameter_name'],
+                                         'data_type': routine_parameter        ['parameter_type'],
                                          'numeric_precision': routine_parameter['numeric_precision'],
-                                         'numeric_scale': routine_parameter['numeric_scale'],
-                                         'data_type_descriptor': value})
+                                         'numeric_scale': routine_parameter    ['numeric_scale'],
+                                         'data_type_descriptor':               value})
 
     # ------------------------------------------------------------------------------------------------------------------
     def _drop_routine(self):
