@@ -1,9 +1,5 @@
 """
 PyStratum
-
-Copyright 2015-2016 Set Based IT Consultancy
-
-Licence MIT
 """
 from pystratum.MetadataDataLayer import MetadataDataLayer
 from pystratum_mysql.StaticDataLayer import StaticDataLayer

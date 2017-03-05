@@ -1,9 +1,5 @@
 """
 PyStratum
-
-Copyright 2015-2016 Set Based IT Consultancy
-
-Licence MIT
 """
 from pystratum.wrapper.BulkWrapper import BulkWrapper
 from pystratum_mysql.wrapper.MySqlWrapper import MySqlWrapper
