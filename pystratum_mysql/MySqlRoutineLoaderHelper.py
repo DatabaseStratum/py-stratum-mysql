@@ -147,22 +147,6 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
         """
         self._io.text('Loading {0} <dbo>{1}</dbo>'.format(self._routine_type, self._routine_name))
 
-        self._set_magic_constants()
-
-        routine_source = []
-        i = 0
-        for line in self._routine_source_code_lines:
-            new_line = line
-            self._replace['__LINE__'] = "'%d'" % (i + 1)
-            for search, replace in self._replace.items():
-                tmp = re.findall(search, new_line, re.IGNORECASE)
-                if tmp:
-                    new_line = new_line.replace(tmp[0], replace)
-            routine_source.append(new_line)
-            i += 1
-
-        routine_source = "\n".join(routine_source)
-
         self._unset_magic_constants()
         self._drop_routine()
 
@@ -170,7 +154,7 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
 
         MySqlMetadataDataLayer.set_character_set(self._character_set, self._collate)
 
-        MySqlMetadataDataLayer.execute_none(routine_source)
+        MySqlMetadataDataLayer.execute_none(self._routine_source_code)
 
     # ------------------------------------------------------------------------------------------------------------------
     def _log_exception(self, exception):
