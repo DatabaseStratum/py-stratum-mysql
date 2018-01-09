@@ -11,6 +11,25 @@ class MySqlRoutineLoader(MySqlConnection, RoutineLoader):
     """
     Class for loading stored routines into a MySQL instance from (pseudo) SQL files.
     """
+    MAX_LENGTH_CHAR = 255
+    """
+    Maximum length of a varchar.
+    """
+
+    MAX_LENGTH_VARCHAR = 4096
+    """
+    Maximum length of a varchar.
+    """
+
+    MAX_LENGTH_BINARY = 255
+    """
+    Maximum length of a varbinary.
+    """
+
+    MAX_LENGTH_VARBINARY = 4096
+    """
+    Maximum length of a varbinary.
+    """
 
     # ------------------------------------------------------------------------------------------------------------------
     def __init__(self, io):
@@ -23,11 +42,12 @@ class MySqlRoutineLoader(MySqlConnection, RoutineLoader):
         MySqlConnection.__init__(self, io)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _get_column_type(self):
+    def __save_column_types_exact(self, rows):
         """
-        Selects schema, table, column names and the column type from MySQL and saves them as replace pairs.
+        Saves the exact column types as replace pairs.
+
+        :param list(str,dict): The columns types.
         """
-        rows = MySqlMetadataDataLayer.get_all_table_columns()
         for row in rows:
             key = row['table_name'] + '.' + row['column_name'] + '%type'
 
@@ -36,6 +56,43 @@ class MySqlRoutineLoader(MySqlConnection, RoutineLoader):
                 value += ' character set ' + row['character_set_name']
 
             self._add_replace_pair(key, value, False)
+
+    # ------------------------------------------------------------------------------------------------------------------
+    def __save_column_types_max_length(self, rows):
+        """
+        Saves the column types with maximum length as replace pairs.
+
+        :param list(str,dict): The columns types.
+        """
+        for row in rows:
+            key = row['table_name'] + '.' + row['column_name'] + '%max-type'
+
+            if row['data_type'] == 'char':
+                value = row['data_type'] + '(' + str(self.MAX_LENGTH_CHAR) + ')'
+                value += ' character set ' + row['character_set_name']
+                self._add_replace_pair(key, value, False)
+
+            if row['data_type'] == 'varchar':
+                value = row['data_type'] + '(' + str(self.MAX_LENGTH_VARCHAR) + ')'
+                value += ' character set ' + row['character_set_name']
+                self._add_replace_pair(key, value, False)
+
+            elif row['data_type'] == 'binary':
+                value = row['data_type'] + '(' + str(self.MAX_LENGTH_BINARY) + ')'
+                self._add_replace_pair(key, value, False)
+
+            elif row['data_type'] == 'varbinary':
+                value = row['data_type'] + '(' + str(self.MAX_LENGTH_VARBINARY) + ')'
+                self._add_replace_pair(key, value, False)
+
+    # ------------------------------------------------------------------------------------------------------------------
+    def _get_column_type(self):
+        """
+        Selects schema, table, column names and the column type from MySQL and saves them as replace pairs.
+        """
+        rows = MySqlMetadataDataLayer.get_all_table_columns()
+        self.__save_column_types_exact(rows)
+        self.__save_column_types_max_length(rows)
 
         self._io.text('Selected {0} column types for substitution'.format(len(rows)))
 

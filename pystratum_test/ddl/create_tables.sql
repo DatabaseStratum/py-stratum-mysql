@@ -14,7 +14,7 @@ create table TST_FOO1( tst_c00 int
 ,                      tst_c02 tinyint
 ,                      tst_c03 mediumint
 ,                      tst_c04 bigint
-,                      tst_c05 decimal(10,2)     
+,                      tst_c05 decimal(10,2)
 ,                      tst_c06 float
 ,                      tst_c07 double
 ,                      tst_c08 bit(8)
