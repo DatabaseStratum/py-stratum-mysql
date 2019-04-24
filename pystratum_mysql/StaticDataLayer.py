@@ -143,7 +143,7 @@ class StaticDataLayer:
         :param str sql: The SQL calling the stored procedure.
         :param iterable params: The arguments for the stored procedure.
 
-        :rtype: int:
+        :rtype: *:
         """
         cursor = MySQLCursorBuffered(StaticDataLayer.connection)
         StaticDataLayer.last_sql = sql
