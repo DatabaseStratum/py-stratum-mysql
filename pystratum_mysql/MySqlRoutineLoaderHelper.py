@@ -48,13 +48,6 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
                                      rdbms_old_metadata,
                                      io)
 
-        self._sql_mode = sql_mode
-        """
-        The SQL-mode under which the stored routine will be loaded and run.
-
-        :type: str
-        """
-
         self._character_set = character_set
         """
         The default character set under which the stored routine will be loaded and run.
@@ -69,37 +62,55 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
         :type: str
         """
 
+        self._sql_mode = sql_mode
+        """
+        The SQL-mode under which the stored routine will be loaded and run.
+
+        :type: str
+        """
+
     # ------------------------------------------------------------------------------------------------------------------
-    def _must_reload(self):
+    def _get_bulk_insert_table_columns_info(self):
         """
-        Returns True if the source file must be load or reloaded. Otherwise returns False.
-
-        :rtype: bool
+        Gets the column names and column types of the current table for bulk insert.
         """
-        if not self._pystratum_old_metadata:
-            return True
+        table_is_non_temporary = MySqlMetadataDataLayer.check_table_exists(self._table_name)
 
-        if self._pystratum_old_metadata['timestamp'] != self._m_time:
-            return True
+        if not table_is_non_temporary:
+            MySqlMetadataDataLayer.call_stored_routine(self._routine_name)
 
-        if self._pystratum_old_metadata['replace']:
-            for key, value in self._pystratum_old_metadata['replace'].items():
-                if key.lower() not in self._replace_pairs or self._replace_pairs[key.lower()] != value:
-                    return True
+        columns = MySqlMetadataDataLayer.describe_table(self._table_name)
 
-        if not self._rdbms_old_metadata:
-            return True
+        tmp_column_types = []
+        tmp_fields = []
 
-        if self._rdbms_old_metadata['sql_mode'] != self._sql_mode:
-            return True
+        n1 = 0
+        for column in columns:
+            prog = re.compile('(\\w+)')
+            c_type = prog.findall(column['Type'])
+            tmp_column_types.append(c_type[0])
+            tmp_fields.append(column['Field'])
+            n1 += 1
 
-        if self._rdbms_old_metadata['character_set_client'] != self._character_set:
-            return True
+        n2 = len(self._columns)
 
-        if self._rdbms_old_metadata['collation_connection'] != self._collate:
-            return True
+        if not table_is_non_temporary:
+            MySqlMetadataDataLayer.drop_temporary_table(self._table_name)
 
-        return False
+        if n1 != n2:
+            raise LoaderException("Number of fields %d and number of columns %d don't match." % (n1, n2))
+
+        self._columns_types = tmp_column_types
+        self._fields = tmp_fields
+
+    # ------------------------------------------------------------------------------------------------------------------
+    def _get_data_type_helper(self):
+        """
+        Returns a data type helper object for MySQL.
+
+        :rtype: pystratum.helper.DataTypeHelper.DataTypeHelper
+        """
+        return MySqlDataTypeHelper()
 
     # ------------------------------------------------------------------------------------------------------------------
     def _get_name(self):
@@ -121,13 +132,26 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
                                   format(self._source_filename))
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _get_data_type_helper(self):
+    def _get_routine_parameters_info(self):
         """
-        Returns a data type helper object for MySQL.
+        Retrieves information about the stored routine parameters from the meta data of MySQL.
+        """
+        routine_parameters = MySqlMetadataDataLayer.get_routine_parameters(self._routine_name)
+        for routine_parameter in routine_parameters:
+            if routine_parameter['parameter_name']:
+                value = routine_parameter['column_type']
+                if 'character_set_name' in routine_parameter:
+                    if routine_parameter['character_set_name']:
+                        value += ' character set %s' % routine_parameter['character_set_name']
+                if 'collation' in routine_parameter:
+                    if routine_parameter['character_set_name']:
+                        value += ' collation %s' % routine_parameter['collation']
 
-        :rtype: pystratum.helper.DataTypeHelper.DataTypeHelper
-        """
-        return MySqlDataTypeHelper()
+                self._parameters.append({'name': routine_parameter             ['parameter_name'],
+                                         'data_type': routine_parameter        ['parameter_type'],
+                                         'numeric_precision': routine_parameter['numeric_precision'],
+                                         'numeric_scale': routine_parameter    ['numeric_scale'],
+                                         'data_type_descriptor':               value})
 
     # ------------------------------------------------------------------------------------------------------------------
     def _is_start_of_stored_routine(self, line):
@@ -192,60 +216,36 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
                     self._print_sql_with_error(sql, error_line)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _get_bulk_insert_table_columns_info(self):
+    def _must_reload(self):
         """
-        Gets the column names and column types of the current table for bulk insert.
+        Returns True if the source file must be load or reloaded. Otherwise returns False.
+
+        :rtype: bool
         """
-        table_is_non_temporary = MySqlMetadataDataLayer.check_table_exists(self._table_name)
+        if not self._pystratum_old_metadata:
+            return True
 
-        if not table_is_non_temporary:
-            MySqlMetadataDataLayer.call_stored_routine(self._routine_name)
+        if self._pystratum_old_metadata['timestamp'] != self._m_time:
+            return True
 
-        columns = MySqlMetadataDataLayer.describe_table(self._table_name)
+        if self._pystratum_old_metadata['replace']:
+            for key, value in self._pystratum_old_metadata['replace'].items():
+                if key.lower() not in self._replace_pairs or self._replace_pairs[key.lower()] != value:
+                    return True
 
-        tmp_column_types = []
-        tmp_fields = []
+        if not self._rdbms_old_metadata:
+            return True
 
-        n1 = 0
-        for column in columns:
-            prog = re.compile('(\\w+)')
-            c_type = prog.findall(column['Type'])
-            tmp_column_types.append(c_type[0])
-            tmp_fields.append(column['Field'])
-            n1 += 1
+        if self._rdbms_old_metadata['sql_mode'] != self._sql_mode:
+            return True
 
-        n2 = len(self._columns)
+        if self._rdbms_old_metadata['character_set_client'] != self._character_set:
+            return True
 
-        if not table_is_non_temporary:
-            MySqlMetadataDataLayer.drop_temporary_table(self._table_name)
+        if self._rdbms_old_metadata['collation_connection'] != self._collate:
+            return True
 
-        if n1 != n2:
-            raise LoaderException("Number of fields %d and number of columns %d don't match." % (n1, n2))
-
-        self._columns_types = tmp_column_types
-        self._fields = tmp_fields
-
-    # ------------------------------------------------------------------------------------------------------------------
-    def _get_routine_parameters_info(self):
-        """
-        Retrieves information about the stored routine parameters from the meta data of MySQL.
-        """
-        routine_parameters = MySqlMetadataDataLayer.get_routine_parameters(self._routine_name)
-        for routine_parameter in routine_parameters:
-            if routine_parameter['parameter_name']:
-                value = routine_parameter['column_type']
-                if 'character_set_name' in routine_parameter:
-                    if routine_parameter['character_set_name']:
-                        value += ' character set %s' % routine_parameter['character_set_name']
-                if 'collation' in routine_parameter:
-                    if routine_parameter['character_set_name']:
-                        value += ' collation %s' % routine_parameter['collation']
-
-                self._parameters.append({'name': routine_parameter             ['parameter_name'],
-                                         'data_type': routine_parameter        ['parameter_type'],
-                                         'numeric_precision': routine_parameter['numeric_precision'],
-                                         'numeric_scale': routine_parameter    ['numeric_scale'],
-                                         'data_type_descriptor':               value})
+        return False
 
     # ------------------------------------------------------------------------------------------------------------------
     def _drop_routine(self):
