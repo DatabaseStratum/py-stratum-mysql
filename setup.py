@@ -37,11 +37,12 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
     ],
 
     keywords='stored routines, wrapper, loader, MySQL',
 
     packages=find_packages(exclude=['build', 'test']),
 
-    install_requires=['pystratum>=0.10.18'],
+    install_requires=['pystratum>=0.10.20'],
 )
