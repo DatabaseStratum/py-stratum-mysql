@@ -5,9 +5,6 @@ python:
 
 sudo: true
 
-addons:
-  mariadb: 10.1
-
 install:
   - cd $HOME
   - wget https://dev.mysql.com/get/Downloads/Connector-Python/mysql-connector-python-2.1.3.tar.gz
