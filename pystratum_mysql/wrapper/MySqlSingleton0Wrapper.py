@@ -1,6 +1,8 @@
 """
 PyStratum
 """
+from typing import Dict, Any
+
 from pystratum.wrapper.Singleton0Wrapper import Singleton0Wrapper
 from pystratum_mysql.wrapper.MySqlWrapper import MySqlWrapper
 
@@ -11,7 +13,7 @@ class MySqlSingleton0Wrapper(MySqlWrapper, Singleton0Wrapper):
     """
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _write_result_handler(self, routine):
+    def _write_result_handler(self, routine: Dict[str, Any]) -> None:
         self._write_line('return StaticDataLayer.execute_sp_singleton0({0!s})'.format(self._generate_command(routine)))
 
 # ----------------------------------------------------------------------------------------------------------------------

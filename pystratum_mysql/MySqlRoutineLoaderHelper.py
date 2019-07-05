@@ -2,8 +2,12 @@
 PyStratum
 """
 import re
+from typing import Dict, Optional
 
 from mysql import connector
+
+from pystratum.helper.DataTypeHelper import DataTypeHelper
+from pystratum.style.PyStratumStyle import PyStratumStyle
 
 from pystratum.RoutineLoaderHelper import RoutineLoaderHelper
 from pystratum.exception.LoaderException import LoaderException
@@ -18,15 +22,15 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
 
     # ------------------------------------------------------------------------------------------------------------------
     def __init__(self,
-                 routine_filename,
-                 routine_file_encoding,
-                 pystratum_old_metadata,
-                 replace_pairs,
-                 rdbms_old_metadata,
-                 sql_mode,
-                 character_set,
-                 collate,
-                 io):
+                 routine_filename: str,
+                 routine_file_encoding: str,
+                 pystratum_old_metadata: Optional[Dict],
+                 replace_pairs: Dict[str, str],
+                 rdbms_old_metadata: Optional[Dict],
+                 sql_mode: str,
+                 character_set: str,
+                 collate: str,
+                 io: PyStratumStyle):
         """
         Object constructor.
 
@@ -38,7 +42,7 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
         :param str sql_mode: The SQL mode under which the stored routine must be loaded and run.
         :param str character_set: The default character set under which the stored routine must be loaded and run.
         :param str collate: The default collate under which the stored routine must be loaded and run.
-        :param pystratum.style.PyStratumStyle.PyStratumStyle io: The output decorator.
+        :param PyStratumStyle io: The output decorator.
         """
         RoutineLoaderHelper.__init__(self,
                                      routine_filename,
@@ -48,29 +52,23 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
                                      rdbms_old_metadata,
                                      io)
 
-        self._character_set = character_set
+        self._character_set: str = character_set
         """
         The default character set under which the stored routine will be loaded and run.
-
-        :type: str
         """
 
-        self._collate = collate
+        self._collate: str = collate
         """
         The default collate under which the stored routine will be loaded and run.
-
-        :type: str
         """
 
-        self._sql_mode = sql_mode
+        self._sql_mode: str = sql_mode
         """
         The SQL-mode under which the stored routine will be loaded and run.
-
-        :type: str
         """
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _get_bulk_insert_table_columns_info(self):
+    def _get_bulk_insert_table_columns_info(self) -> None:
         """
         Gets the column names and column types of the current table for bulk insert.
         """
@@ -104,16 +102,16 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
         self._fields = tmp_fields
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _get_data_type_helper(self):
+    def _get_data_type_helper(self) -> DataTypeHelper:
         """
         Returns a data type helper object for MySQL.
 
-        :rtype: pystratum.helper.DataTypeHelper.DataTypeHelper
+        :rtype: DataTypeHelper
         """
         return MySqlDataTypeHelper()
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _get_name(self):
+    def _get_name(self) -> None:
         """
         Extracts the name of the stored routine and the stored routine type (i.e. procedure or function) source.
         """
@@ -132,7 +130,7 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
                                   format(self._source_filename))
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _get_routine_parameters_info(self):
+    def _get_routine_parameters_info(self) -> None:
         """
         Retrieves information about the stored routine parameters from the meta data of MySQL.
         """
@@ -154,7 +152,7 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
                                          'data_type_descriptor':               value})
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _is_start_of_stored_routine(self, line):
+    def _is_start_of_stored_routine(self, line: str) -> bool:
         """
         Returns True if a line is the start of the code of the stored routine.
 
@@ -165,7 +163,7 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
         return re.match(r'^\s*create\s+(procedure|function)', line, re.IGNORECASE) is not None
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _is_start_of_stored_routine_body(self, line):
+    def _is_start_of_stored_routine_body(self, line: str) -> bool:
         """
         Returns True if a line is the start of the body of the stored routine.
 
@@ -176,7 +174,7 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
         return re.match(r'^\s*begin', line, re.IGNORECASE) is not None
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _load_routine_file(self):
+    def _load_routine_file(self) -> None:
         """
         Loads the stored routine into the MySQL instance.
         """
@@ -192,7 +190,7 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
         MySqlMetadataDataLayer.execute_none(self._routine_source_code)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _log_exception(self, exception):
+    def _log_exception(self, exception: Exception) -> None:
         """
         Logs an exception.
 
@@ -216,7 +214,7 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
                     self._print_sql_with_error(sql, error_line)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _must_reload(self):
+    def _must_reload(self) -> bool:
         """
         Returns True if the source file must be load or reloaded. Otherwise returns False.
 
@@ -248,7 +246,7 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
         return False
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _drop_routine(self):
+    def _drop_routine(self) -> None:
         """
         Drops the stored routine if it exists.
         """

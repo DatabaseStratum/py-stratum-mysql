@@ -1,0 +1,10 @@
+/**
+ * Test for designation type none.
+ */
+create procedure tst_test_none2()
+reads sql data
+-- type: none
+begin
+ delete from TMP_TMP
+ ;
+end

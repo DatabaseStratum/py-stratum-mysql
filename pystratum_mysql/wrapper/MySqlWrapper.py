@@ -1,6 +1,8 @@
 """
 PyStratum
 """
+from typing import Any, Dict, List
+
 from pystratum.wrapper.Wrapper import Wrapper
 
 
@@ -10,7 +12,7 @@ class MySqlWrapper(Wrapper):
     """
 
     # ------------------------------------------------------------------------------------------------------------------
-    def is_lob_parameter(self, parameters):
+    def is_lob_parameter(self, parameters: List[Dict[str, Any]]):
         """
         Returns True of one of the parameters is a BLOB or CLOB. Otherwise, returns False.
 
@@ -60,7 +62,7 @@ class MySqlWrapper(Wrapper):
         return has_lob
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _generate_command(self, routine):
+    def _generate_command(self, routine: Dict[str, Any]) -> str:
         """
         Generates SQL statement for calling a stored routine.
 
@@ -98,7 +100,7 @@ class MySqlWrapper(Wrapper):
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def _get_parameter_format_specifier(data_type):
+    def _get_parameter_format_specifier(data_type: str) -> str:
         """
         Returns the appropriate format specifier for a parameter type.
 

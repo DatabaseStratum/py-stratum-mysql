@@ -3,7 +3,7 @@
  *
  * @param p_count The number of iterations.
  */
-create procedure tst_test_none( p_count bigint )
+create procedure tst_test_none1( p_count bigint )
 reads sql data
 -- type: none
 begin
@@ -21,7 +21,4 @@ begin
    
    set l_count = l_count +1;
  end while;
-
- delete from TMP_TMP
- ;
 end

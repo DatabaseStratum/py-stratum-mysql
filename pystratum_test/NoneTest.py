@@ -11,7 +11,9 @@ class NoneTest(StratumTestCase):
         """
         Stored routine with designation type none must return the number of rows affected.
         """
-        ret = TestDataLayer.tst_test_none(0)
+        TestDataLayer.tst_test_none1(0)
+
+        ret = TestDataLayer.tst_test_none2()
         self.assertEqual(0, ret)
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -19,7 +21,9 @@ class NoneTest(StratumTestCase):
         """
         Stored routine with designation type none must return the number of rows affected.
         """
-        ret = TestDataLayer.tst_test_none(1)
+        TestDataLayer.tst_test_none1(1)
+
+        ret = TestDataLayer.tst_test_none2()
         self.assertEqual(1, ret)
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -27,7 +31,9 @@ class NoneTest(StratumTestCase):
         """
         Stored routine with designation type none must return the number of rows affected.
         """
-        ret = TestDataLayer.tst_test_none(20)
+        TestDataLayer.tst_test_none1(20)
+
+        ret = TestDataLayer.tst_test_none2()
         self.assertEqual(20, ret)
 
     # ------------------------------------------------------------------------------------------------------------------

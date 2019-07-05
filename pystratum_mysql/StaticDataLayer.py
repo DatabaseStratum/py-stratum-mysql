@@ -2,10 +2,12 @@
 PyStratum
 """
 from time import strftime, gmtime
+from typing import Union, Dict, Optional, Any, List
 
 from mysql.connector import MySQLConnection, InterfaceError
 from mysql.connector.cursor import MySQLCursorBufferedDict, MySQLCursorBuffered, MySQLCursor, MySQLCursorDict
 
+from pystratum.BulkHandler import BulkHandler
 from pystratum.exception.ResultException import ResultException
 
 
@@ -15,7 +17,7 @@ class StaticDataLayer:
     static wrapper methods for executing stored procedures and functions.
     """
     # ------------------------------------------------------------------------------------------------------------------
-    config = {
+    config: Dict[str, Union[str, int, None]] = {
         'database':  None,
         'user':      '',
         'password':  '',
@@ -33,31 +35,25 @@ class StaticDataLayer:
     :type: dict[str,str|int]
     """
 
-    connection = None
+    connection: Optional[MySQLConnection] = None
     """
     The connection between Python and the MySQL instance.
-
-    :type: mysql.connector.connection.MySQLConnection
     """
 
-    line_buffered = True
+    line_buffered: bool = True
     """
     If True log messages from stored procedures with designation type 'log' are line buffered (Note: In python
     sys.stdout is buffered by default).
-
-    :type: bool
     """
 
-    last_sql = None
+    last_sql: Optional[str] = None
     """
     The last executed SQL statement.
-
-    :type: str|None
     """
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def commit():
+    def commit() -> None:
         """
         Commits the current transaction.
         See http://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlconnection-commit.html
@@ -66,7 +62,7 @@ class StaticDataLayer:
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def connect():
+    def connect() -> None:
         """
         Connects to a MySQL instance. See http://dev.mysql.com/doc/connector-python/en/connector-python-connectargs.html
         for a complete overview of all possible keys in config.
@@ -75,7 +71,7 @@ class StaticDataLayer:
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def disconnect():
+    def disconnect() -> None:
         """
         Disconnects from the MySQL instance.
         See http://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlconnection-disconnect.html.
@@ -84,7 +80,7 @@ class StaticDataLayer:
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def execute_multi(sql):
+    def execute_multi(sql: str) -> None:
         """
         Executes a multi query that does not select any rows.
 
@@ -98,7 +94,7 @@ class StaticDataLayer:
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def execute_none(sql, *params):
+    def execute_none(sql: str, *params) -> int:
         """
         Executes a query that does not select any rows. Returns the number of affected rows.
 
@@ -117,7 +113,7 @@ class StaticDataLayer:
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def execute_rows(sql, *params):
+    def execute_rows(sql: str, *params) -> List[Dict[str, Any]]:
         """
         Executes a query that selects 0 or more rows. Returns the selected rows (an empty list if no rows are selected).
 
@@ -136,7 +132,7 @@ class StaticDataLayer:
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def execute_singleton1(sql, *params):
+    def execute_singleton1(sql: str, *params) -> Any:
         """
         Executes SQL statement that selects 1 row with 1 column. Returns the value of the selected column.
 
@@ -162,11 +158,11 @@ class StaticDataLayer:
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def execute_sp_bulk(bulk_handler, sql, *params):
+    def execute_sp_bulk(bulk_handler: BulkHandler, sql: str, *params) -> int:
         """
         Executes a stored routine with designation type "bulk". Returns the number of rows processed.
 
-        :param pystratum.BulkHandler.BulkHandler bulk_handler: The bulk handler for processing the selected rows.
+        :param BulkHandler bulk_handler: The bulk handler for processing the selected rows.
         :param str sql: The SQL statement for calling the stored routine.
         :param iterable params: The arguments for calling the stored routine.
 
@@ -200,7 +196,7 @@ class StaticDataLayer:
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def execute_sp_log(sql, *params):
+    def execute_sp_log(sql: str, *params) -> int:
         """
         Executes a stored routine with designation type "log". Returns the number of log messages.
 
@@ -234,7 +230,7 @@ class StaticDataLayer:
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def execute_sp_multi(sql, *params):
+    def execute_sp_multi(sql: str, *params) -> List[List[Dict[str, Any]]]:
         """
         Executes a stored routine with designation type "multi". Returns a list of the result sets.
 
@@ -260,7 +256,7 @@ class StaticDataLayer:
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def execute_sp_none(sql, *params):
+    def execute_sp_none(sql: str, *params) -> int:
         """
         Executes a stored routine that does not select any rows. Returns the number of affected rows.
 
@@ -280,7 +276,7 @@ class StaticDataLayer:
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def execute_sp_row0(sql, *params):
+    def execute_sp_row0(sql: str, *params) -> Optional[Dict[str, Any]]:
         """
         Executes a stored procedure that selects 0 or 1 row. Returns the selected row or None.
 
@@ -308,7 +304,7 @@ class StaticDataLayer:
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def execute_sp_row1(sql, *params):
+    def execute_sp_row1(sql: str, *params) -> Dict[str, Any]:
         """
         Executes a stored procedure that selects 1 row. Returns the selected row.
 
@@ -336,7 +332,7 @@ class StaticDataLayer:
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def execute_sp_rows(sql, *params):
+    def execute_sp_rows(sql: str, *params) -> List[Dict[str, Any]]:
         """
         Executes a stored procedure that selects 0 or more rows. Returns the selected rows (an empty list if no rows
         are selected).
@@ -357,7 +353,7 @@ class StaticDataLayer:
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def execute_sp_singleton0(sql, *params):
+    def execute_sp_singleton0(sql: str, *params) -> Any:
         """
         Executes a stored procedure that selects 0 or 1 row with 1 column. Returns the value of selected column or None.
 
@@ -385,7 +381,7 @@ class StaticDataLayer:
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def execute_sp_singleton1(sql, *params):
+    def execute_sp_singleton1(sql: str, *params) -> Any:
         """
         Executes a stored routine with designation type "table", i.e a stored routine that is expected to select 1 row
         with 1 column.
@@ -414,7 +410,7 @@ class StaticDataLayer:
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def execute_sp_table(sql, *params):
+    def execute_sp_table(sql: str, *params) -> int:
         """
         Executes a stored routine with designation type "table". Returns the number of rows.
 
@@ -428,7 +424,7 @@ class StaticDataLayer:
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def rollback():
+    def rollback() -> None:
         """
         Rolls back the current transaction.
         See http://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlconnection-rollback.html
@@ -437,7 +433,9 @@ class StaticDataLayer:
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def start_transaction(consistent_snapshot=False, isolation_level='READ-COMMITTED', readonly=None):
+    def start_transaction(consistent_snapshot: bool = False,
+                          isolation_level: str = 'READ-COMMITTED',
+                          readonly: Optional[bool] = None) -> None:
         """
         Starts a transaction.
         See http://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlconnection-start-transaction.html

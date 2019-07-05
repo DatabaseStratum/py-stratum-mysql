@@ -1,14 +1,13 @@
 language: python
 python:
-  - '3.4'
-  - '3.5'
   - '3.6'
+  - '3.7'
 
 sudo: true
 
 addons:
   mariadb: 10.1
-  
+
 install:
   - cd $HOME
   - wget https://dev.mysql.com/get/Downloads/Connector-Python/mysql-connector-python-2.1.3.tar.gz
@@ -25,7 +24,7 @@ before_script:
   - mysql -u root -e "set global binlog_format = 'row';"
   - mysql -u root -e "set global log_bin_trust_function_creators = 1;"
 
-script: 
+script:
   - cd $TRAVIS_BUILD_DIR
   - cat pystratum_test/ddl/create_tables.sql | mysql -utest -ptest test
   - python3 -m unittest pystratum_test/*.py

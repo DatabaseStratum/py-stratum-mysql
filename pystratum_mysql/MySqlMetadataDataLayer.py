@@ -1,6 +1,8 @@
 """
 PyStratum
 """
+from typing import Optional, Any, Dict, List, Union
+
 from pystratum.MetadataDataLayer import MetadataDataLayer
 from pystratum_mysql.StaticDataLayer import StaticDataLayer
 
@@ -9,22 +11,20 @@ class MySqlMetadataDataLayer(MetadataDataLayer):
     """
     Data layer for retrieving metadata and loading stored routines.
     """
-    __dl = None
+    __dl: Optional[StaticDataLayer] = None
     """
     The connection to the MySQL instance.
-
-    :type: pystratum_mysql.StaticDataLayer.StaticDataLayer|None
     """
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def call_stored_routine(routine_name):
+    def call_stored_routine(routine_name: str) -> int:
         """
         Class a stored procedure without arguments.
 
         :param str routine_name: The name of the procedure.
 
-        :rtype: int|None
+        :rtype: int
         """
         sql = 'call {0}()'.format(routine_name)
 
@@ -32,13 +32,13 @@ class MySqlMetadataDataLayer(MetadataDataLayer):
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def check_table_exists(table_name):
+    def check_table_exists(table_name: str) -> int:
         """
         Checks if a table exists in the current schema.
 
         :param str table_name: The name of the table.
 
-        :rtype: int|None
+        :rtype: int
         """
         sql = """
 select 1 from
@@ -50,7 +50,7 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def connect():
+    def connect() -> None:
         """
         Connects to a MySQL instance.
         """
@@ -59,7 +59,7 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def describe_table(table_name):
+    def describe_table(table_name: str) -> List[Dict[str, Any]]:
         """
         Describes a table.
 
@@ -73,7 +73,7 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def disconnect():
+    def disconnect() -> None:
         """
         Disconnects from the MySQL instance.
         """
@@ -81,7 +81,7 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def drop_stored_routine(routine_type, routine_name):
+    def drop_stored_routine(routine_type: str, routine_name: str) -> None:
         """
         Drops a stored routine if it exists.
 
@@ -94,7 +94,7 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def drop_temporary_table(table_name):
+    def drop_temporary_table(table_name: str) -> None:
         """
         Drops a temporary table.
 
@@ -106,7 +106,7 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def execute_none(query):
+    def execute_none(query: str) -> int:
         """
         Executes a query that does not select any rows.
 
@@ -120,7 +120,7 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def execute_rows(query):
+    def execute_rows(query: str) -> List[Dict[str, Any]]:
         """
         Executes a query that selects 0 or more rows. Returns the selected rows (an empty list if no rows are selected).
 
@@ -134,7 +134,7 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def execute_singleton1(query):
+    def execute_singleton1(query: str) -> Any:
         """
         Executes SQL statement that selects 1 row with 1 column. Returns the value of the selected column.
 
@@ -148,7 +148,7 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def get_all_table_columns():
+    def get_all_table_columns() -> List[Dict[str, Union[str, int, None]]]:
         """
         Selects metadata of all columns of all tables.
 
@@ -196,7 +196,7 @@ union all
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def get_correct_sql_mode(sql_mode):
+    def get_correct_sql_mode(sql_mode: str) -> str:
         """
         Selects the SQL mode in the order as preferred by MySQL.
 
@@ -212,7 +212,7 @@ union all
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def get_label_tables(regex):
+    def get_label_tables(regex: str) -> List[Dict[str, Any]]:
         """
         Selects metadata of tables with a label column.
 
@@ -235,7 +235,7 @@ and   t2.COLUMN_NAME rlike '{0}'""".format(regex)
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def get_labels_from_table(table_name, id_column_name, label_column_name):
+    def get_labels_from_table(table_name: str, id_column_name: str, label_column_name: str) -> List[Dict[str, Any]]:
         """
         Selects all labels from a table with labels.
 
@@ -257,7 +257,7 @@ where   nullif(`{1}`,'') is not null""".format(id_column_name,
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def last_sql():
+    def last_sql() -> Optional[str]:
         """
         The last executed SQL statement.
 
@@ -267,7 +267,7 @@ where   nullif(`{1}`,'') is not null""".format(id_column_name,
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def get_routine_parameters(routine_name):
+    def get_routine_parameters(routine_name: str) -> List[Dict[str, Any]]:
         """
         Selects metadata of the parameters of a stored routine.
 
@@ -294,18 +294,18 @@ and   t1.ROUTINE_NAME   = '{0}'""".format(routine_name)
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def get_routines():
+    def get_routines() -> List[Dict[str, Any]]:
         """
         Selects metadata of all routines in the current schema.
 
         :rtype: list[dict[str,*]]
         """
         sql = """
-select ROUTINE_NAME           routine_name
-,      ROUTINE_TYPE           routine_type
-,      SQL_MODE               sql_mode
-,      CHARACTER_SET_CLIENT   character_set_client
-,      COLLATION_CONNECTION   collation_connection
+select ROUTINE_NAME           as routine_name
+,      ROUTINE_TYPE           as routine_type
+,      SQL_MODE               as sql_mode
+,      CHARACTER_SET_CLIENT   as character_set_client
+,      COLLATION_CONNECTION   as collation_connection
 from  information_schema.ROUTINES
 where ROUTINE_SCHEMA = database()
 order by routine_name"""
@@ -314,7 +314,7 @@ order by routine_name"""
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def set_character_set(character_set, collate):
+    def set_character_set(character_set: str, collate: str) -> None:
         """
         Sets the default character set and collate.
 
@@ -327,7 +327,7 @@ order by routine_name"""
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def set_sql_mode(sql_mode):
+    def set_sql_mode(sql_mode: str) -> None:
         """
         Sets the SQL mode.
 

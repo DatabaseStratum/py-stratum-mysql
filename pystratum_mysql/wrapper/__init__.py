@@ -1,3 +1,5 @@
+from typing import Any, Dict
+
 from pystratum_mysql.wrapper.MySqlBulkWrapper import MySqlBulkWrapper
 from pystratum_mysql.wrapper.MySqlFunctionsWrapper import MySqlFunctionsWrapper
 from pystratum_mysql.wrapper.MySqlLogWrapper import MySqlLogWrapper
@@ -13,14 +15,17 @@ from pystratum_mysql.wrapper.MySqlSingleton1Wrapper import MySqlSingleton1Wrappe
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-def create_routine_wrapper(routine, lob_as_string_flag):
+from pystratum_mysql.wrapper.MySqlWrapper import MySqlWrapper
+
+
+def create_routine_wrapper(routine: Dict[str, Any], lob_as_string_flag: bool) -> MySqlWrapper:
     """
     A factory for creating the appropriate object for generating a wrapper method for a stored routine.
 
     :param dict[str,str] routine: The metadata of the sored routine.
     :param bool lob_as_string_flag: If True BLOBs and CLOBs must be treated as strings.
 
-    :rtype: pystratum_mysql.wrapper.MySqlWrapper.MySqlWrapper
+    :rtype: MySqlWrapper
     """
     if routine['designation'] == 'bulk':
         wrapper = MySqlBulkWrapper(routine, lob_as_string_flag)

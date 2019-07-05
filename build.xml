@@ -70,7 +70,7 @@
                 <exclude name="_static"/>
             </fileset>
         </delete>
-        <exec command="sphinx-apidoc-3 -f pystratum/ -d 4 -e -P -o source/" passthru="true" checkreturn="true"/>
+        <exec command="sphinx-apidoc-3 -f pystratum_mysql/ -d 4 -e -P -o source/" passthru="true" checkreturn="true"/>
         <exec command="sphinx-build-3 -b html -d build/doctrees source build/html" passthru="true" checkreturn="true"/>
     </target>
 

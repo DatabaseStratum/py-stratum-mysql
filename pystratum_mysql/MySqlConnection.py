@@ -1,6 +1,10 @@
 """
 PyStratum
 """
+from typing import Optional
+
+from pystratum.style.PyStratumStyle import PyStratumStyle
+
 from pystratum.Connection import Connection
 
 from pystratum.MetadataDataLayer import MetadataDataLayer
@@ -15,7 +19,7 @@ class MySqlConnection(Connection):
     """
 
     # ------------------------------------------------------------------------------------------------------------------
-    def __init__(self, io):
+    def __init__(self, io: PyStratumStyle):
         """
         Object constructor.
 
@@ -23,64 +27,48 @@ class MySqlConnection(Connection):
         """
         Connection.__init__(self, io)
 
-        self._host = None
+        self._host: Optional[str] = None
         """
         The hostname of the MySQL instance.
-
-        :type: str
         """
 
-        self._port = None
+        self._port: Optional[int] = None
         """
         The port of the MySQL instance.
-
-        :type: str
         """
 
-        self._user = None
+        self._user: Optional[str] = None
         """
         User name.
-
-        :type: str
         """
 
-        self._password = None
+        self._password: Optional[str] = None
         """
         Password required for logging in on to the MySQL instance.
-
-        :type: str
         """
 
-        self._database = None
+        self._database: Optional[str] = None
         """
         The database name.
-
-        :type: str
         """
 
-        self._character_set_client = None
+        self._character_set_client: Optional[str] = None
         """
         The default character set under which the stored routine will be loaded and run.
-
-        :type: str
         """
 
-        self._collation_connection = None
+        self._collation_connection: Optional[str] = None
         """
         The default collate under which the stored routine will be loaded and run.
-
-        :type: str
         """
 
-        self._sql_mode = None
+        self._sql_mode: Optional[str] = None
         """
         The SQL mode under which the stored routine will be loaded and run.
-
-        :type: str
         """
 
     # ------------------------------------------------------------------------------------------------------------------
-    def connect(self):
+    def connect(self) -> None:
         """
         Connects to the MySQL instance.
         """
@@ -98,14 +86,14 @@ class MySqlConnection(Connection):
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def disconnect():
+    def disconnect() -> None:
         """
         Disconnects from the MySQL instance.
         """
         MySqlMetadataDataLayer.disconnect()
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _read_configuration_file(self, config_filename):
+    def _read_configuration_file(self, config_filename: str) -> None:
         """
         Reads connections parameters from the configuration file.
 
