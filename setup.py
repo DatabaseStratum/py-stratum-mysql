@@ -42,5 +42,5 @@ setup(
 
     packages=find_packages(exclude=['build', 'test']),
 
-    install_requires=['pystratum>=0.10.20'],
+    install_requires=['pystratum>=0.10.21'],
 )
