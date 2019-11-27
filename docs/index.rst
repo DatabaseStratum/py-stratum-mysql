@@ -1,4 +1,4 @@
-Pystratum MySQL & MariaDB
+PyStratum MySQL & MariaDB
 =========================
 
 A stored procedure and function loader and wrapper generator for MySQL and MariaDB Python.

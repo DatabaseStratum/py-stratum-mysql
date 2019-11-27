@@ -14,7 +14,7 @@ A stored procedure and function loader, wrapper generator for MySQL and MariaDB 
 
 Overview
 ========
-PyStratum MySQL is a tool and library with the following mayor functionalities:
+PyStratum MySQL is a package with the following mayor functionalities:
 
 * Loading modified and new stored routines and removing obsolete stored routines into/from a MySQL and MariaDB instance. This MySQL or MariaDB instance can be part of your development or a production environment.
 * Enhancing the (limited) syntax of MySQL & MariaDB stored routines with constants and custom types (based on actual table columns).
@@ -24,7 +24,7 @@ PyStratum MySQL is a tool and library with the following mayor functionalities:
 Documentation
 =============
 
-The documentation of PyStratum pgSQL is available at https://pystratum-mysql.readthedocs.io/en/latest/ and the general documentation of all Stratum projects is available at https://stratum.readthedocs.io/.
+The documentation of PyStratum pgSQL is available at https://pystratum-mysql.readthedocs.io and the general documentation of all Stratum projects is available at https://stratum.readthedocs.io.
 
 License
 =======
