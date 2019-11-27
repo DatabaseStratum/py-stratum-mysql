@@ -11,7 +11,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 setup(
     name='PyStratum-MySQL',
 
-    version='0.10.16',
+    version='0.10.17',
 
     description='A stored procedure and function loader and wrapper generator for MySQL & MariaDB',
     long_description=long_description,
