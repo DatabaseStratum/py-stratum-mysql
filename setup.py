@@ -39,9 +39,9 @@ setup(
         'Programming Language :: Python :: 3.8',
     ],
 
-    keywords='stored routines, wrapper, loader, MySQL',
+    keywords='stored routines, wrapper, loader, MySQL, MariaDB',
 
     packages=find_packages(exclude=['build', 'test']),
 
-    install_requires=['pystratum>=0.10.21'],
+    install_requires=['pystratum>=0.10.22'],
 )
