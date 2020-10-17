@@ -12,7 +12,7 @@ services:
   - mysql
 
 install:
-  - pip3 install mysql-connector
+  - pip3 install mysql-connector-python
   - pip3 install PyStratum-Backend
   - pip3 install PyStratum-Cli
   - pip3 install PyStratum-Common
