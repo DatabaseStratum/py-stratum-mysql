@@ -1,12 +1,10 @@
-"""
-PyStratum
-"""
+from abc import ABC
 from typing import Any, Dict, List
 
-from pystratum.wrapper.Wrapper import Wrapper
+from pystratum_common.wrapper.Wrapper import Wrapper
 
 
-class MySqlWrapper(Wrapper):
+class MySqlWrapper(Wrapper, ABC):
     """
     Parent class for wrapper method generators for stored procedures and functions.
     """

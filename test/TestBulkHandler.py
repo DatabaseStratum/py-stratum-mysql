@@ -1,4 +1,4 @@
-from pystratum.BulkHandler import BulkHandler
+from pystratum_middle.BulkHandler import BulkHandler
 
 
 class TestBulkHandler(BulkHandler):

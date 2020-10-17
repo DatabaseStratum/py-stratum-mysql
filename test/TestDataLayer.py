@@ -1,67 +1,60 @@
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
-from pystratum_mysql.StaticDataLayer import StaticDataLayer
+from pystratum_mysql.MySqlDataLayer import MySqlDataLayer
 
 
-# ----------------------------------------------------------------------------------------------------------------------
-class TestDataLayer(StaticDataLayer):
+class TestDataLayer(MySqlDataLayer):
     """
     The stored routines wrappers.
     """
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_constant01() -> Any:
+    def tst_constant01(self) -> Any:
         """
         Test for constant.
 
         :rtype: dict[str,*]
         """
-        return StaticDataLayer.execute_sp_row1("call tst_constant01()")
+        return self.execute_sp_row1("call tst_constant01()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_magic_constant01() -> Any:
+    def tst_magic_constant01(self) -> Any:
         """
         Test for magic constant.
 
         :rtype: *
         """
-        return StaticDataLayer.execute_sp_singleton1("call tst_magic_constant01()")
+        return self.execute_sp_singleton1("call tst_magic_constant01()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_magic_constant02() -> Any:
+    def tst_magic_constant02(self) -> Any:
         """
         Test for magic constant.
 
         :rtype: *
         """
-        return StaticDataLayer.execute_sp_singleton1("call tst_magic_constant02()")
+        return self.execute_sp_singleton1("call tst_magic_constant02()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_magic_constant03() -> Any:
+    def tst_magic_constant03(self) -> Any:
         """
         Test for magic constant.
 
         :rtype: *
         """
-        return StaticDataLayer.execute_sp_singleton1("call tst_magic_constant03()")
+        return self.execute_sp_singleton1("call tst_magic_constant03()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_magic_constant04() -> Any:
+    def tst_magic_constant04(self) -> Any:
         """
         Test for magic constant.
 
         :rtype: *
         """
-        return StaticDataLayer.execute_sp_singleton1("call tst_magic_constant04()")
+        return self.execute_sp_singleton1("call tst_magic_constant04()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_parameter_types01(p_param00: Optional[int], p_param01: Optional[int], p_param02: Optional[int], p_param03: Optional[int], p_param04: Optional[int], p_param05: Optional[float], p_param06: Optional[float], p_param07: Optional[float], p_param08: Optional[int], p_param09: Optional[str], p_param10: Optional[str], p_param11: Optional[str], p_param12: Optional[str], p_param13: Optional[int], p_param14: Optional[str], p_param15: Optional[str], p_param16: Optional[bytes], p_param17: Optional[bytes], p_param26: Optional[str], p_param27: Optional[str]) -> int:
+    def tst_parameter_types01(self, p_param00: Optional[int], p_param01: Optional[int], p_param02: Optional[int], p_param03: Optional[int], p_param04: Optional[int], p_param05: Optional[float], p_param06: Optional[float], p_param07: Optional[float], p_param08: Optional[int], p_param09: Optional[str], p_param10: Optional[str], p_param11: Optional[str], p_param12: Optional[str], p_param13: Optional[int], p_param14: Optional[str], p_param15: Optional[str], p_param16: Optional[bytes], p_param17: Optional[bytes], p_param26: Optional[str], p_param27: Optional[str]) -> int:
         """
         Test for all possible types of parameters excluding LOB's.
 
@@ -94,25 +87,24 @@ class TestDataLayer(StaticDataLayer):
         :param int p_param13: Test parameter 13.
                               year(4)
         :param str p_param14: Test parameter 14.
-                              char(10) character set utf8 collation utf8_general_ci
+                              char(10) character set latin1 collation latin1_swedish_ci
         :param str p_param15: Test parameter 15.
-                              varchar(10) character set utf8 collation utf8_general_ci
+                              varchar(10) character set latin1 collation latin1_swedish_ci
         :param bytes p_param16: Test parameter 16.
                                 binary(10)
         :param bytes p_param17: Test parameter 17.
                                 varbinary(10)
         :param str p_param26: Test parameter 26.
-                              enum('a','b') character set utf8 collation utf8_general_ci
+                              enum('a','b') character set latin1 collation latin1_swedish_ci
         :param str p_param27: Test parameter 27.
-                              set('a','b') character set utf8 collation utf8_general_ci
+                              set('a','b') character set latin1 collation latin1_swedish_ci
 
         :rtype: int
         """
-        return StaticDataLayer.execute_sp_none("call tst_parameter_types01(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", p_param00, p_param01, p_param02, p_param03, p_param04, p_param05, p_param06, p_param07, p_param08, p_param09, p_param10, p_param11, p_param12, p_param13, p_param14, p_param15, p_param16, p_param17, p_param26, p_param27)
+        return self.execute_sp_none("call tst_parameter_types01(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", p_param00, p_param01, p_param02, p_param03, p_param04, p_param05, p_param06, p_param07, p_param08, p_param09, p_param10, p_param11, p_param12, p_param13, p_param14, p_param15, p_param16, p_param17, p_param26, p_param27)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_parameter_types02(p_param00: Optional[int], p_param01: Optional[int], p_param02: Optional[int], p_param03: Optional[int], p_param04: Optional[int], p_param05: Optional[float], p_param06: Optional[float], p_param07: Optional[float], p_param08: Optional[int], p_param09: Optional[str], p_param10: Optional[str], p_param11: Optional[str], p_param12: Optional[str], p_param13: Optional[int], p_param14: Optional[str], p_param15: Optional[str], p_param16: Optional[bytes], p_param17: Optional[bytes], p_param18: Optional[bytes], p_param19: Optional[bytes], p_param20: Optional[bytes], p_param21: Optional[bytes], p_param22: Optional[str], p_param23: Optional[str], p_param24: Optional[str], p_param25: Optional[str], p_param26: Optional[str], p_param27: Optional[str]) -> int:
+    def tst_parameter_types02(self, p_param00: Optional[int], p_param01: Optional[int], p_param02: Optional[int], p_param03: Optional[int], p_param04: Optional[int], p_param05: Optional[float], p_param06: Optional[float], p_param07: Optional[float], p_param08: Optional[int], p_param09: Optional[str], p_param10: Optional[str], p_param11: Optional[str], p_param12: Optional[str], p_param13: Optional[int], p_param14: Optional[str], p_param15: Optional[str], p_param16: Optional[bytes], p_param17: Optional[bytes], p_param18: Optional[bytes], p_param19: Optional[bytes], p_param20: Optional[bytes], p_param21: Optional[bytes], p_param22: Optional[str], p_param23: Optional[str], p_param24: Optional[str], p_param25: Optional[str], p_param26: Optional[str], p_param27: Optional[str]) -> int:
         """
         Test for all possible types of parameters including LOB's.
 
@@ -145,9 +137,9 @@ class TestDataLayer(StaticDataLayer):
         :param int p_param13: Test parameter 13.
                               year(4)
         :param str p_param14: Test parameter 14.
-                              char(10) character set utf8 collation utf8_general_ci
+                              char(10) character set latin1 collation latin1_swedish_ci
         :param str p_param15: Test parameter 15.
-                              varchar(10) character set utf8 collation utf8_general_ci
+                              varchar(10) character set latin1 collation latin1_swedish_ci
         :param bytes p_param16: Test parameter 16.
                                 binary(10)
         :param bytes p_param17: Test parameter 17.
@@ -161,32 +153,31 @@ class TestDataLayer(StaticDataLayer):
         :param bytes p_param21: Test parameter 21.
                                 longblob
         :param str p_param22: Test parameter 22.
-                              tinytext character set utf8 collation utf8_general_ci
+                              tinytext character set latin1 collation latin1_swedish_ci
         :param str p_param23: Test parameter 23.
-                              text character set utf8 collation utf8_general_ci
+                              text character set latin1 collation latin1_swedish_ci
         :param str p_param24: Test parameter 24.
-                              mediumtext character set utf8 collation utf8_general_ci
+                              mediumtext character set latin1 collation latin1_swedish_ci
         :param str p_param25: Test parameter 25.
-                              longtext character set utf8 collation utf8_general_ci
+                              longtext character set latin1 collation latin1_swedish_ci
         :param str p_param26: Test parameter 26.
-                              enum('a','b') character set utf8 collation utf8_general_ci
+                              enum('a','b') character set latin1 collation latin1_swedish_ci
         :param str p_param27: Test parameter 27.
-                              set('a','b') character set utf8 collation utf8_general_ci
+                              set('a','b') character set latin1 collation latin1_swedish_ci
 
         :rtype: int
         """
-        return StaticDataLayer.execute_sp_none("call tst_parameter_types02(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", p_param00, p_param01, p_param02, p_param03, p_param04, p_param05, p_param06, p_param07, p_param08, p_param09, p_param10, p_param11, p_param12, p_param13, p_param14, p_param15, p_param16, p_param17, p_param18, p_param19, p_param20, p_param21, p_param22, p_param23, p_param24, p_param25, p_param26, p_param27)
+        return self.execute_sp_none("call tst_parameter_types02(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", p_param00, p_param01, p_param02, p_param03, p_param04, p_param05, p_param06, p_param07, p_param08, p_param09, p_param10, p_param11, p_param12, p_param13, p_param14, p_param15, p_param16, p_param17, p_param18, p_param19, p_param20, p_param21, p_param22, p_param23, p_param24, p_param25, p_param26, p_param27)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_parameter_types03(p_param14: Optional[str], p_param15: Optional[str], p_param16: Optional[bytes], p_param17: Optional[bytes]) -> int:
+    def tst_parameter_types03(self, p_param14: Optional[str], p_param15: Optional[str], p_param16: Optional[bytes], p_param17: Optional[bytes]) -> int:
         """
         Test for all possible types of parameters with maximum length.
 
         :param str p_param14: Test parameter 14.
-                              char(255) character set utf8 collation utf8_general_ci
+                              char(255) character set latin1 collation latin1_swedish_ci
         :param str p_param15: Test parameter 15.
-                              varchar(4096) character set utf8 collation utf8_general_ci
+                              varchar(4096) character set latin1 collation latin1_swedish_ci
         :param bytes p_param16: Test parameter 16.
                                 binary(255)
         :param bytes p_param17: Test parameter 17.
@@ -194,11 +185,10 @@ class TestDataLayer(StaticDataLayer):
 
         :rtype: int
         """
-        return StaticDataLayer.execute_sp_none("call tst_parameter_types03(%s, %s, %s, %s)", p_param14, p_param15, p_param16, p_param17)
+        return self.execute_sp_none("call tst_parameter_types03(%s, %s, %s, %s)", p_param14, p_param15, p_param16, p_param17)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_bulk(bulk_handler) -> int:
+    def tst_test_bulk(self, bulk_handler) -> int:
         """
         Test for designation type bulk.
 
@@ -206,61 +196,55 @@ class TestDataLayer(StaticDataLayer):
 
         :rtype: int
         """
-        return StaticDataLayer.execute_sp_bulk(bulk_handler, "call tst_test_bulk()")
+        return self.execute_sp_bulk(bulk_handler, "call tst_test_bulk()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_find_designation_type01() -> Any:
+    def tst_test_find_designation_type01(self) -> Any:
         """
         Test for designation type.
 
         :rtype: dict[str,*]
         """
-        return StaticDataLayer.execute_sp_row1("call tst_test_find_designation_type01()")
+        return self.execute_sp_row1("call tst_test_find_designation_type01()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_find_designation_type02() -> Any:
+    def tst_test_find_designation_type02(self) -> Any:
         """
         Test for designation type.
 
         :rtype: dict[str,*]
         """
-        return StaticDataLayer.execute_sp_row1("call tst_test_find_designation_type02()")
+        return self.execute_sp_row1("call tst_test_find_designation_type02()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_find_designation_type03() -> Any:
+    def tst_test_find_designation_type03(self) -> Any:
         """
         Test for designation type.
 
         :rtype: dict[str,*]
         """
-        return StaticDataLayer.execute_sp_row1("call tst_test_find_designation_type03()")
+        return self.execute_sp_row1("call tst_test_find_designation_type03()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_find_designation_type04() -> Any:
+    def tst_test_find_designation_type04(self) -> Any:
         """
         Test for designation type.
 
         :rtype: dict[str,*]
         """
-        return StaticDataLayer.execute_sp_row1("call tst_test_find_designation_type04()")
+        return self.execute_sp_row1("call tst_test_find_designation_type04()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_find_designation_type05() -> Any:
+    def tst_test_find_designation_type05(self) -> Any:
         """
         Test for designation type.
 
         :rtype: dict[str,*]
         """
-        return StaticDataLayer.execute_sp_row1("call tst_test_find_designation_type05()")
+        return self.execute_sp_row1("call tst_test_find_designation_type05()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_function(p_a: Optional[int], p_b: Optional[int]) -> Any:
+    def tst_test_function(self, p_a: Optional[int], p_b: Optional[int]) -> Any:
         """
         Test for stored function wrapper.
 
@@ -271,21 +255,19 @@ class TestDataLayer(StaticDataLayer):
 
         :rtype: *
         """
-        return StaticDataLayer.execute_singleton1("select tst_test_function(%s, %s)", p_a, p_b)
+        return self.execute_singleton1("select tst_test_function(%s, %s)", p_a, p_b)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_log() -> int:
+    def tst_test_log(self) -> int:
         """
         Test for designation type log.
 
         :rtype: int
         """
-        return StaticDataLayer.execute_sp_log("call tst_test_log()")
+        return self.execute_sp_log("call tst_test_log()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_max_allowed_packet(p_tmp_blob: Optional[bytes]) -> Any:
+    def tst_test_max_allowed_packet(self, p_tmp_blob: Optional[bytes]) -> Any:
         """
         Test for sending data larger than max_allowed_packet.
 
@@ -294,21 +276,19 @@ class TestDataLayer(StaticDataLayer):
 
         :rtype: *
         """
-        return StaticDataLayer.execute_sp_singleton1("call tst_test_max_allowed_packet(%s)", p_tmp_blob)
+        return self.execute_sp_singleton1("call tst_test_max_allowed_packet(%s)", p_tmp_blob)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_multi() -> List[List[Dict[str, Any]]]:
+    def tst_test_multi(self) -> List[List[Dict[str, Any]]]:
         """
         Test for designation type multi.
 
         :rtype: list[list[dict[str,*]]]
         """
-        return StaticDataLayer.execute_sp_multi("call tst_test_multi()")
+        return self.execute_sp_multi("call tst_test_multi()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_none1(p_count: Optional[int]) -> int:
+    def tst_test_none1(self, p_count: Optional[int]) -> int:
         """
         Test for designation type none.
 
@@ -317,21 +297,19 @@ class TestDataLayer(StaticDataLayer):
 
         :rtype: int
         """
-        return StaticDataLayer.execute_sp_none("call tst_test_none1(%s)", p_count)
+        return self.execute_sp_none("call tst_test_none1(%s)", p_count)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_none2() -> int:
+    def tst_test_none2(self) -> int:
         """
         Test for designation type none.
 
         :rtype: int
         """
-        return StaticDataLayer.execute_sp_none("call tst_test_none2()")
+        return self.execute_sp_none("call tst_test_none2()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_none_with_lob(p_count: Optional[int], p_blob: Optional[bytes]) -> int:
+    def tst_test_none_with_lob(self, p_count: Optional[int], p_blob: Optional[bytes]) -> int:
         """
         Test for designation type none with BLOB.
 
@@ -342,21 +320,19 @@ class TestDataLayer(StaticDataLayer):
 
         :rtype: int
         """
-        return StaticDataLayer.execute_sp_none("call tst_test_none_with_lob(%s, %s)", p_count, p_blob)
+        return self.execute_sp_none("call tst_test_none_with_lob(%s, %s)", p_count, p_blob)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_percent_symbol() -> List[Dict[str, Any]]:
+    def tst_test_percent_symbol(self) -> List[Dict[str, Any]]:
         """
         Test for stored function with percent symbols.
 
         :rtype: list[dict[str,*]]
         """
-        return StaticDataLayer.execute_sp_rows("call tst_test_percent_symbol()")
+        return self.execute_sp_rows("call tst_test_percent_symbol()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_row0a(p_count: Optional[int]) -> Any:
+    def tst_test_row0a(self, p_count: Optional[int]) -> Any:
         """
         Test for designation type row0.
 
@@ -368,11 +344,10 @@ class TestDataLayer(StaticDataLayer):
 
         :rtype: None|dict[str,*]
         """
-        return StaticDataLayer.execute_sp_row0("call tst_test_row0a(%s)", p_count)
+        return self.execute_sp_row0("call tst_test_row0a(%s)", p_count)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_row0a_with_lob(p_count: Optional[int], p_blob: Optional[bytes]) -> Any:
+    def tst_test_row0a_with_lob(self, p_count: Optional[int], p_blob: Optional[bytes]) -> Any:
         """
         Test for designation type row0 with BLOB.
 
@@ -386,11 +361,10 @@ class TestDataLayer(StaticDataLayer):
 
         :rtype: None|dict[str,*]
         """
-        return StaticDataLayer.execute_sp_row0("call tst_test_row0a_with_lob(%s, %s)", p_count, p_blob)
+        return self.execute_sp_row0("call tst_test_row0a_with_lob(%s, %s)", p_count, p_blob)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_row1a(p_count: Optional[int]) -> Any:
+    def tst_test_row1a(self, p_count: Optional[int]) -> Any:
         """
         Test for designation type row1.
 
@@ -402,11 +376,10 @@ class TestDataLayer(StaticDataLayer):
 
         :rtype: dict[str,*]
         """
-        return StaticDataLayer.execute_sp_row1("call tst_test_row1a(%s)", p_count)
+        return self.execute_sp_row1("call tst_test_row1a(%s)", p_count)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_row1a_with_lob(p_count: Optional[int], p_blob: Optional[bytes]) -> Any:
+    def tst_test_row1a_with_lob(self, p_count: Optional[int], p_blob: Optional[bytes]) -> Any:
         """
         Test for designation type row1 with BLOB.
 
@@ -420,11 +393,10 @@ class TestDataLayer(StaticDataLayer):
 
         :rtype: dict[str,*]
         """
-        return StaticDataLayer.execute_sp_row1("call tst_test_row1a_with_lob(%s, %s)", p_count, p_blob)
+        return self.execute_sp_row1("call tst_test_row1a_with_lob(%s, %s)", p_count, p_blob)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_rows1(p_count: Optional[int]) -> List[Dict[str, Any]]:
+    def tst_test_rows1(self, p_count: Optional[int]) -> List[Dict[str, Any]]:
         """
         Test for designation type row1.
 
@@ -436,11 +408,10 @@ class TestDataLayer(StaticDataLayer):
 
         :rtype: list[dict[str,*]]
         """
-        return StaticDataLayer.execute_sp_rows("call tst_test_rows1(%s)", p_count)
+        return self.execute_sp_rows("call tst_test_rows1(%s)", p_count)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_rows1_with_lob(p_count: Optional[int], p_blob: Optional[bytes]) -> List[Dict[str, Any]]:
+    def tst_test_rows1_with_lob(self, p_count: Optional[int], p_blob: Optional[bytes]) -> List[Dict[str, Any]]:
         """
         Test for designation type rows.
 
@@ -451,11 +422,10 @@ class TestDataLayer(StaticDataLayer):
 
         :rtype: list[dict[str,*]]
         """
-        return StaticDataLayer.execute_sp_rows("call tst_test_rows1_with_lob(%s, %s)", p_count, p_blob)
+        return self.execute_sp_rows("call tst_test_rows1_with_lob(%s, %s)", p_count, p_blob)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_rows_with_index1(p_count: Optional[int]) -> Dict:
+    def tst_test_rows_with_index1(self, p_count: Optional[int]) -> Dict:
         """
         Test for designation type rows_with_index.
 
@@ -465,7 +435,7 @@ class TestDataLayer(StaticDataLayer):
         :rtype: dict
         """
         ret = {}
-        rows = StaticDataLayer.execute_sp_rows("call tst_test_rows_with_index1(%s)", p_count)
+        rows = self.execute_sp_rows("call tst_test_rows_with_index1(%s)", p_count)
         for row in rows:
             if row['tst_c01'] in ret:
                 if row['tst_c02'] in ret[row['tst_c01']]:
@@ -478,8 +448,7 @@ class TestDataLayer(StaticDataLayer):
         return ret
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_rows_with_index1_with_lob(p_count: Optional[int], p_blob: Optional[bytes]) -> Dict:
+    def tst_test_rows_with_index1_with_lob(self, p_count: Optional[int], p_blob: Optional[bytes]) -> Dict:
         """
         Test for designation type rows_with_index with BLOB..
 
@@ -491,7 +460,7 @@ class TestDataLayer(StaticDataLayer):
         :rtype: dict
         """
         ret = {}
-        rows = StaticDataLayer.execute_sp_rows("call tst_test_rows_with_index1_with_lob(%s, %s)", p_count, p_blob)
+        rows = self.execute_sp_rows("call tst_test_rows_with_index1_with_lob(%s, %s)", p_count, p_blob)
         for row in rows:
             if row['tst_c01'] in ret:
                 if row['tst_c02'] in ret[row['tst_c01']]:
@@ -504,8 +473,7 @@ class TestDataLayer(StaticDataLayer):
         return ret
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_rows_with_key1(p_count: Optional[int]) -> Dict:
+    def tst_test_rows_with_key1(self, p_count: Optional[int]) -> Dict:
         """
         Test for designation type rows_with_key.
 
@@ -515,7 +483,7 @@ class TestDataLayer(StaticDataLayer):
         :rtype: dict
         """
         ret = {}
-        rows = StaticDataLayer.execute_sp_rows("call tst_test_rows_with_key1(%s)", p_count)
+        rows = self.execute_sp_rows("call tst_test_rows_with_key1(%s)", p_count)
         for row in rows:
             if row['tst_c01'] in ret:
                 if row['tst_c02'] in ret[row['tst_c01']]:
@@ -531,8 +499,7 @@ class TestDataLayer(StaticDataLayer):
         return ret
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_rows_with_key1_with_lob(p_count: Optional[int], p_blob: Optional[bytes]) -> Dict:
+    def tst_test_rows_with_key1_with_lob(self, p_count: Optional[int], p_blob: Optional[bytes]) -> Dict:
         """
         Test for designation type rows_with_key with BLOB.
 
@@ -544,7 +511,7 @@ class TestDataLayer(StaticDataLayer):
         :rtype: dict
         """
         ret = {}
-        rows = StaticDataLayer.execute_sp_rows("call tst_test_rows_with_key1_with_lob(%s, %s)", p_count, p_blob)
+        rows = self.execute_sp_rows("call tst_test_rows_with_key1_with_lob(%s, %s)", p_count, p_blob)
         for row in rows:
             if row['tst_c01'] in ret:
                 if row['tst_c02'] in ret[row['tst_c01']]:
@@ -560,8 +527,7 @@ class TestDataLayer(StaticDataLayer):
         return ret
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_singleton0a(p_count: Optional[int]) -> Any:
+    def tst_test_singleton0a(self, p_count: Optional[int]) -> Any:
         """
         Test for designation type singleton0.
 
@@ -573,11 +539,10 @@ class TestDataLayer(StaticDataLayer):
 
         :rtype: *
         """
-        return StaticDataLayer.execute_sp_singleton0("call tst_test_singleton0a(%s)", p_count)
+        return self.execute_sp_singleton0("call tst_test_singleton0a(%s)", p_count)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_singleton0a_with_lob(p_count: Optional[int], p_blob: Optional[bytes]) -> Any:
+    def tst_test_singleton0a_with_lob(self, p_count: Optional[int], p_blob: Optional[bytes]) -> Any:
         """
         Test for designation type singleton0 with BLOB..
 
@@ -591,11 +556,10 @@ class TestDataLayer(StaticDataLayer):
 
         :rtype: *
         """
-        return StaticDataLayer.execute_sp_singleton0("call tst_test_singleton0a_with_lob(%s, %s)", p_count, p_blob)
+        return self.execute_sp_singleton0("call tst_test_singleton0a_with_lob(%s, %s)", p_count, p_blob)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_singleton1a(p_count: Optional[int]) -> Any:
+    def tst_test_singleton1a(self, p_count: Optional[int]) -> Any:
         """
         Test for designation type singleton1.
 
@@ -607,11 +571,10 @@ class TestDataLayer(StaticDataLayer):
 
         :rtype: *
         """
-        return StaticDataLayer.execute_sp_singleton1("call tst_test_singleton1a(%s)", p_count)
+        return self.execute_sp_singleton1("call tst_test_singleton1a(%s)", p_count)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def tst_test_singleton1a_with_lob(p_count: Optional[int], p_blob: Optional[bytes]) -> Any:
+    def tst_test_singleton1a_with_lob(self, p_count: Optional[int], p_blob: Optional[bytes]) -> Any:
         """
         Test for designation type singleton1 with BLOB.
 
@@ -625,7 +588,7 @@ class TestDataLayer(StaticDataLayer):
 
         :rtype: *
         """
-        return StaticDataLayer.execute_sp_singleton1("call tst_test_singleton1a_with_lob(%s, %s)", p_count, p_blob)
+        return self.execute_sp_singleton1("call tst_test_singleton1a_with_lob(%s, %s)", p_count, p_blob)
 
 
 # ----------------------------------------------------------------------------------------------------------------------

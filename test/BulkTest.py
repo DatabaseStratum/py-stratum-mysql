@@ -1,23 +1,22 @@
-"""
-PyStratum
-"""
 import sys
 
-from pystratum_test.TestDataLayer import TestDataLayer
-from pystratum_test.StratumTestCase import StratumTestCase
+from test.StratumTestCase import StratumTestCase
+from test.TestBulkHandler import TestBulkHandler
 
 
-class LogTest(StratumTestCase):
+class BulkTest(StratumTestCase):
     # ------------------------------------------------------------------------------------------------------------------
     def test1(self):
         """
         Stored routine with designation type none must return the number of rows affected.
         """
-        n = TestDataLayer.tst_test_log()
+        bulk_handler = TestBulkHandler()
+        n = self._dl.tst_test_bulk(bulk_handler)
 
-        self.assertEqual(2, n)
+        self.assertEqual(3, n)
 
-        self.assertRegex(sys.stdout.getvalue(),
-                         '^(\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}\sHello, world\n){2}$')
+        output = sys.stdout.getvalue().strip()
+        print(output)
+        self.assertEqual(output, 'start\n1\n2\n3\nstop')
 
 # ----------------------------------------------------------------------------------------------------------------------

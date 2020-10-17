@@ -2,9 +2,8 @@ dist: xenial
 
 language: python
 python:
-  - '3.6'
-  - '3.7'
   - '3.8'
+  - '3.9'
 
 sudo: true
 
@@ -17,7 +16,8 @@ install:
   - tar zxvf mysql-connector-python-8.0.16.tar.gz
   - cd mysql-connector-python-8.0.16
   - python3 setup.py install
-  - pip3 install pystratum
+  - pip3 install PyStratum-Cli
+  - pip3 install PyStratum-Common
 
 before_script:
   - mysql --version
@@ -29,5 +29,5 @@ before_script:
 
 script:
   - cd $TRAVIS_BUILD_DIR
-  - cat pystratum_test/ddl/create_tables.sql | mysql -utest -ptest test
-  - python3 -m unittest pystratum_test/*.py
+  - cat test/ddl/create_tables.sql | mysql -utest -ptest test
+  - python3 -m unittest test/*.py

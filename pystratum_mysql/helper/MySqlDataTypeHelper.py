@@ -1,9 +1,6 @@
-"""
-PyStratum
-"""
-from typing import Dict, Any
+from typing import Any, Dict
 
-from pystratum.helper.DataTypeHelper import DataTypeHelper
+from pystratum_common.helper.DataTypeHelper import DataTypeHelper
 
 
 class MySqlDataTypeHelper(DataTypeHelper):

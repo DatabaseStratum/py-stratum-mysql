@@ -1,18 +1,14 @@
-"""
-PyStratum
-"""
 import re
-from typing import Dict, Optional
+from typing import Dict, Optional, Any
 
 from mysql import connector
+from pystratum_backend.StratumStyle import StratumStyle
 
-from pystratum.helper.DataTypeHelper import DataTypeHelper
-from pystratum.style.PyStratumStyle import PyStratumStyle
-
-from pystratum.RoutineLoaderHelper import RoutineLoaderHelper
-from pystratum.exception.LoaderException import LoaderException
-from pystratum_mysql.MySqlMetadataDataLayer import MySqlMetadataDataLayer
+from pystratum_common.exception.LoaderException import LoaderException
+from pystratum_common.helper.DataTypeHelper import DataTypeHelper
+from pystratum_common.helper.RoutineLoaderHelper import RoutineLoaderHelper
 from pystratum_mysql.helper.MySqlDataTypeHelper import MySqlDataTypeHelper
+from pystratum_mysql.MySqlMetadataDataLayer import MySqlMetadataDataLayer
 
 
 class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
@@ -22,18 +18,21 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
 
     # ------------------------------------------------------------------------------------------------------------------
     def __init__(self,
+                 io: StratumStyle,
+                 dl: MySqlMetadataDataLayer,
                  routine_filename: str,
                  routine_file_encoding: str,
                  pystratum_old_metadata: Optional[Dict],
-                 replace_pairs: Dict[str, str],
+                 replace_pairs: Dict[str, Any],
                  rdbms_old_metadata: Optional[Dict],
                  sql_mode: str,
                  character_set: str,
-                 collate: str,
-                 io: PyStratumStyle):
+                 collate: str):
         """
         Object constructor.
-
+                                
+        :param PyStratumStyle io: The output decorator.
+        :param MySqlMetadataDataLayer dl: The metadata layer.
         :param str routine_filename: The filename of the source of the stored routine.
         :param str routine_file_encoding: The encoding of the source file.
         :param dict pystratum_old_metadata: The metadata of the stored routine from PyStratum.
@@ -42,15 +41,14 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
         :param str sql_mode: The SQL mode under which the stored routine must be loaded and run.
         :param str character_set: The default character set under which the stored routine must be loaded and run.
         :param str collate: The default collate under which the stored routine must be loaded and run.
-        :param PyStratumStyle io: The output decorator.
         """
         RoutineLoaderHelper.__init__(self,
+                                     io,
                                      routine_filename,
                                      routine_file_encoding,
                                      pystratum_old_metadata,
                                      replace_pairs,
-                                     rdbms_old_metadata,
-                                     io)
+                                     rdbms_old_metadata)
 
         self._character_set: str = character_set
         """
@@ -66,18 +64,23 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
         """
         The SQL-mode under which the stored routine will be loaded and run.
         """
+        
+        self._dl: MySqlMetadataDataLayer = dl
+        """
+        The metadata layer.
+        """
 
     # ------------------------------------------------------------------------------------------------------------------
     def _get_bulk_insert_table_columns_info(self) -> None:
         """
         Gets the column names and column types of the current table for bulk insert.
         """
-        table_is_non_temporary = MySqlMetadataDataLayer.check_table_exists(self._table_name)
+        table_is_non_temporary = self._dl.check_table_exists(self._table_name)
 
         if not table_is_non_temporary:
-            MySqlMetadataDataLayer.call_stored_routine(self._routine_name)
+            self._dl.call_stored_routine(self._routine_name)
 
-        columns = MySqlMetadataDataLayer.describe_table(self._table_name)
+        columns = self._dl.describe_table(self._table_name)
 
         tmp_column_types = []
         tmp_fields = []
@@ -93,7 +96,7 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
         n2 = len(self._columns)
 
         if not table_is_non_temporary:
-            MySqlMetadataDataLayer.drop_temporary_table(self._table_name)
+            self._dl.drop_temporary_table(self._table_name)
 
         if n1 != n2:
             raise LoaderException("Number of fields %d and number of columns %d don't match." % (n1, n2))
@@ -134,7 +137,7 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
         """
         Retrieves information about the stored routine parameters from the meta data of MySQL.
         """
-        routine_parameters = MySqlMetadataDataLayer.get_routine_parameters(self._routine_name)
+        routine_parameters = self._dl.get_routine_parameters(self._routine_name)
         for routine_parameter in routine_parameters:
             if routine_parameter['parameter_name']:
                 value = routine_parameter['column_type']
@@ -145,11 +148,11 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
                     if routine_parameter['character_set_name']:
                         value += ' collation %s' % routine_parameter['collation']
 
-                self._parameters.append({'name': routine_parameter             ['parameter_name'],
-                                         'data_type': routine_parameter        ['parameter_type'],
-                                         'numeric_precision': routine_parameter['numeric_precision'],
-                                         'numeric_scale': routine_parameter    ['numeric_scale'],
-                                         'data_type_descriptor':               value})
+                self._parameters.append({'name':                 routine_parameter['parameter_name'],
+                                         'data_type':            routine_parameter['parameter_type'],
+                                         'numeric_precision':    routine_parameter['numeric_precision'],
+                                         'numeric_scale':        routine_parameter['numeric_scale'],
+                                         'data_type_descriptor': value})
 
     # ------------------------------------------------------------------------------------------------------------------
     def _is_start_of_stored_routine(self, line: str) -> bool:
@@ -183,11 +186,11 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
         self._unset_magic_constants()
         self._drop_routine()
 
-        MySqlMetadataDataLayer.set_sql_mode(self._sql_mode)
+        self._dl.set_sql_mode(self._sql_mode)
 
-        MySqlMetadataDataLayer.set_character_set(self._character_set, self._collate)
+        self._dl.set_character_set(self._character_set, self._collate)
 
-        MySqlMetadataDataLayer.execute_none(self._routine_source_code)
+        self._dl.execute_none(self._routine_source_code)
 
     # ------------------------------------------------------------------------------------------------------------------
     def _log_exception(self, exception: Exception) -> None:
@@ -201,7 +204,7 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
         if isinstance(exception, connector.errors.Error):
             if exception.errno == 1064:
                 # Exception is caused by an invalid SQL statement.
-                sql = MySqlMetadataDataLayer.last_sql()
+                sql = self._dl.last_sql()
                 if sql:
                     sql = sql.strip()
                     # The format of a 1064 message is: %s near '%s' at line %d
@@ -251,6 +254,6 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
         Drops the stored routine if it exists.
         """
         if self._rdbms_old_metadata:
-            MySqlMetadataDataLayer.drop_stored_routine(self._rdbms_old_metadata['routine_type'], self._routine_name)
+            self._dl.drop_stored_routine(self._rdbms_old_metadata['routine_type'], self._routine_name)
 
 # ----------------------------------------------------------------------------------------------------------------------

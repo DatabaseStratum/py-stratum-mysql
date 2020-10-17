@@ -1,10 +1,7 @@
-"""
-PyStratum
-"""
 from typing import Dict, Any
 
+from pystratum_common.wrapper.RowsWithIndexWrapper import RowsWithIndexWrapper
 from pystratum_mysql.wrapper.MySqlWrapper import MySqlWrapper
-from pystratum.wrapper.RowsWithIndexWrapper import RowsWithIndexWrapper
 
 
 class MySqlRowsWithIndexWrapper(RowsWithIndexWrapper, MySqlWrapper):
@@ -15,6 +12,6 @@ class MySqlRowsWithIndexWrapper(RowsWithIndexWrapper, MySqlWrapper):
 
     # ------------------------------------------------------------------------------------------------------------------
     def _write_execute_rows(self, routine: Dict[str, Any]) -> None:
-        self._write_line('rows = StaticDataLayer.execute_sp_rows({0!s})'.format(self._generate_command(routine)))
+        self._write_line('rows = self.execute_sp_rows({0!s})'.format(self._generate_command(routine)))
 
 # ----------------------------------------------------------------------------------------------------------------------

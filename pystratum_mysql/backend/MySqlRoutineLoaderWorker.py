@@ -1,17 +1,14 @@
-"""
-PyStratum
-"""
-from typing import List, Dict, Any, Optional
+from configparser import ConfigParser
+from typing import Any, Dict, List, Optional
 
-from pystratum.style.PyStratumStyle import PyStratumStyle
+from pystratum_backend.StratumStyle import StratumStyle
 
-from pystratum.RoutineLoader import RoutineLoader
-from pystratum_mysql.MySqlConnection import MySqlConnection
-from pystratum_mysql.MySqlMetadataDataLayer import MySqlMetadataDataLayer
-from pystratum_mysql.MySqlRoutineLoaderHelper import MySqlRoutineLoaderHelper
+from pystratum_common.backend.CommonRoutineLoaderWorker import CommonRoutineLoaderWorker
+from pystratum_mysql.backend.MySqlWorker import MySqlWorker
+from pystratum_mysql.helper.MySqlRoutineLoaderHelper import MySqlRoutineLoaderHelper
 
 
-class MySqlRoutineLoader(MySqlConnection, RoutineLoader):
+class MySqlRoutineLoaderWorker(MySqlWorker, CommonRoutineLoaderWorker):
     """
     Class for loading stored routines into a MySQL instance from (pseudo) SQL files.
     """
@@ -36,14 +33,29 @@ class MySqlRoutineLoader(MySqlConnection, RoutineLoader):
     """
 
     # ------------------------------------------------------------------------------------------------------------------
-    def __init__(self, io: PyStratumStyle):
+    def __init__(self, io: StratumStyle, config: ConfigParser):
         """
         Object constructor.
 
         :param PyStratumStyle io: The output decorator.
         """
-        RoutineLoader.__init__(self, io)
-        MySqlConnection.__init__(self, io)
+        MySqlWorker.__init__(self, io, config)
+        CommonRoutineLoaderWorker.__init__(self, io, config)
+
+        self._character_set_client: Optional[str] = None
+        """
+        The default character set under which the stored routine will be loaded and run.
+        """
+
+        self._collation_connection: Optional[str] = None
+        """
+        The default collate under which the stored routine will be loaded and run.
+        """
+
+        self._sql_mode: Optional[str] = None
+        """
+        
+        """
 
     # ------------------------------------------------------------------------------------------------------------------
     def __save_column_types_exact(self, rows: List[Dict[str, Any]]) -> None:
@@ -94,7 +106,7 @@ class MySqlRoutineLoader(MySqlConnection, RoutineLoader):
         """
         Selects schema, table, column names and the column type from MySQL and saves them as replace pairs.
         """
-        rows = MySqlMetadataDataLayer.get_all_table_columns()
+        rows = self._dl.get_all_table_columns()
         self.__save_column_types_exact(rows)
         self.__save_column_types_max_length(rows)
 
@@ -114,22 +126,23 @@ class MySqlRoutineLoader(MySqlConnection, RoutineLoader):
 
         :rtype: pystratum_mysql.MySqlRoutineLoaderHelper.MySqlRoutineLoaderHelper
         """
-        return MySqlRoutineLoaderHelper(self._source_file_names[routine_name],
+        return MySqlRoutineLoaderHelper(self._io,
+                                        self._dl,
+                                        self._source_file_names[routine_name],
                                         self._source_file_encoding,
                                         pystratum_old_metadata,
                                         self._replace_pairs,
                                         rdbms_old_metadata,
                                         self._sql_mode,
                                         self._character_set_client,
-                                        self._collation_connection,
-                                        self._io)
+                                        self._collation_connection)
 
     # ------------------------------------------------------------------------------------------------------------------
     def _get_old_stored_routine_info(self) -> None:
         """
         Retrieves information about all stored routines in the current schema.
         """
-        rows = MySqlMetadataDataLayer.get_routines()
+        rows = self._dl.get_routines()
         self._rdbms_old_metadata = {}
         for row in rows:
             self._rdbms_old_metadata[row['routine_name']] = row
@@ -139,7 +152,7 @@ class MySqlRoutineLoader(MySqlConnection, RoutineLoader):
         """
         Gets the SQL mode in the order as preferred by MySQL.
         """
-        self._sql_mode = MySqlMetadataDataLayer.get_correct_sql_mode(self._sql_mode)
+        self._sql_mode = self._dl.get_correct_sql_mode(self._sql_mode)
 
     # ------------------------------------------------------------------------------------------------------------------
     def _drop_obsolete_routines(self) -> None:
@@ -150,15 +163,17 @@ class MySqlRoutineLoader(MySqlConnection, RoutineLoader):
         for routine_name, values in self._rdbms_old_metadata.items():
             if routine_name not in self._source_file_names:
                 self._io.writeln("Dropping {0} <dbo>{1}</dbo>".format(values['routine_type'].lower(), routine_name))
-                MySqlMetadataDataLayer.drop_stored_routine(values['routine_type'], routine_name)
+                self._dl.drop_stored_routine(values['routine_type'], routine_name)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _read_configuration_file(self, config_filename: str) -> None:
+    def _read_configuration_file(self) -> None:
         """
         Reads parameters from the configuration file.
-        :param config_filename string
         """
-        RoutineLoader._read_configuration_file(self, config_filename)
-        MySqlConnection._read_configuration_file(self, config_filename)
+        CommonRoutineLoaderWorker._read_configuration_file(self)
+
+        self._character_set_client = self._config.get('database', 'character_set_client', fallback='utf-8')
+        self._collation_connection = self._config.get('database', 'collation_connection', fallback='utf8_general_ci')
+        self._sql_mode = self._config.get('database', 'sql_mode')
 
 # ----------------------------------------------------------------------------------------------------------------------

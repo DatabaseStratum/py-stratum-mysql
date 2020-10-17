@@ -1,32 +1,29 @@
-"""
-PyStratum
-"""
 import os
 import re
-from typing import Dict, Any, Optional
+from configparser import ConfigParser
+from typing import Any, Dict, Optional
 
-from pystratum.style.PyStratumStyle import PyStratumStyle
+from pystratum_backend.StratumStyle import StratumStyle
+from pystratum_common.backend.CommonConstantWorker import CommonConstantWorker
+from pystratum_common.Util import Util
 
-from pystratum.Constants import Constants
-from pystratum.Util import Util
-from pystratum_mysql.MySqlMetadataDataLayer import MySqlMetadataDataLayer
-from pystratum_mysql.MySqlConnection import MySqlConnection
+from pystratum_mysql.backend.MySqlWorker import MySqlWorker
 
 
-class MySqlConstants(MySqlConnection, Constants):
+class MySqlConstantWorker(MySqlWorker, CommonConstantWorker):
     """
     Class for creating constants based on column widths, and auto increment columns and labels for MySQL databases.
     """
 
     # ------------------------------------------------------------------------------------------------------------------
-    def __init__(self, io: PyStratumStyle):
+    def __init__(self, io: StratumStyle, config: ConfigParser):
         """
         Object constructor.
 
         :param PyStratumStyle io: The output decorator.
         """
-        Constants.__init__(self, io)
-        MySqlConnection.__init__(self, io)
+        MySqlWorker.__init__(self, io, config)
+        CommonConstantWorker.__init__(self, io, config)
 
         self._columns: Dict[str, Any] = {}
         """
@@ -87,7 +84,7 @@ class MySqlConstants(MySqlConnection, Constants):
         """
         Retrieves metadata about all table columns in the MySQL schema.
         """
-        rows = MySqlMetadataDataLayer.get_all_table_columns()
+        rows = self._dl.get_all_table_columns()
         for row in rows:
             # Enhance row with the actual length of the column.
             row['length'] = self.derive_field_length(row)
@@ -174,15 +171,13 @@ class MySqlConstants(MySqlConnection, Constants):
         Util.write_two_phases(self._constants_filename, content, self._io)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _get_labels(self, regex: str) -> None:
+    def _get_labels(self) -> None:
         """
         Gets all primary key labels from the MySQL database.
-
-        :param str regex: The regular expression for columns which we want to use.
         """
-        tables = MySqlMetadataDataLayer.get_label_tables(regex)
+        tables = self._dl.get_label_tables(self._label_regex)
         for table in tables:
-            rows = MySqlMetadataDataLayer.get_labels_from_table(table['table_name'], table['id'], table['label'])
+            rows = self._dl.get_labels_from_table(table['table_name'], table['id'], table['label'])
             for row in rows:
                 self._labels[row['label']] = row['id']
 
@@ -209,48 +204,38 @@ class MySqlConstants(MySqlConnection, Constants):
 
         :rtype: int|None
         """
-        types_length = {'tinyint': column   ['numeric_precision'],
-                        'smallint': column  ['numeric_precision'],
-                        'mediumint': column ['numeric_precision'],
-                        'int': column       ['numeric_precision'],
-                        'bigint': column    ['numeric_precision'],
-                        'decimal': column   ['numeric_precision'],
-                        'float': column     ['numeric_precision'],
-                        'double': column    ['numeric_precision'],
-                        'char': column      ['character_maximum_length'],
-                        'varchar': column   ['character_maximum_length'],
-                        'binary': column    ['character_maximum_length'],
-                        'varbinary': column ['character_maximum_length'],
-                        'tinytext': column  ['character_maximum_length'],
-                        'text': column      ['character_maximum_length'],
+        types_length = {'tinyint':    column['numeric_precision'],
+                        'smallint':   column['numeric_precision'],
+                        'mediumint':  column['numeric_precision'],
+                        'int':        column['numeric_precision'],
+                        'bigint':     column['numeric_precision'],
+                        'decimal':    column['numeric_precision'],
+                        'float':      column['numeric_precision'],
+                        'double':     column['numeric_precision'],
+                        'char':       column['character_maximum_length'],
+                        'varchar':    column['character_maximum_length'],
+                        'binary':     column['character_maximum_length'],
+                        'varbinary':  column['character_maximum_length'],
+                        'tinytext':   column['character_maximum_length'],
+                        'text':       column['character_maximum_length'],
                         'mediumtext': column['character_maximum_length'],
-                        'longtext': column  ['character_maximum_length'],
-                        'tinyblob': column  ['character_maximum_length'],
-                        'blob': column      ['character_maximum_length'],
+                        'longtext':   column['character_maximum_length'],
+                        'tinyblob':   column['character_maximum_length'],
+                        'blob':       column['character_maximum_length'],
                         'mediumblob': column['character_maximum_length'],
-                        'longblob': column  ['character_maximum_length'],
-                        'bit': column       ['character_maximum_length'],
-                        'timestamp':        16,
-                        'year':             4,
-                        'time':             8,
-                        'date':             10,
-                        'datetime':         16,
-                        'enum':             None,
-                        'set':              None}
+                        'longblob':   column['character_maximum_length'],
+                        'bit':        column['character_maximum_length'],
+                        'timestamp':  16,
+                        'year':       4,
+                        'time':       8,
+                        'date':       10,
+                        'datetime':   16,
+                        'enum':       None,
+                        'set':        None}
 
         if column['data_type'] in types_length:
             return types_length[column['data_type']]
 
         raise Exception("Unexpected type '{0!s}'.".format(column['data_type']))
-
-    # ------------------------------------------------------------------------------------------------------------------
-    def _read_configuration_file(self, config_filename: str) -> None:
-        """
-        Reads parameters from the configuration file.
-
-        :param str config_filename: The name of the configuration file.
-        """
-        Constants._read_configuration_file(self, config_filename)
-        MySqlConnection._read_configuration_file(self, config_filename)
 
 # ----------------------------------------------------------------------------------------------------------------------

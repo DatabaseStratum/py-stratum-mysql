@@ -1,9 +1,6 @@
-"""
-PyStratum
-"""
 from typing import Any, Dict
 
-from pystratum.wrapper.BulkWrapper import BulkWrapper
+from pystratum_common.wrapper.BulkWrapper import BulkWrapper
 from pystratum_mysql.wrapper.MySqlWrapper import MySqlWrapper
 
 
@@ -14,6 +11,6 @@ class MySqlBulkWrapper(MySqlWrapper, BulkWrapper):
 
     # ------------------------------------------------------------------------------------------------------------------
     def _write_result_handler(self, routine: Dict[str, Any]) -> None:
-        self._write_line('return StaticDataLayer.execute_sp_bulk(bulk_handler, {0})'.format(self._generate_command(routine)))
+        self._write_line('return self.execute_sp_bulk(bulk_handler, {0})'.format(self._generate_command(routine)))
 
 # ----------------------------------------------------------------------------------------------------------------------

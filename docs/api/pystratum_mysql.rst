@@ -20,10 +20,10 @@ pystratum\_mysql.MySqlConnection module
    :undoc-members:
    :show-inheritance:
 
-pystratum\_mysql.MySqlConstants module
+pystratum\_mysql.MySqlConstantWorker module
 --------------------------------------
 
-.. automodule:: pystratum_mysql.MySqlConstants
+.. automodule:: pystratum_mysql.MySqlConstantWorker
    :members:
    :undoc-members:
    :show-inheritance:
@@ -36,10 +36,10 @@ pystratum\_mysql.MySqlMetadataDataLayer module
    :undoc-members:
    :show-inheritance:
 
-pystratum\_mysql.MySqlRoutineLoader module
+pystratum\_mysql.MySqlRoutineLoaderWorker module
 ------------------------------------------
 
-.. automodule:: pystratum_mysql.MySqlRoutineLoader
+.. automodule:: pystratum_mysql.MySqlRoutineLoaderWorker
    :members:
    :undoc-members:
    :show-inheritance:
@@ -52,18 +52,18 @@ pystratum\_mysql.MySqlRoutineLoaderHelper module
    :undoc-members:
    :show-inheritance:
 
-pystratum\_mysql.MySqlRoutineWrapperGenerator module
+pystratum\_mysql.MySqlRoutineWrapperGeneratorWorker module
 ----------------------------------------------------
 
-.. automodule:: pystratum_mysql.MySqlRoutineWrapperGenerator
+.. automodule:: pystratum_mysql.MySqlRoutineWrapperGeneratorWorker
    :members:
    :undoc-members:
    :show-inheritance:
 
-pystratum\_mysql.StaticDataLayer module
+pystratum\_mysql.MySqlDataLayer module
 ---------------------------------------
 
-.. automodule:: pystratum_mysql.StaticDataLayer
+.. automodule:: pystratum_mysql.MySqlDataLayer
    :members:
    :undoc-members:
    :show-inheritance:

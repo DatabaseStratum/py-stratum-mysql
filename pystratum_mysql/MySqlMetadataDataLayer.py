@@ -1,24 +1,33 @@
-"""
-PyStratum
-"""
-from typing import Optional, Any, Dict, List, Union
+from typing import Any, Dict, List, Union
 
-from pystratum.MetadataDataLayer import MetadataDataLayer
-from pystratum_mysql.StaticDataLayer import StaticDataLayer
+from pystratum_backend.StratumStyle import StratumStyle
+from pystratum_common.MetadataDataLayer import MetadataDataLayer
+
+from pystratum_mysql.MySqlConnector import MySqlConnector
+from pystratum_mysql.MySqlDataLayer import MySqlDataLayer
 
 
 class MySqlMetadataDataLayer(MetadataDataLayer):
     """
     Data layer for retrieving metadata and loading stored routines.
     """
-    __dl: Optional[StaticDataLayer] = None
-    """
-    The connection to the MySQL instance.
-    """
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def call_stored_routine(routine_name: str) -> int:
+    def __init__(self, io: StratumStyle, connector: MySqlConnector):
+        """
+        Object constructor.
+
+        :param PyStratumStyle io: The output decorator.
+        """
+        super().__init__(io)
+
+        self.__dl: MySqlDataLayer = MySqlDataLayer(connector)
+        """
+        The connection to the MySQL instance.
+        """
+
+    # ------------------------------------------------------------------------------------------------------------------
+    def call_stored_routine(self, routine_name: str) -> int:
         """
         Class a stored procedure without arguments.
 
@@ -28,11 +37,10 @@ class MySqlMetadataDataLayer(MetadataDataLayer):
         """
         sql = 'call {0}()'.format(routine_name)
 
-        return MySqlMetadataDataLayer.execute_none(sql)
+        return self.execute_none(sql)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def check_table_exists(table_name: str) -> int:
+    def check_table_exists(self, table_name: str) -> int:
         """
         Checks if a table exists in the current schema.
 
@@ -46,20 +54,17 @@ information_schema.TABLES
 where TABLE_SCHEMA = database()
 and   TABLE_NAME   = '{0}'""".format(table_name)
 
-        return MySqlMetadataDataLayer.execute_none(sql)
+        return self.execute_none(sql)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def connect() -> None:
+    def connect(self) -> None:
         """
         Connects to a MySQL instance.
         """
-        MySqlMetadataDataLayer.__dl = StaticDataLayer()
-        MySqlMetadataDataLayer.__dl.connect()
+        self.__dl.connect()
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def describe_table(table_name: str) -> List[Dict[str, Any]]:
+    def describe_table(self, table_name: str) -> List[Dict[str, Any]]:
         """
         Describes a table.
 
@@ -69,19 +74,17 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
         """
         sql = 'describe `{0}`'.format(table_name)
 
-        return MySqlMetadataDataLayer.execute_rows(sql)
+        return self.execute_rows(sql)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def disconnect() -> None:
+    def disconnect(self) -> None:
         """
         Disconnects from the MySQL instance.
         """
-        MySqlMetadataDataLayer.__dl.disconnect()
+        self.__dl.disconnect()
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def drop_stored_routine(routine_type: str, routine_name: str) -> None:
+    def drop_stored_routine(self, routine_type: str, routine_name: str) -> None:
         """
         Drops a stored routine if it exists.
 
@@ -90,11 +93,10 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
         """
         sql = 'drop {0} if exists `{1}`'.format(routine_type, routine_name)
 
-        MySqlMetadataDataLayer.execute_none(sql)
+        self.execute_none(sql)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def drop_temporary_table(table_name: str) -> None:
+    def drop_temporary_table(self, table_name: str) -> None:
         """
         Drops a temporary table.
 
@@ -102,11 +104,10 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
         """
         sql = 'drop temporary table `{0}`'.format(table_name)
 
-        MySqlMetadataDataLayer.execute_none(sql)
+        self.execute_none(sql)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def execute_none(query: str) -> int:
+    def execute_none(self, query: str) -> int:
         """
         Executes a query that does not select any rows.
 
@@ -114,13 +115,12 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
 
         :rtype: int
         """
-        MySqlMetadataDataLayer._log_query(query)
+        self._log_query(query)
 
-        return MySqlMetadataDataLayer.__dl.execute_none(query)
+        return self.__dl.execute_none(query)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def execute_rows(query: str) -> List[Dict[str, Any]]:
+    def execute_rows(self, query: str) -> List[Dict[str, Any]]:
         """
         Executes a query that selects 0 or more rows. Returns the selected rows (an empty list if no rows are selected).
 
@@ -128,13 +128,12 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
 
         :rtype: list[dict[str,*]]
         """
-        MySqlMetadataDataLayer._log_query(query)
+        self._log_query(query)
 
-        return MySqlMetadataDataLayer.__dl.execute_rows(query)
+        return self.__dl.execute_rows(query)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def execute_singleton1(query: str) -> Any:
+    def execute_singleton1(self, query: str) -> Any:
         """
         Executes SQL statement that selects 1 row with 1 column. Returns the value of the selected column.
 
@@ -142,13 +141,12 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
 
         :rtype: *
         """
-        MySqlMetadataDataLayer._log_query(query)
+        self._log_query(query)
 
-        return MySqlMetadataDataLayer.__dl.execute_singleton1(query)
+        return self.__dl.execute_singleton1(query)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def get_all_table_columns() -> List[Dict[str, Union[str, int, None]]]:
+    def get_all_table_columns(self) -> List[Dict[str, Union[str, int, None]]]:
         """
         Selects metadata of all columns of all tables.
 
@@ -192,11 +190,10 @@ union all
 )
 """
 
-        return MySqlMetadataDataLayer.execute_rows(sql)
+        return self.execute_rows(sql)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def get_correct_sql_mode(sql_mode: str) -> str:
+    def get_correct_sql_mode(self, sql_mode: str) -> str:
         """
         Selects the SQL mode in the order as preferred by MySQL.
 
@@ -204,15 +201,14 @@ union all
 
         :rtype: str
         """
-        MySqlMetadataDataLayer.set_sql_mode(sql_mode)
+        self.set_sql_mode(sql_mode)
 
         sql = 'select @@sql_mode'
 
-        return MySqlMetadataDataLayer.execute_singleton1(sql)
+        return self.execute_singleton1(sql)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def get_label_tables(regex: str) -> List[Dict[str, Any]]:
+    def get_label_tables(self, regex: str) -> List[Dict[str, Any]]:
         """
         Selects metadata of tables with a label column.
 
@@ -231,11 +227,11 @@ and   t1.EXTRA        = 'auto_increment'
 and   t2.TABLE_SCHEMA = database()
 and   t2.COLUMN_NAME rlike '{0}'""".format(regex)
 
-        return MySqlMetadataDataLayer.execute_rows(sql)
+        return self.execute_rows(sql)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def get_labels_from_table(table_name: str, id_column_name: str, label_column_name: str) -> List[Dict[str, Any]]:
+    def get_labels_from_table(self, table_name: str, id_column_name: str, label_column_name: str) -> \
+            List[Dict[str, Any]]:
         """
         Selects all labels from a table with labels.
 
@@ -253,21 +249,19 @@ where   nullif(`{1}`,'') is not null""".format(id_column_name,
                                                label_column_name,
                                                table_name)
 
-        return MySqlMetadataDataLayer.execute_rows(sql)
+        return self.execute_rows(sql)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def last_sql() -> Optional[str]:
+    def last_sql(self) -> str:
         """
         The last executed SQL statement.
 
-        :rtype: str|None
+        :rtype: str
         """
-        return MySqlMetadataDataLayer.__dl.last_sql
+        return self.__dl.last_sql()
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def get_routine_parameters(routine_name: str) -> List[Dict[str, Any]]:
+    def get_routine_parameters(self, routine_name: str) -> List[Dict[str, Any]]:
         """
         Selects metadata of the parameters of a stored routine.
 
@@ -290,11 +284,10 @@ left outer join information_schema.PARAMETERS t2  on  t2.SPECIFIC_SCHEMA = t1.RO
 where t1.ROUTINE_SCHEMA = database()
 and   t1.ROUTINE_NAME   = '{0}'""".format(routine_name)
 
-        return MySqlMetadataDataLayer.execute_rows(sql)
+        return self.execute_rows(sql)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def get_routines() -> List[Dict[str, Any]]:
+    def get_routines(self) -> List[Dict[str, Any]]:
         """
         Selects metadata of all routines in the current schema.
 
@@ -310,11 +303,10 @@ from  information_schema.ROUTINES
 where ROUTINE_SCHEMA = database()
 order by routine_name"""
 
-        return MySqlMetadataDataLayer.execute_rows(sql)
+        return self.execute_rows(sql)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def set_character_set(character_set: str, collate: str) -> None:
+    def set_character_set(self, character_set: str, collate: str) -> None:
         """
         Sets the default character set and collate.
 
@@ -323,11 +315,10 @@ order by routine_name"""
         """
         sql = "set names '{0}' collate '{1}'".format(character_set, collate)
 
-        MySqlMetadataDataLayer.execute_none(sql)
+        self.execute_none(sql)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @staticmethod
-    def set_sql_mode(sql_mode: str) -> None:
+    def set_sql_mode(self, sql_mode: str) -> None:
         """
         Sets the SQL mode.
 
@@ -335,6 +326,6 @@ order by routine_name"""
         """
         sql = "set sql_mode = '{0}'".format(sql_mode)
 
-        MySqlMetadataDataLayer.execute_none(sql)
+        self.execute_none(sql)
 
 # ----------------------------------------------------------------------------------------------------------------------

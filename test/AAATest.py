@@ -1,10 +1,7 @@
-"""
-PyStratum
-"""
 import unittest
 
 from cleo import CommandTester
-from pystratum.application.PyStratumApplication import PyStratumApplication
+from pystratum_cli import StratumApplication
 
 
 class AAATest(unittest.TestCase):
@@ -15,13 +12,15 @@ class AAATest(unittest.TestCase):
     # ------------------------------------------------------------------------------------------------------------------
     def test1(self):
         """
-        Stored routine with designation type function executes a stored function and return result.
+        Runs the stratum command: loads the stored routines and generates the stored routine wrapper.
         """
-        application = PyStratumApplication()
+        application = StratumApplication()
         command = application.find('stratum')
         command_tester = CommandTester(command)
         status = command_tester.execute([('command', command.get_name()),
-                                         ('config_file', 'pystratum_test/etc/stratum.cfg')])
+                                         ('config_file', 'test/etc/stratum.cfg')])
+
+        print(command_tester.get_display())
 
         self.assertEqual(0, status)
 

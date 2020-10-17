@@ -7,7 +7,8 @@
 /composer.lock
 /dist/
 /docs/_build/
-/pystratum_test/html/
-/pystratum_test/etc/columns.txt
-/pystratum_test/etc/routines.json
+/test/etc/columns.txt
+/test/etc/routines.json
+/test/html/
 /vendor/
+/venv/

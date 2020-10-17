@@ -1,10 +1,4 @@
-"""
-PyStratum
-"""
-import os
-
-from pystratum_test.TestDataLayer import TestDataLayer
-from pystratum_test.StratumTestCase import StratumTestCase
+from test.StratumTestCase import StratumTestCase
 
 
 class ConstantTest(StratumTestCase):
@@ -13,7 +7,7 @@ class ConstantTest(StratumTestCase):
         """
         Test constant __ROUTINE__. Must return name of routine.
         """
-        row = TestDataLayer.tst_constant01()
+        row = self._dl.tst_constant01()
         self.assertEqual(row['int'], 1)
         self.assertEqual(row['float'], 1.0)
         self.assertEqual(row['false'], 0)

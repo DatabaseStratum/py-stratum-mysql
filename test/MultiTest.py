@@ -1,8 +1,4 @@
-"""
-PyStratum
-"""
-from pystratum_test.TestDataLayer import TestDataLayer
-from pystratum_test.StratumTestCase import StratumTestCase
+from test.StratumTestCase import StratumTestCase
 
 
 class MultiTest(StratumTestCase):
@@ -11,7 +7,7 @@ class MultiTest(StratumTestCase):
         """
         Stored routine with designation type multi must return a list of list.
         """
-        ret = TestDataLayer.tst_test_multi()
+        ret = self._dl.tst_test_multi()
         self.assertIsInstance(ret, list)
 
         # We must have 2 result sets.
@@ -24,6 +20,5 @@ class MultiTest(StratumTestCase):
         # Second result set must have 2 rows.
         self.assertIsInstance(ret[1], list)
         self.assertEqual(2, len(ret[1]))
-
 
 # ----------------------------------------------------------------------------------------------------------------------

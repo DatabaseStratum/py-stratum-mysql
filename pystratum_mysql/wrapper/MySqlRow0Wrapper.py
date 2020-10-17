@@ -1,9 +1,6 @@
-"""
-PyStratum
-"""
 from typing import Dict, Any
 
-from pystratum.wrapper.Row0Wrapper import Row0Wrapper
+from pystratum_common.wrapper.Row0Wrapper import Row0Wrapper
 from pystratum_mysql.wrapper.MySqlWrapper import MySqlWrapper
 
 
@@ -14,6 +11,6 @@ class MySqlRow0Wrapper(MySqlWrapper, Row0Wrapper):
 
     # ------------------------------------------------------------------------------------------------------------------
     def _write_result_handler(self, routine: Dict[str, Any]) -> None:
-        self._write_line('return StaticDataLayer.execute_sp_row0({0!s})'.format(self._generate_command(routine)))
+        self._write_line('return self.execute_sp_row0({0!s})'.format(self._generate_command(routine)))
 
 # ----------------------------------------------------------------------------------------------------------------------
