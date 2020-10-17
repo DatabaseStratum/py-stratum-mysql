@@ -19,6 +19,7 @@ install:
   - pip3 install PyStratum-Backend
   - pip3 install PyStratum-Cli
   - pip3 install PyStratum-Common
+  - pip3 install PyStratum-Middle
 
 before_script:
   - mysql --version
