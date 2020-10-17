@@ -12,8 +12,6 @@ services:
   - mysql
 
 install:
-  - cd $HOME
-  - python3 setup.py install
   - pip3 install mysql-connector
   - pip3 install PyStratum-Backend
   - pip3 install PyStratum-Cli
