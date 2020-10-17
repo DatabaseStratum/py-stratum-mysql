@@ -7,13 +7,11 @@ build:
     before:
       - pip3 install cleo==0.6.8
       - pip3 install coverage
+      - pip3 install mysql-connector
       - pip3 install PyStratum-Backend
       - pip3 install PyStratum-Cli
       - pip3 install PyStratum-Common
       - pip3 install PyStratum-Middle
-      - wget https://dev.mysql.com/get/Downloads/Connector-Python/mysql-connector-python-2.1.5.tar.gz
-      - tar zxvf mysql-connector-python-2.1.5.tar.gz
-      - cd mysql-connector-python-2.1.5 && python3 setup.py install
 
   nodes:
     analysis:
