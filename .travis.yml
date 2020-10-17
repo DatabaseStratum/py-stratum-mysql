@@ -16,6 +16,7 @@ install:
   - tar zxvf mysql-connector-python-8.0.16.tar.gz
   - cd mysql-connector-python-8.0.16
   - python3 setup.py install
+  - pip3 install PyStratum-Backend
   - pip3 install PyStratum-Cli
   - pip3 install PyStratum-Common
 
