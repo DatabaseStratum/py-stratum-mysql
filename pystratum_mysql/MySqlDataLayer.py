@@ -163,20 +163,10 @@ class MySqlDataLayer:
         bulk_handler.start()
 
         rowcount = 0
-        try:
-            result = itr.__next__()
-            while result:
-                try:
-                    row = result.__next__()
-                    while row:
-                        rowcount += 1
-                        bulk_handler.row(row)
-                        row = result.__next__()
-                except StopIteration:
-                    pass
-                result = itr.__next__()
-        except StopIteration:
-            pass
+        for result in itr:
+            for row in result:
+                rowcount += 1
+                bulk_handler.row(row)
 
         cursor.close()
         bulk_handler.stop()
