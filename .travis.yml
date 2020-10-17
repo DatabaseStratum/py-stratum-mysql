@@ -13,10 +13,8 @@ services:
 
 install:
   - cd $HOME
-  - wget https://dev.mysql.com/get/Downloads/Connector-Python/mysql-connector-python-8.0.16.tar.gz
-  - tar zxvf mysql-connector-python-8.0.16.tar.gz
-  - cd mysql-connector-python-8.0.16
   - python3 setup.py install
+  - pip3 install mysql-connector
   - pip3 install PyStratum-Backend
   - pip3 install PyStratum-Cli
   - pip3 install PyStratum-Common
