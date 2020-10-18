@@ -12,6 +12,13 @@ pystratum\_mysql.helper.MySqlDataTypeHelper module
    :undoc-members:
    :show-inheritance:
 
+pystratum\_mysql.helper.MySqlRoutineLoaderHelper module
+-------------------------------------------------------
+
+.. automodule:: pystratum_mysql.helper.MySqlRoutineLoaderHelper
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 Module contents
 ---------------

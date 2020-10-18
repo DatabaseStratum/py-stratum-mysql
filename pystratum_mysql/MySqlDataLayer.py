@@ -23,7 +23,7 @@ class MySqlDataLayer:
 
         self.__connector: MySqlConnector = connector
         """
-        The object for connecting to the MySql instance.
+        The object for connecting to a MySQL instance.
         """
 
         self._connection: Optional[MySQLConnection] = None

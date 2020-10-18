@@ -5,25 +5,35 @@ Subpackages
 -----------
 
 .. toctree::
+   :maxdepth: 4
 
+   pystratum_mysql.backend
    pystratum_mysql.helper
    pystratum_mysql.wrapper
 
 Submodules
 ----------
 
-pystratum\_mysql.MySqlConnection module
----------------------------------------
+pystratum\_mysql.MySqlConnector module
+--------------------------------------
 
-.. automodule:: pystratum_mysql.MySqlConnection
+.. automodule:: pystratum_mysql.MySqlConnector
    :members:
    :undoc-members:
    :show-inheritance:
 
-pystratum\_mysql.MySqlConstantWorker module
+pystratum\_mysql.MySqlDataLayer module
 --------------------------------------
 
-.. automodule:: pystratum_mysql.MySqlConstantWorker
+.. automodule:: pystratum_mysql.MySqlDataLayer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pystratum\_mysql.MySqlDefaultConnector module
+---------------------------------------------
+
+.. automodule:: pystratum_mysql.MySqlDefaultConnector
    :members:
    :undoc-members:
    :show-inheritance:
@@ -35,39 +45,6 @@ pystratum\_mysql.MySqlMetadataDataLayer module
    :members:
    :undoc-members:
    :show-inheritance:
-
-pystratum\_mysql.MySqlRoutineLoaderWorker module
-------------------------------------------
-
-.. automodule:: pystratum_mysql.MySqlRoutineLoaderWorker
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pystratum\_mysql.MySqlRoutineLoaderHelper module
-------------------------------------------------
-
-.. automodule:: pystratum_mysql.MySqlRoutineLoaderHelper
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pystratum\_mysql.MySqlRoutineWrapperGeneratorWorker module
-----------------------------------------------------
-
-.. automodule:: pystratum_mysql.MySqlRoutineWrapperGeneratorWorker
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-pystratum\_mysql.MySqlDataLayer module
----------------------------------------
-
-.. automodule:: pystratum_mysql.MySqlDataLayer
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 
 Module contents
 ---------------

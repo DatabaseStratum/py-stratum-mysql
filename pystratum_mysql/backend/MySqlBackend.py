@@ -14,7 +14,7 @@ from pystratum_mysql.backend.MySqlRoutineWrapperGeneratorWorker import MySqlRout
 
 class MySqlBackend(Backend):
     """
-    Semi interface for PyStratum's backends.
+    PyStratum Backend for MySQL & MariaDB.
     """
 
     # ------------------------------------------------------------------------------------------------------------------

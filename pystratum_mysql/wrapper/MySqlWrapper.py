@@ -10,7 +10,7 @@ class MySqlWrapper(Wrapper, ABC):
     """
 
     # ------------------------------------------------------------------------------------------------------------------
-    def is_lob_parameter(self, parameters: List[Dict[str, Any]]):
+    def is_lob_parameter(self, parameters: List[Dict[str, Any]]) -> bool:
         """
         Returns True of one of the parameters is a BLOB or CLOB. Otherwise, returns False.
 

@@ -7,7 +7,7 @@ from pystratum_mysql.MySqlConnector import MySqlConnector
 
 class MySqlDefaultConnector(MySqlConnector):
     """
-    Connects to a MySql instance using user name and password.
+    Connects to a MySQL instance using user name and password.
     """
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -17,7 +17,11 @@ class MySqlDefaultConnector(MySqlConnector):
         
         :param params: The connection parameters.
         """
+
         self._params: Dict[str, Union[str, int]] = params
+        """
+        The connection parameters.
+        """
 
         self._connection: Optional[MySQLConnection] = None
         """
@@ -27,7 +31,7 @@ class MySqlDefaultConnector(MySqlConnector):
     # ------------------------------------------------------------------------------------------------------------------
     def connect(self) -> MySQLConnection:
         """
-        Connects to the MySql instance.
+        Connects to the MySQL instance.
         """
         self._connection = MySQLConnection(**self._params)
 
@@ -36,7 +40,7 @@ class MySqlDefaultConnector(MySqlConnector):
     # ------------------------------------------------------------------------------------------------------------------
     def disconnect(self) -> None:
         """
-        Disconnects from the MySql instance.
+        Disconnects from the MySQL instance.
         """
         if self._connection:
             self._connection.disconnect()

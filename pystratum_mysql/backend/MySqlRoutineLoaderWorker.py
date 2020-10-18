@@ -124,7 +124,7 @@ class MySqlRoutineLoaderWorker(MySqlWorker, CommonRoutineLoaderWorker):
         :param dict pystratum_old_metadata: The old metadata of the stored routine from PyStratum.
         :param dict rdbms_old_metadata:  The old metadata of the stored routine from MySQL.
 
-        :rtype: pystratum_mysql.MySqlRoutineLoaderHelper.MySqlRoutineLoaderHelper
+        :rtype: MySqlRoutineLoaderHelper
         """
         return MySqlRoutineLoaderHelper(self._io,
                                         self._dl,

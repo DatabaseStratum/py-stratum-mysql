@@ -116,7 +116,6 @@ pystratum\_mysql.wrapper.MySqlWrapper module
    :undoc-members:
    :show-inheritance:
 
-
 Module contents
 ---------------
 

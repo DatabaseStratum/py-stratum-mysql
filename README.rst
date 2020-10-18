@@ -14,7 +14,7 @@ MySQL & MariaDB Backend for PyStratum
 
 Overview
 ========
-PyStratum MySQL is a package with the following mayor functionalities:
+PyStratum-MySQL is a package with the following mayor functionalities:
 
 * Loading modified and new stored routines and removing obsolete stored routines into/from a MySQL and MariaDB instance. This MySQL or MariaDB instance can be part of your development or a production environment.
 * Enhancing the (limited) syntax of MySQL & MariaDB stored routines with constants and custom types (based on actual table columns).

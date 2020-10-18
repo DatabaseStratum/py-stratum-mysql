@@ -24,13 +24,6 @@ class MySqlRoutineWrapperGeneratorWorker(MySqlWorker, CommonRoutineWrapperGenera
         CommonRoutineWrapperGeneratorWorker.__init__(self, io, config)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _read_configuration_file(self) -> None:
-        """
-        Reads parameters from the configuration file.
-        """
-        CommonRoutineWrapperGeneratorWorker._read_configuration_file(self)
-
-    # ------------------------------------------------------------------------------------------------------------------
     def _write_routine_function(self, routine: Dict[str, Any]) -> None:
         """
         Generates a complete wrapper method for a stored routine.

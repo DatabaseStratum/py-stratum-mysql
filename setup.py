@@ -13,7 +13,7 @@ setup(
 
     version='1.0.0',
 
-    description='PyStratum MySql: MySQL & MariaDB Backend',
+    description='PyStratum-MySQL: MySQL & MariaDB Backend',
     long_description=long_description,
 
     url='https://github.com/DatabaseStratum/py-stratum-mysql',
@@ -34,6 +34,8 @@ setup(
         'License :: OSI Approved :: MIT License',
 
         'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
     ],
