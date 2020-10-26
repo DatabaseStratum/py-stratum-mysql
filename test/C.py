@@ -14,4 +14,3 @@ class C:
     # PyStratum
     TST_ID_EGGS = 2
     TST_ID_SPAM = 1
-    TST_TST_C00 = 10
