@@ -162,7 +162,7 @@ class MySqlRoutineLoaderWorker(MySqlWorker, CommonRoutineLoaderWorker):
         """
         for routine_name, values in self._rdbms_old_metadata.items():
             if routine_name not in self._source_file_names:
-                self._io.writeln("Dropping {0} <dbo>{1}</dbo>".format(values['routine_type'].lower(), routine_name))
+                self._io.text("Dropping {0} <dbo>{1}</dbo>".format(values['routine_type'].lower(), routine_name))
                 self._dl.drop_stored_routine(values['routine_type'], routine_name)
 
     # ------------------------------------------------------------------------------------------------------------------
