@@ -7,6 +7,13 @@
         <exec command="composer update" checkreturn="true" passthru="true"/>
     </target>
 
+    <target name="venv">
+        <delete dir="venv" quiet="true"/>
+        <exec command="python3 -m venv venv" checkreturn="true" passthru="true"/>
+        <exec command="venv/bin/pip install --upgrade pip" checkreturn="true" passthru="true"/>
+        <exec command="venv/bin/pip install -r requirements.txt" checkreturn="true" passthru="true"/>
+    </target>
+    
     <!-- Creates a new version/release. -->
     <!-- @todo replace semantic version with pep-396 -->
     <target name="version">
@@ -24,10 +31,24 @@
                 </replaceregexp>
             </filterchain>
         </reflexive>
-        <gitcommit repository="." message="Release: ${VERSION}" allFiles="true"/>
-        <gitpush repository="."/>
-        <gittag repository="." name="${VERSION}"/>
-        <gitpush repository="." refspec="${VERSION}" quiet="false"/>
+        <exec executable="git" checkreturn="true" passthru="true">
+            <arg value="commit"/>
+            <arg value="-a"/>
+            <arg value="-m"/>
+            <arg value="Release: ${VERSION}"/>
+        </exec>
+        <exec executable="git" checkreturn="true" passthru="true">
+            <arg value="push"/>
+        </exec>
+        <exec executable="git" checkreturn="true" passthru="true">
+            <arg value="tag"/>
+            <arg value="${VERSION}"/>
+        </exec>
+        <exec executable="git" checkreturn="true" passthru="true">
+            <arg value="push"/>
+            <arg value="origin"/>
+            <arg value="${VERSION}"/>
+        </exec>
     </target>
 
     <!-- Creates a new distribution using setup.py -->
@@ -42,7 +63,7 @@
     </target>
 
     <!-- All steps for releasing a new version -->
-    <target name="release" depends="version,dist,upload,docs"/>
+    <target name="release" depends="docs,version,dist,upload"/>
 
     <!-- Checks the code with pylint -->
     <target name="pylint">
@@ -60,7 +81,8 @@
 
     <!-- Generates the documentation -->
     <target name="docs">
-        <exec command="sphinx-apidoc -o api --force --doc-project API --no-toc ../pystratum_mysql" dir="docs" passthru="true" checkreturn="true"/>
+        <exec command="sphinx-apidoc -o api --force --doc-project API --no-toc ../pystratum_mysql" dir="docs"
+              passthru="true" checkreturn="true"/>
         <exec command="make html" dir="docs" passthru="true" checkreturn="true"/>
     </target>
 
