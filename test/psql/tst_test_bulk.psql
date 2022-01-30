@@ -1,9 +1,10 @@
 /**
  * Test for designation type bulk.
+ *
+ * @type bulk
  */
 create procedure tst_test_bulk()
 reads sql data
--- type: bulk
 begin
   select *
   from   TST_FOO2

@@ -18,7 +18,7 @@ class MagicConstantTest(StratumTestCase):
         Test constant __LINE__. Must return line number in the source code.
         """
         ret = self._dl.tst_magic_constant02()
-        self.assertEqual(8, int(ret))
+        self.assertEqual(9, int(ret))
 
     # ------------------------------------------------------------------------------------------------------------------
     def test3(self):

@@ -1,9 +1,10 @@
 /**
- *  Test for stored function with percent symbols.
+ * Test for stored function with percent symbols.
+ *
+ * @type rows
  */
 create procedure tst_test_percent_symbol()
 reads sql data
--- type: rows
 begin
   select *
   from  TST_FOO2

@@ -1,9 +1,10 @@
 /**
  * Test for designation type multi.
+ *
+ * @type multi
  */
 create procedure tst_test_multi()
 reads sql data
--- type: multi
 begin
   select 'Hello, world';
 

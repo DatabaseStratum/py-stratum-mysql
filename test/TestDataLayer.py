@@ -87,17 +87,17 @@ class TestDataLayer(MySqlDataLayer):
         :param int p_param13: Test parameter 13.
                               year(4)
         :param str p_param14: Test parameter 14.
-                              char(10) character set utf8mb4 collation utf8mb4_general_ci
+                              char(10) character set latin1 collation latin1_swedish_ci
         :param str p_param15: Test parameter 15.
-                              varchar(10) character set utf8mb4 collation utf8mb4_general_ci
+                              varchar(10) character set latin1 collation latin1_swedish_ci
         :param bytes p_param16: Test parameter 16.
                                 binary(10)
         :param bytes p_param17: Test parameter 17.
                                 varbinary(10)
         :param str p_param26: Test parameter 26.
-                              enum('a','b') character set utf8mb4 collation utf8mb4_general_ci
+                              enum('a','b') character set latin1 collation latin1_swedish_ci
         :param str p_param27: Test parameter 27.
-                              set('a','b') character set utf8mb4 collation utf8mb4_general_ci
+                              set('a','b') character set latin1 collation latin1_swedish_ci
 
         :rtype: int
         """
@@ -137,9 +137,9 @@ class TestDataLayer(MySqlDataLayer):
         :param int p_param13: Test parameter 13.
                               year(4)
         :param str p_param14: Test parameter 14.
-                              char(10) character set utf8mb4 collation utf8mb4_general_ci
+                              char(10) character set latin1 collation latin1_swedish_ci
         :param str p_param15: Test parameter 15.
-                              varchar(10) character set utf8mb4 collation utf8mb4_general_ci
+                              varchar(10) character set latin1 collation latin1_swedish_ci
         :param bytes p_param16: Test parameter 16.
                                 binary(10)
         :param bytes p_param17: Test parameter 17.
@@ -153,17 +153,17 @@ class TestDataLayer(MySqlDataLayer):
         :param bytes p_param21: Test parameter 21.
                                 longblob
         :param str p_param22: Test parameter 22.
-                              tinytext character set utf8mb4 collation utf8mb4_general_ci
+                              tinytext character set latin1 collation latin1_swedish_ci
         :param str p_param23: Test parameter 23.
-                              text character set utf8mb4 collation utf8mb4_general_ci
+                              text character set latin1 collation latin1_swedish_ci
         :param str p_param24: Test parameter 24.
-                              mediumtext character set utf8mb4 collation utf8mb4_general_ci
+                              mediumtext character set latin1 collation latin1_swedish_ci
         :param str p_param25: Test parameter 25.
-                              longtext character set utf8mb4 collation utf8mb4_general_ci
+                              longtext character set latin1 collation latin1_swedish_ci
         :param str p_param26: Test parameter 26.
-                              enum('a','b') character set utf8mb4 collation utf8mb4_general_ci
+                              enum('a','b') character set latin1 collation latin1_swedish_ci
         :param str p_param27: Test parameter 27.
-                              set('a','b') character set utf8mb4 collation utf8mb4_general_ci
+                              set('a','b') character set latin1 collation latin1_swedish_ci
 
         :rtype: int
         """
@@ -175,9 +175,9 @@ class TestDataLayer(MySqlDataLayer):
         Test for all possible types of parameters with maximum length.
 
         :param str p_param14: Test parameter 14.
-                              char(255) character set utf8mb4 collation utf8mb4_general_ci
+                              char(255) character set latin1 collation latin1_swedish_ci
         :param str p_param15: Test parameter 15.
-                              varchar(4096) character set utf8mb4 collation utf8mb4_general_ci
+                              varchar(4096) character set latin1 collation latin1_swedish_ci
         :param bytes p_param16: Test parameter 16.
                                 binary(255)
         :param bytes p_param17: Test parameter 17.
@@ -450,7 +450,7 @@ class TestDataLayer(MySqlDataLayer):
     # ------------------------------------------------------------------------------------------------------------------
     def tst_test_rows_with_index1_with_lob(self, p_count: Optional[int], p_blob: Optional[bytes]) -> Dict:
         """
-        Test for designation type rows_with_index with BLOB..
+        Test for designation type rows_with_index with BLOB.
 
         :param int p_count: The number of rows selected.
                             int(11)

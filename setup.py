@@ -46,6 +46,6 @@ setup(
 
     install_requires=['mysql-connector-python<9, >=8.0.22',
                       'PyStratum-Backend<2, >=1.0.2',
-                      'PyStratum-Common<2, >=1.0.3',
+                      'PyStratum-Common<2, >=1.1.1',
                       'PyStratum-Middle<2, >=1.0.0']
 )

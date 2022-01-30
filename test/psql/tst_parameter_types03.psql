@@ -5,13 +5,14 @@
  * @param p_param15 Test parameter 15.
  * @param p_param16 Test parameter 16.
  * @param p_param17 Test parameter 17.
+ *
+ * @type none
  */
 create procedure tst_parameter_types03(p_param14 @tst_foo1.tst_c14%max-type@,
                                        p_param15 @tst_foo1.tst_c15%max-type@,
                                        p_param16 @tst_foo1.tst_c16%max-type@,
                                        p_param17 @tst_foo1.tst_c17%max-type@)
 reads sql data
--- type: none
 begin
   insert into TST_FOO1( tst_c14
   ,                     tst_c15

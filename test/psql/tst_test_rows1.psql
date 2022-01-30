@@ -5,10 +5,11 @@
  *                * 0 For a invalid test.
  *                * 1 For a valid test.
  *                * 2 For a invalid test.
+ *
+ * @type rows
  */
 create procedure tst_test_rows1( p_count int )
 reads sql data
--- type: rows
 begin
   select *
   from   TST_FOO2
