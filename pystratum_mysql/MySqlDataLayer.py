@@ -46,23 +46,35 @@ class MySqlDataLayer:
     def commit(self) -> None:
         """
         Commits the current transaction.
-        See http://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlconnection-commit.html
+        See https://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlconnection-commit.html
         """
         self._connection.commit()
 
     # ------------------------------------------------------------------------------------------------------------------
     def connect(self) -> None:
         """
-        Connects to a MySQL instance. See http://dev.mysql.com/doc/connector-python/en/connector-python-connectargs.html
+        Connects to a MySQL instance. See https://dev.mysql.com/doc/connector-python/en/connector-python-connectargs.html
         for a complete overview of all possible keys in config.
         """
         self._connection = self.__connector.connect()
 
     # ------------------------------------------------------------------------------------------------------------------
+    def connect_if_not_alive(self) -> None:
+        """
+        Connects or reconnects to the MySQL or MariaDB instance when Python is not (longer) connected to a MySQL or
+        MariaDB instance. See https://dev.mysql.com/doc/connector-python/en/connector-python-connectargs.html for a
+        complete overview of all possible keys in config.
+        """
+        if not self.__connector.is_alive():
+            if self._connection:
+                self._connection.close()
+            self._connection = self.__connector.connect()
+
+    # ------------------------------------------------------------------------------------------------------------------
     def disconnect(self) -> None:
         """
         Disconnects from the MySQL instance.
-        See http://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlconnection-disconnect.html.
+        See https://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlconnection-disconnect.html.
         """
         self._connection = None
         self.__connector.disconnect()
@@ -388,6 +400,15 @@ class MySqlDataLayer:
         return ret
 
     # ------------------------------------------------------------------------------------------------------------------
+    def is_alive(self) -> bool:
+        """
+        Returns whether Python is (still) connected to a MySQL or MariaDB instance.
+
+        :rtype: bool
+        """
+        return self.__connector.is_alive()
+
+    # ------------------------------------------------------------------------------------------------------------------
     def last_sql(self) -> str:
         """
         Returns the last execute SQL statement.
@@ -398,7 +419,7 @@ class MySqlDataLayer:
     def rollback(self) -> None:
         """
         Rolls back the current transaction.
-        See http://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlconnection-rollback.html
+        See https://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlconnection-rollback.html
         """
         self._connection.rollback()
 
@@ -409,7 +430,7 @@ class MySqlDataLayer:
                           readonly: Optional[bool] = None) -> None:
         """
         Starts a transaction.
-        See http://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlconnection-start-transaction.html
+        See https://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlconnection-start-transaction.html
 
         :param bool consistent_snapshot:
         :param str isolation_level:

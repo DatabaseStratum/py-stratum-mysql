@@ -23,4 +23,14 @@ class MySqlConnector:
         """
         raise NotImplementedError()
 
+    # ------------------------------------------------------------------------------------------------------------------
+    @abc.abstractmethod
+    def is_alive(self) -> bool:
+        """
+        Returns whether Python is (still) connected to a MySQL or MariaDB instance.
+
+        :rtype: bool
+        """
+        raise NotImplementedError()
+
 # ----------------------------------------------------------------------------------------------------------------------

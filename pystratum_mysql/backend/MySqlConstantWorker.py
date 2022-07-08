@@ -230,6 +230,7 @@ class MySqlConstantWorker(MySqlWorker, CommonConstantWorker):
                         'time':       8,
                         'date':       10,
                         'datetime':   16,
+                        'inet6':      39,
                         'enum':       None,
                         'set':        None}
 

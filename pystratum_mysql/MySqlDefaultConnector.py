@@ -7,7 +7,7 @@ from pystratum_mysql.MySqlConnector import MySqlConnector
 
 class MySqlDefaultConnector(MySqlConnector):
     """
-    Connects to a MySQL instance using user name and password.
+    Connects to a MySQL instance using username and password.
     """
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -43,7 +43,26 @@ class MySqlDefaultConnector(MySqlConnector):
         Disconnects from the MySQL instance.
         """
         if self._connection:
-            self._connection.disconnect()
+            self._connection.close()
             self._connection = None
+
+    # ------------------------------------------------------------------------------------------------------------------
+    def is_alive(self) -> bool:
+        """
+        Returns whether Python is (still) connected to a MySQL or MariaDB instance.
+
+        :rtype: bool
+        """
+        is_alive = False
+
+        if self._connection:
+            try:
+                result = self._connection.cmd_ping()
+                if isinstance(result, dict):
+                    is_alive = True
+            except:
+                pass
+
+        return is_alive
 
 # ----------------------------------------------------------------------------------------------------------------------
