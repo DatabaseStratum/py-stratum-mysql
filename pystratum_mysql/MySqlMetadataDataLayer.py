@@ -140,39 +140,39 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
         """
         sql = """
 (
-  select table_name
-  ,      column_name
-  ,      column_type
-  ,      character_set_name
-  ,      data_type
-  ,      character_maximum_length
-  ,      numeric_precision
-  ,      ordinal_position
+  select TABLE_NAME                as  table_name
+  ,      COLUMN_NAME               as  column_name
+  ,      COLUMN_TYPE               as  column_type
+  ,      CHARACTER_SET_NAME        as  character_set_name
+  ,      DATA_TYPE                 as  data_type
+  ,      CHARACTER_MAXIMUM_LENGTH  as  character_maximum_length
+  ,      NUMERIC_PRECISION         as  numeric_precision
+  ,      ORDINAL_POSITION          as  ordinal_position
   from   information_schema.COLUMNS
-  where  table_schema = database()
-  and    table_name  rlike '^[a-zA-Z0-9_]*$'
-  and    column_name rlike '^[a-zA-Z0-9_]*$'
-  order by table_name
-  ,        ordinal_position
+  where  TABLE_SCHEMA = database()
+  and    TABLE_NAME  rlike '^[a-zA-Z0-9_]*$'
+  and    COLUMN_NAME rlike '^[a-zA-Z0-9_]*$'
+  order by TABLE_NAME
+  ,        ORDINAL_POSITION
 )
 
 union all
 
 (
-  select concat(table_schema,'.',table_name) table_name
-  ,      column_name
-  ,      column_type
-  ,      character_set_name
-  ,      data_type
-  ,      character_maximum_length
-  ,      numeric_precision
-  ,      ordinal_position
+  select concat(TABLE_SCHEMA,'.',TABLE_NAME) 
+  ,      COLUMN_NAME
+  ,      COLUMN_TYPE
+  ,      CHARACTER_SET_NAME
+  ,      DATA_TYPE
+  ,      CHARACTER_MAXIMUM_LENGTH
+  ,      NUMERIC_PRECISION
+  ,      ORDINAL_POSITION
   from   information_schema.COLUMNS
-  where  table_name  rlike '^[a-zA-Z0-9_]*$'
-  and    column_name rlike '^[a-zA-Z0-9_]*$'
-  order by table_schema
-  ,        table_name
-  ,        ordinal_position
+  where  TABLE_NAME  rlike '^[a-zA-Z0-9_]*$'
+  and    COLUMN_NAME rlike '^[a-zA-Z0-9_]*$'
+  order by TABLE_SCHEMA
+  ,        TABLE_NAME
+  ,        ORDINAL_POSITION
 )
 """
 
