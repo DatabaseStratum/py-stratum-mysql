@@ -216,6 +216,7 @@ class MySqlConstantWorker(MySqlWorker, CommonConstantWorker):
                         'varbinary':  column['character_maximum_length'],
                         'tinytext':   column['character_maximum_length'],
                         'text':       column['character_maximum_length'],
+                        'json':       column['character_maximum_length'],
                         'mediumtext': column['character_maximum_length'],
                         'longtext':   column['character_maximum_length'],
                         'tinyblob':   column['character_maximum_length'],
