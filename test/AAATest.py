@@ -1,6 +1,6 @@
 import unittest
 
-from cleo import CommandTester
+from cleo.testers.command_tester import CommandTester
 from pystratum_cli import StratumApplication
 
 
@@ -17,10 +17,9 @@ class AAATest(unittest.TestCase):
         application = StratumApplication()
         command = application.find('stratum')
         command_tester = CommandTester(command)
-        status = command_tester.execute([('command', command.get_name()),
-                                         ('config_file', 'test/etc/stratum.cfg')])
+        status = command_tester.execute('test/etc/stratum.cfg')
 
-        print(command_tester.get_display())
+        print(command_tester.io.fetch_output())
 
         self.assertEqual(0, status)
 
