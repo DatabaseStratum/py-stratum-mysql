@@ -58,8 +58,8 @@ jobs:
 
       - name: "Run tests with pytest"
         run: |
-          cat test/ddl/create_tables.sql | mysql -utest -ptest test
           export PYTHONPATH=.
+          ./test/unit-test.sh
           ./venv/bin/pystratum stratum test/etc/stratum.cfg
           rm test/etc/routines.json
           python -m coverage run -m unittest discover -s test -p *Test.py
