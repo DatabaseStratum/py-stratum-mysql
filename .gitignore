@@ -7,6 +7,8 @@
 /composer.lock
 /dist/
 /docs/_build/
+/requirements.txt
+/test/coverage.xml
 /test/etc/columns.txt
 /test/etc/routines.json
 /test/html/
