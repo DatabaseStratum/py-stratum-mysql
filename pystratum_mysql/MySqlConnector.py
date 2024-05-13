@@ -7,6 +7,7 @@ class MySqlConnector:
     """
     Interface for classes for connecting to a MySql instances.
     """
+
     # ------------------------------------------------------------------------------------------------------------------
     @abc.abstractmethod
     def connect(self) -> MySQLConnection:
@@ -28,8 +29,6 @@ class MySqlConnector:
     def is_alive(self) -> bool:
         """
         Returns whether Python is (still) connected to a MySQL or MariaDB instance.
-
-        :rtype: bool
         """
         raise NotImplementedError()
 

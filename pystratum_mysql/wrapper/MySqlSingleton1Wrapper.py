@@ -1,6 +1,7 @@
-from typing import Dict, Any
+from typing import Any, Dict
 
 from pystratum_common.wrapper.Singleton1Wrapper import Singleton1Wrapper
+
 from pystratum_mysql.wrapper.MySqlWrapper import MySqlWrapper
 
 
@@ -12,6 +13,6 @@ class MySqlSingleton1Wrapper(Singleton1Wrapper, MySqlWrapper):
     # ------------------------------------------------------------------------------------------------------------------
     def _write_result_handler(self, routine: Dict[str, Any]) -> None:
         self._write_line(
-            'return self.execute_sp_singleton1({0!s})'.format(str(self._generate_command(routine))))
+                'return self.execute_sp_singleton1({0!s})'.format(str(self._generate_command(routine))))
 
 # ----------------------------------------------------------------------------------------------------------------------

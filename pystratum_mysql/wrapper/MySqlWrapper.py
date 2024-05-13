@@ -15,8 +15,6 @@ class MySqlWrapper(Wrapper, ABC):
         Returns True of one of the parameters is a BLOB or CLOB. Otherwise, returns False.
 
         :param parameters: The parameters of a stored routine.
-
-        :rtype: bool:
         """
         has_lob = False
 
@@ -65,7 +63,6 @@ class MySqlWrapper(Wrapper, ABC):
         Generates SQL statement for calling a stored routine.
 
         :param routine: Metadata of the stored routine.
-        :return: The generated SQL statement.
         """
         parameters = ''
         placeholders = ''
@@ -102,9 +99,7 @@ class MySqlWrapper(Wrapper, ABC):
         """
         Returns the appropriate format specifier for a parameter type.
 
-        :param str data_type: The parameter type.
-
-        :rtype: str
+        :param data_type: The parameter type.
         """
         lookup = {'bigint':     '%s',
                   'binary':     '%s',

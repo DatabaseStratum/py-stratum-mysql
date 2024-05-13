@@ -12,8 +12,6 @@ from pystratum_mysql.wrapper.MySqlRowsWithKeyWrapper import MySqlRowsWithKeyWrap
 from pystratum_mysql.wrapper.MySqlRowsWrapper import MySqlRowsWrapper
 from pystratum_mysql.wrapper.MySqlSingleton0Wrapper import MySqlSingleton0Wrapper
 from pystratum_mysql.wrapper.MySqlSingleton1Wrapper import MySqlSingleton1Wrapper
-
-
 # ----------------------------------------------------------------------------------------------------------------------
 from pystratum_mysql.wrapper.MySqlWrapper import MySqlWrapper
 

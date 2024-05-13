@@ -1,7 +1,7 @@
 from configparser import ConfigParser
 from typing import Dict, Optional, Union
 
-from pystratum_backend.StratumStyle import StratumStyle
+from pystratum_backend.StratumIO import StratumIO
 
 from pystratum_mysql.MySqlDefaultConnector import MySqlDefaultConnector
 from pystratum_mysql.MySqlMetadataDataLayer import MySqlMetadataDataLayer
@@ -9,14 +9,14 @@ from pystratum_mysql.MySqlMetadataDataLayer import MySqlMetadataDataLayer
 
 class MySqlWorker:
     # ------------------------------------------------------------------------------------------------------------------
-    def __init__(self, io: StratumStyle, config: ConfigParser):
+    def __init__(self, io: StratumIO, config: ConfigParser):
         """
         Object constructor.
 
-        :param PyStratumStyle io: The output decorator.
+        :param io: The output decorator.
         """
 
-        self._io: StratumStyle = io
+        self._io: StratumIO = io
         """
         The output decorator.
         """
@@ -72,14 +72,10 @@ class MySqlWorker:
         """
         Reads an option for a configuration file.
 
-        :param configparser.ConfigParser config: The main config file.
-        :param str section: The name of the section op the option.
-        :param str option: The name of the option.
-        :param str|None fallback: The fallback value of the option if it is not set in either configuration files.
-
-        :rtype: str
-
-        :raise KeyError:
+        :param config: The main config file.
+        :param section: The name of the section op the option.
+        :param option: The name of the option.
+        :param fallback: The fallback value of the option if it is not set in either configuration files.
         """
         return_value = config.get(section, option, fallback=fallback)
 

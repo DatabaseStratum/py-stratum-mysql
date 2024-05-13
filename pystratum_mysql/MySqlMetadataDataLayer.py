@@ -1,6 +1,6 @@
 from typing import Any, Dict, List, Union
 
-from pystratum_backend.StratumStyle import StratumStyle
+from pystratum_backend.StratumIO import StratumIO
 from pystratum_common.MetadataDataLayer import MetadataDataLayer
 
 from pystratum_mysql.MySqlConnector import MySqlConnector
@@ -13,11 +13,11 @@ class MySqlMetadataDataLayer(MetadataDataLayer):
     """
 
     # ------------------------------------------------------------------------------------------------------------------
-    def __init__(self, io: StratumStyle, connector: MySqlConnector):
+    def __init__(self, io: StratumIO, connector: MySqlConnector):
         """
         Object constructor.
 
-        :param PyStratumStyle io: The output decorator.
+        :param io: The output decorator.
         """
         super().__init__(io)
 
@@ -31,9 +31,7 @@ class MySqlMetadataDataLayer(MetadataDataLayer):
         """
         Class a stored procedure without arguments.
 
-        :param str routine_name: The name of the procedure.
-
-        :rtype: int
+        :param routine_name: The name of the procedure.
         """
         sql = 'call {0}()'.format(routine_name)
 
@@ -44,9 +42,7 @@ class MySqlMetadataDataLayer(MetadataDataLayer):
         """
         Checks if a table exists in the current schema.
 
-        :param str table_name: The name of the table.
-
-        :rtype: int
+        :param table_name: The name of the table.
         """
         sql = """
 select 1 from
@@ -68,9 +64,7 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
         """
         Describes a table.
 
-        :param str table_name: The name of the table.
-
-        :rtype: list[dict[str,*]]
+        :param table_name: The name of the table.
         """
         sql = 'describe `{0}`'.format(table_name)
 
@@ -88,8 +82,8 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
         """
         Drops a stored routine if it exists.
 
-        :param str routine_type: The type of the routine (i.e. PROCEDURE or FUNCTION).
-        :param str routine_name: The name of the routine.
+        :param routine_type: The type of the routine (i.e. PROCEDURE or FUNCTION).
+        :param routine_name: The name of the routine.
         """
         sql = 'drop {0} if exists `{1}`'.format(routine_type, routine_name)
 
@@ -100,7 +94,7 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
         """
         Drops a temporary table.
 
-        :param str table_name: The name of the table.
+        :param table_name: The name of the table.
         """
         sql = 'drop temporary table `{0}`'.format(table_name)
 
@@ -111,9 +105,7 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
         """
         Executes a query that does not select any rows.
 
-        :param str query: The query.
-
-        :rtype: int
+        :param query: The query.
         """
         self._log_query(query)
 
@@ -124,9 +116,7 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
         """
         Executes a query that selects 0 or more rows. Returns the selected rows (an empty list if no rows are selected).
 
-        :param str query: The query.
-
-        :rtype: list[dict[str,*]]
+        :param query: The query.
         """
         self._log_query(query)
 
@@ -137,9 +127,7 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
         """
         Executes SQL statement that selects 1 row with 1 column. Returns the value of the selected column.
 
-        :param str query: The query.
-
-        :rtype: *
+        :param query: The query.
         """
         self._log_query(query)
 
@@ -149,8 +137,6 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
     def get_all_table_columns(self) -> List[Dict[str, Union[str, int, None]]]:
         """
         Selects metadata of all columns of all tables.
-
-        :rtype: list[dict[str,*]]
         """
         sql = """
 (
@@ -197,9 +183,7 @@ union all
         """
         Selects the SQL mode in the order as preferred by MySQL.
 
-        :param str sql_mode: The SQL mode.
-
-        :rtype: str
+        :param sql_mode: The SQL mode.
         """
         self.set_sql_mode(sql_mode)
 
@@ -212,9 +196,7 @@ union all
         """
         Selects metadata of tables with a label column.
 
-        :param str regex: The regular expression for columns which we want to use.
-
-        :rtype: list[dict[str,*]]
+        :param regex: The regular expression for columns which we want to use.
         """
         sql = """
 select t1.TABLE_NAME  table_name
@@ -235,11 +217,9 @@ and   t2.COLUMN_NAME rlike '{0}'""".format(regex)
         """
         Selects all labels from a table with labels.
 
-        :param str table_name: The name of the table.
-        :param str id_column_name: The name of the auto increment column.
-        :param str label_column_name: The name of the column with labels.
-
-        :rtype: list[dict[str,*]]
+        :param table_name: The name of the table.
+        :param id_column_name: The name of the auto increment column.
+        :param label_column_name: The name of the column with labels.
         """
         sql = """
 select `{0}`  as `id`
@@ -255,8 +235,6 @@ where   nullif(`{1}`,'') is not null""".format(id_column_name,
     def last_sql(self) -> str:
         """
         The last executed SQL statement.
-
-        :rtype: str
         """
         return self.__dl.last_sql()
 
@@ -265,9 +243,7 @@ where   nullif(`{1}`,'') is not null""".format(id_column_name,
         """
         Selects metadata of the parameters of a stored routine.
 
-        :param str routine_name: The name of the routine.
-
-        :rtype: list[dict[str,*]]
+        :param routine_name: The name of the routine.
         """
         sql = """
 select t2.PARAMETER_NAME      parameter_name
@@ -290,8 +266,6 @@ and   t1.ROUTINE_NAME   = '{0}'""".format(routine_name)
     def get_routines(self) -> List[Dict[str, Any]]:
         """
         Selects metadata of all routines in the current schema.
-
-        :rtype: list[dict[str,*]]
         """
         sql = """
 select ROUTINE_NAME           as routine_name
@@ -310,8 +284,8 @@ order by routine_name"""
         """
         Sets the default character set and collate.
 
-        :param str character_set: The name of the character set.
-        :param str collate: The name of the collate
+        :param character_set: The name of the character set.
+        :param collate: The name of collate.
         """
         sql = "set names '{0}' collate '{1}'".format(character_set, collate)
 
@@ -322,7 +296,7 @@ order by routine_name"""
         """
         Sets the SQL mode.
 
-        :param str sql_mode: The SQL mode.
+        :param sql_mode: The SQL mode.
         """
         sql = "set sql_mode = '{0}'".format(sql_mode)
 

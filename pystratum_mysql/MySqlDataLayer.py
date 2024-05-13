@@ -53,7 +53,8 @@ class MySqlDataLayer:
     # ------------------------------------------------------------------------------------------------------------------
     def connect(self) -> None:
         """
-        Connects to a MySQL instance. See https://dev.mysql.com/doc/connector-python/en/connector-python-connectargs.html
+        Connects to a MySQL instance. See https://dev.mysql.com/doc/connector-python/en/connector-python-connectargs
+        .html
         for a complete overview of all possible keys in config.
         """
         self._connection = self.__connector.connect()
@@ -84,7 +85,7 @@ class MySqlDataLayer:
         """
         Executes a multi query that does not select any rows.
 
-        :param str sql: The SQL statements.
+        :param sql: The SQL statements.
         """
         self._last_sql = sql
 
@@ -98,10 +99,8 @@ class MySqlDataLayer:
         """
         Executes a query that does not select any rows. Returns the number of affected rows.
 
-        :param str sql: The SQL statement.
-        :param iterable params: The values for the statement.
-
-        :rtype: int
+        :param sql: The SQL statement.
+        :param params: The values for the statement.
         """
         self._last_sql = sql
 
@@ -117,10 +116,8 @@ class MySqlDataLayer:
         """
         Executes a query that selects 0 or more rows. Returns the selected rows (an empty list if no rows are selected).
 
-        :param str sql: The SQL statement.
-        :param iterable params: The arguments for the statement.
-
-        :rtype: list[dict[str,*]]
+        :param sql: The SQL statement.
+        :param params: The arguments for the statement.
         """
         self._last_sql = sql
 
@@ -136,10 +133,8 @@ class MySqlDataLayer:
         """
         Executes SQL statement that selects 1 row with 1 column. Returns the value of the selected column.
 
-        :param str sql: The SQL calling the stored procedure.
-        :param iterable params: The arguments for the stored procedure.
-
-        :rtype: *:
+        :param sql: The SQL calling the stored procedure.
+        :param params: The arguments for the stored procedure.
         """
         self._last_sql = sql
 
@@ -162,11 +157,9 @@ class MySqlDataLayer:
         """
         Executes a stored routine with designation type "bulk". Returns the number of rows processed.
 
-        :param BulkHandler bulk_handler: The bulk handler for processing the selected rows.
-        :param str sql: The SQL statement for calling the stored routine.
-        :param iterable params: The arguments for calling the stored routine.
-
-        :rtype: int
+        :param bulk_handler: The bulk handler for processing the selected rows.
+        :param sql: The SQL statement for calling the stored routine.
+        :param params: The arguments for calling the stored routine.
         """
         self._last_sql = sql
 
@@ -190,10 +183,8 @@ class MySqlDataLayer:
         """
         Executes a stored routine with designation type "log". Returns the number of log messages.
 
-        :param str sql: The SQL statement for calling the stored routine.
-        :param iterable params: The arguments for calling the stored routine.
-
-        :rtype: int
+        :param sql: The SQL statement for calling the stored routine.
+        :param params: The arguments for calling the stored routine.
         """
         self._last_sql = sql
 
@@ -224,10 +215,8 @@ class MySqlDataLayer:
         """
         Executes a stored routine with designation type "multi". Returns a list of the result sets.
 
-        :param str sql: The SQL statement for calling the stored routine.
-        :param iterable params: The arguments for calling the stored routine.
-
-        :rtype: list[list[dict[str,*]]]
+        :param sql: The SQL statement for calling the stored routine.
+        :param params: The arguments for calling the stored routine.
         """
         self._last_sql = sql
 
@@ -250,10 +239,8 @@ class MySqlDataLayer:
         """
         Executes a stored routine that does not select any rows. Returns the number of affected rows.
 
-        :param str sql: The SQL calling the stored procedure.
-        :param iterable params: The arguments for the stored procedure.
-
-        :rtype: int
+        :param sql: The SQL calling the stored procedure.
+        :param params: The arguments for the stored procedure.
         """
         self._last_sql = sql
 
@@ -270,10 +257,8 @@ class MySqlDataLayer:
         """
         Executes a stored procedure that selects 0 or 1 row. Returns the selected row or None.
 
-        :param str sql: The SQL call the the stored procedure.
-        :param iterable params: The arguments for the stored procedure.
-
-        :rtype: None|dict[str,*]
+        :param sql: The SQL code to execute the stored procedure.
+        :param params: The arguments for the stored procedure.
         """
         self._last_sql = sql
 
@@ -298,10 +283,8 @@ class MySqlDataLayer:
         """
         Executes a stored procedure that selects 1 row. Returns the selected row.
 
-        :param str sql: The SQL calling the the stored procedure.
-        :param iterable params: The arguments for the stored procedure.
-
-        :rtype: dict[str,*]
+        :param sql: The SQL code to execute the stored procedure.
+        :param params: The arguments for the stored procedure.
         """
         self._last_sql = sql
 
@@ -327,10 +310,8 @@ class MySqlDataLayer:
         Executes a stored procedure that selects 0 or more rows. Returns the selected rows (an empty list if no rows
         are selected).
 
-        :param str sql: The SQL statement.
-        :param iterable params: The arguments for the statement.
-
-        :rtype: list[dict[str,*]]
+        :param sql: The SQL code to execute the stored procedure.
+        :param params: The arguments for the statement.
         """
         self._last_sql = sql
 
@@ -347,10 +328,8 @@ class MySqlDataLayer:
         """
         Executes a stored procedure that selects 0 or 1 row with 1 column. Returns the value of selected column or None.
 
-        :param str sql: The SQL calling the stored procedure.
-        :param iterable params: The arguments for the stored procedure.
-
-        :rtype: *
+        :param sql: The SQL code to execute the stored procedure.
+        :param params: The arguments for the stored procedure.
         """
         self._last_sql = sql
 
@@ -376,10 +355,8 @@ class MySqlDataLayer:
         Executes a stored routine with designation type "table", i.e a stored routine that is expected to select 1 row
         with 1 column.
 
-        :param str sql: The SQL calling the the stored procedure.
-        :param iterable params: The arguments for the stored procedure.
-
-        :rtype: * The value of the selected column.
+        :param sql: The SQL code to execute the stored procedure.
+        :param params: The arguments for the stored procedure.
         """
         self._last_sql = sql
 
@@ -403,8 +380,6 @@ class MySqlDataLayer:
     def is_alive(self) -> bool:
         """
         Returns whether Python is (still) connected to a MySQL or MariaDB instance.
-
-        :rtype: bool
         """
         return self.__connector.is_alive()
 
@@ -432,9 +407,9 @@ class MySqlDataLayer:
         Starts a transaction.
         See https://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlconnection-start-transaction.html
 
-        :param bool consistent_snapshot:
-        :param str isolation_level:
-        :param bool readonly:
+        :param consistent_snapshot:
+        :param isolation_level:
+        :param readonly:
         """
         self._connection.start_transaction(consistent_snapshot, isolation_level, readonly)
 

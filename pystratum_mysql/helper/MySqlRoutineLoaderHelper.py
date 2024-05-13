@@ -1,12 +1,12 @@
 import re
-from typing import Dict, Optional, Any
+from typing import Any, Dict, Optional
 
 from mysql import connector
-from pystratum_backend.StratumStyle import StratumStyle
-
+from pystratum_backend.StratumIO import StratumIO
 from pystratum_common.exception.LoaderException import LoaderException
 from pystratum_common.helper.DataTypeHelper import DataTypeHelper
 from pystratum_common.helper.RoutineLoaderHelper import RoutineLoaderHelper
+
 from pystratum_mysql.helper.MySqlDataTypeHelper import MySqlDataTypeHelper
 from pystratum_mysql.MySqlMetadataDataLayer import MySqlMetadataDataLayer
 
@@ -18,7 +18,7 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
 
     # ------------------------------------------------------------------------------------------------------------------
     def __init__(self,
-                 io: StratumStyle,
+                 io: StratumIO,
                  dl: MySqlMetadataDataLayer,
                  routine_filename: str,
                  routine_file_encoding: str,
@@ -31,16 +31,16 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
         """
         Object constructor.
                                 
-        :param PyStratumStyle io: The output decorator.
-        :param MySqlMetadataDataLayer dl: The metadata layer.
-        :param str routine_filename: The filename of the source of the stored routine.
-        :param str routine_file_encoding: The encoding of the source file.
-        :param dict pystratum_old_metadata: The metadata of the stored routine from PyStratum.
-        :param dict[str,str] replace_pairs: A map from placeholders to their actual values.
-        :param dict rdbms_old_metadata: The old metadata of the stored routine from MS SQL Server.
-        :param str sql_mode: The SQL mode under which the stored routine must be loaded and run.
-        :param str character_set: The default character set under which the stored routine must be loaded and run.
-        :param str collate: The default collate under which the stored routine must be loaded and run.
+        :param io: The output decorator.
+        :param dl: The metadata layer.
+        :param routine_filename: The filename of the source of the stored routine.
+        :param routine_file_encoding: The encoding of the source file.
+        :param pystratum_old_metadata: The metadata of the stored routine from PyStratum.
+        :param replace_pairs: A map from placeholders to their actual values.
+        :param rdbms_old_metadata: The old metadata of the stored routine from MS SQL Server.
+        :param sql_mode: The SQL mode under which the stored routine must be loaded and run.
+        :param character_set: The default character set under which the stored routine must be loaded and run.
+        :param collate: The default collate under which the stored routine must be loaded and run.
         """
         RoutineLoaderHelper.__init__(self,
                                      io,
@@ -64,7 +64,7 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
         """
         The SQL-mode under which the stored routine will be loaded and run.
         """
-        
+
         self._dl: MySqlMetadataDataLayer = dl
         """
         The metadata layer.
@@ -108,8 +108,6 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
     def _get_data_type_helper(self) -> DataTypeHelper:
         """
         Returns a data type helper object for MySQL.
-
-        :rtype: DataTypeHelper
         """
         return MySqlDataTypeHelper()
 
@@ -135,7 +133,7 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
     # ------------------------------------------------------------------------------------------------------------------
     def _get_routine_parameters_info(self) -> None:
         """
-        Retrieves information about the stored routine parameters from the meta data of MySQL.
+        Retrieves information about the stored routine parameters from the metadata of MySQL.
         """
         routine_parameters = self._dl.get_routine_parameters(self._routine_name)
         for routine_parameter in routine_parameters:
@@ -159,9 +157,7 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
         """
         Returns True if a line is the start of the code of the stored routine.
 
-        :param str line: The line with source code of the stored routine.
-
-        :rtype: bool
+        :param line: The line with source code of the stored routine.
         """
         return re.match(r'^\s*create\s+(procedure|function)', line, re.IGNORECASE) is not None
 
@@ -170,9 +166,7 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
         """
         Returns True if a line is the start of the body of the stored routine.
 
-        :param str line: The line with source code of the stored routine.
-
-        :rtype: bool
+        :param line: The line with source code of the stored routine.
         """
         return re.match(r'^\s*begin', line, re.IGNORECASE) is not None
 
@@ -197,7 +191,7 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
         """
         Logs an exception.
 
-        :param Exception exception: The exception.
+        :param exception: The exception.
         """
         RoutineLoaderHelper._log_exception(self, exception)
 
@@ -219,9 +213,7 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
     # ------------------------------------------------------------------------------------------------------------------
     def _must_reload(self) -> bool:
         """
-        Returns True if the source file must be load or reloaded. Otherwise returns False.
-
-        :rtype: bool
+        Returns whether the source file must be load or reloaded.
         """
         if not self._pystratum_old_metadata:
             return True

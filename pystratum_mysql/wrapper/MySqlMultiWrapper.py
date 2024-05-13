@@ -1,6 +1,7 @@
-from typing import Dict, Any
+from typing import Any, Dict
 
 from pystratum_common.wrapper.MultiWrapper import MultiWrapper
+
 from pystratum_mysql.wrapper.MySqlWrapper import MySqlWrapper
 
 

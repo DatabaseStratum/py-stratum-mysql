@@ -1,9 +1,9 @@
 from configparser import ConfigParser
 from typing import Any, Dict
 
-from pystratum_backend.StratumStyle import StratumStyle
-
+from pystratum_backend.StratumIO import StratumIO
 from pystratum_common.backend.CommonRoutineWrapperGeneratorWorker import CommonRoutineWrapperGeneratorWorker
+
 from pystratum_mysql.backend.MySqlWorker import MySqlWorker
 from pystratum_mysql.wrapper import create_routine_wrapper
 
@@ -14,11 +14,11 @@ class MySqlRoutineWrapperGeneratorWorker(MySqlWorker, CommonRoutineWrapperGenera
     """
 
     # ------------------------------------------------------------------------------------------------------------------
-    def __init__(self, io: StratumStyle, config: ConfigParser):
+    def __init__(self, io: StratumIO, config: ConfigParser):
         """
         Object constructor.
 
-        :param PyStratumStyle io: The output decorator.
+        :param io: The output decorator.
         """
         MySqlWorker.__init__(self, io, config)
         CommonRoutineWrapperGeneratorWorker.__init__(self, io, config)
@@ -28,7 +28,7 @@ class MySqlRoutineWrapperGeneratorWorker(MySqlWorker, CommonRoutineWrapperGenera
         """
         Generates a complete wrapper method for a stored routine.
 
-        :param dict routine: The metadata of the stored routine.
+        :param routine: The metadata of the stored routine.
         """
         wrapper = create_routine_wrapper(routine, self._lob_as_string_flag)
         self._code += wrapper.write_routine_method(routine)

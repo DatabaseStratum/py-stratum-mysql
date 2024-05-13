@@ -11,11 +11,9 @@ class MySqlDataTypeHelper(DataTypeHelper):
     # ------------------------------------------------------------------------------------------------------------------
     def column_type_to_python_type(self, data_type_info: Dict[str, Any]) -> str:
         """
-        Returns the corresponding Python data type of a MySQL data type.
+        Returns the corresponding Python data type of MySQL data type.
 
-        :param dict data_type_info: The MySQL data type metadata.
-
-        :rtype: str
+        :param data_type_info: The MySQL data type metadata.
         """
         if data_type_info['data_type'] in ['tinyint',
                                            'smallint',
@@ -62,9 +60,7 @@ class MySqlDataTypeHelper(DataTypeHelper):
         """
         Returns the corresponding Python data type hinting of a MySQL data type.
 
-        :param dict data_type_info: The MySQL data type metadata.
-
-        :rtype: str
+        :param data_type_info: The MySQL data type metadata.
         """
         if data_type_info['data_type'] in ['tinyint',
                                            'smallint',

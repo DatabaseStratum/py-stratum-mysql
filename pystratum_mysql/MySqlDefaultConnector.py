@@ -50,8 +50,6 @@ class MySqlDefaultConnector(MySqlConnector):
     def is_alive(self) -> bool:
         """
         Returns whether Python is (still) connected to a MySQL or MariaDB instance.
-
-        :rtype: bool
         """
         is_alive = False
 

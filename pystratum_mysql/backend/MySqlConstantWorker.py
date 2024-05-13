@@ -3,7 +3,7 @@ import re
 from configparser import ConfigParser
 from typing import Any, Dict, Optional
 
-from pystratum_backend.StratumStyle import StratumStyle
+from pystratum_backend.StratumIO import StratumIO
 from pystratum_common.backend.CommonConstantWorker import CommonConstantWorker
 from pystratum_common.Util import Util
 
@@ -16,11 +16,11 @@ class MySqlConstantWorker(MySqlWorker, CommonConstantWorker):
     """
 
     # ------------------------------------------------------------------------------------------------------------------
-    def __init__(self, io: StratumStyle, config: ConfigParser):
+    def __init__(self, io: StratumIO, config: ConfigParser):
         """
         Object constructor.
 
-        :param PyStratumStyle io: The output decorator.
+        :param io: The output decorator.
         """
         MySqlWorker.__init__(self, io, config)
         CommonConstantWorker.__init__(self, io, config)
@@ -101,8 +101,8 @@ class MySqlConstantWorker(MySqlWorker, CommonConstantWorker):
     def _enhance_columns(self) -> None:
         """
         Enhances old_columns as follows:
-        If the constant name is *, is is replaced with the column name prefixed by prefix in uppercase.
-        Otherwise the constant name is set to uppercase.
+        If the constant name is *, it is replaced with the column name prefixed by prefix in uppercase.
+        Otherwise, the constant name is set to uppercase.
         """
         if self._old_columns:
             for table_name, table in sorted(self._old_columns.items()):
@@ -200,9 +200,7 @@ class MySqlConstantWorker(MySqlWorker, CommonConstantWorker):
         """
         Returns the width of a field based on column.
 
-        :param dict column: The column of which the field is based.
-
-        :rtype: int|None
+        :param column: The column of which the field is based.
         """
         types_length = {'tinyint':    column['numeric_precision'],
                         'smallint':   column['numeric_precision'],

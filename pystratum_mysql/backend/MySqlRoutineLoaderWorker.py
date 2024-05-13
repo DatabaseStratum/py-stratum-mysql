@@ -1,9 +1,9 @@
 from configparser import ConfigParser
 from typing import Any, Dict, List, Optional
 
-from pystratum_backend.StratumStyle import StratumStyle
-
+from pystratum_backend.StratumIO import StratumIO
 from pystratum_common.backend.CommonRoutineLoaderWorker import CommonRoutineLoaderWorker
+
 from pystratum_mysql.backend.MySqlWorker import MySqlWorker
 from pystratum_mysql.helper.MySqlRoutineLoaderHelper import MySqlRoutineLoaderHelper
 
@@ -33,11 +33,11 @@ class MySqlRoutineLoaderWorker(MySqlWorker, CommonRoutineLoaderWorker):
     """
 
     # ------------------------------------------------------------------------------------------------------------------
-    def __init__(self, io: StratumStyle, config: ConfigParser):
+    def __init__(self, io: StratumIO, config: ConfigParser):
         """
         Object constructor.
 
-        :param PyStratumStyle io: The output decorator.
+        :param io: The output decorator.
         """
         MySqlWorker.__init__(self, io, config)
         CommonRoutineLoaderWorker.__init__(self, io, config)
@@ -62,7 +62,7 @@ class MySqlRoutineLoaderWorker(MySqlWorker, CommonRoutineLoaderWorker):
         """
         Saves the exact column types as replace pairs.
 
-        :param list[dict[str,*]] rows: The columns types.
+        :param rows: The column types.
         """
         for row in rows:
             key = row['table_name'] + '.' + row['column_name'] + '%type'
@@ -78,7 +78,7 @@ class MySqlRoutineLoaderWorker(MySqlWorker, CommonRoutineLoaderWorker):
         """
         Saves the column types with maximum length as replace pairs.
 
-        :param list[dict[str,*]] rows: The columns types.
+        :param rows: The column types.
         """
         for row in rows:
             key = row['table_name'] + '.' + row['column_name'] + '%max-type'
@@ -120,11 +120,9 @@ class MySqlRoutineLoaderWorker(MySqlWorker, CommonRoutineLoaderWorker):
         """
         Creates a Routine Loader Helper object.
 
-        :param str routine_name: The name of the routine.
-        :param dict pystratum_old_metadata: The old metadata of the stored routine from PyStratum.
-        :param dict rdbms_old_metadata:  The old metadata of the stored routine from MySQL.
-
-        :rtype: MySqlRoutineLoaderHelper
+        :param routine_name: The name of the routine.
+        :param pystratum_old_metadata: The old metadata of the stored routine from PyStratum.
+        :param rdbms_old_metadata:  The old metadata of the stored routine from MySQL.
         """
         return MySqlRoutineLoaderHelper(self._io,
                                         self._dl,

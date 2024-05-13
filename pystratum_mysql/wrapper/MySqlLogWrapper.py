@@ -1,6 +1,7 @@
 from typing import Any, Dict
 
 from pystratum_common.wrapper.LogWrapper import LogWrapper
+
 from pystratum_mysql.wrapper.MySqlWrapper import MySqlWrapper
 
 

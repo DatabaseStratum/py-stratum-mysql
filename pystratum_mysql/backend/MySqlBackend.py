@@ -5,7 +5,7 @@ from pystratum_backend.Backend import Backend
 from pystratum_backend.ConstantWorker import ConstantWorker
 from pystratum_backend.RoutineLoaderWorker import RoutineLoaderWorker
 from pystratum_backend.RoutineWrapperGeneratorWorker import RoutineWrapperGeneratorWorker
-from pystratum_backend.StratumStyle import StratumStyle
+from pystratum_backend.StratumIO import StratumIO
 
 from pystratum_mysql.backend.MySqlConstantWorker import MySqlConstantWorker
 from pystratum_mysql.backend.MySqlRoutineLoaderWorker import MySqlRoutineLoaderWorker
@@ -18,39 +18,33 @@ class MySqlBackend(Backend):
     """
 
     # ------------------------------------------------------------------------------------------------------------------
-    def create_constant_worker(self, config: ConfigParser, io: StratumStyle) -> Optional[ConstantWorker]:
+    def create_constant_worker(self, config: ConfigParser, io: StratumIO) -> Optional[ConstantWorker]:
         """
         Creates the object that does the actual execution of the constant command for the backend.
 
-        :param ConfigParser config: The settings from the PyStratum configuration file.
-        :param StratumStyle io: The output object.
-
-        :rtype: ConstantWorker|None
+        :param config: The settings from the PyStratum configuration file.
+        :param io: The output object.
         """
         return MySqlConstantWorker(io, config)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def create_routine_loader_worker(self, config: ConfigParser, io: StratumStyle) -> Optional[RoutineLoaderWorker]:
+    def create_routine_loader_worker(self, config: ConfigParser, io: StratumIO) -> Optional[RoutineLoaderWorker]:
         """
         Creates the object that does the actual execution of the routine loader command for the backend.
 
-        :param ConfigParser config: The settings from the PyStratum configuration file.
-        :param StratumStyle io: The output object.
-
-        :rtype: RoutineLoaderWorker|None
+        :param config: The settings from the PyStratum configuration file.
+        :param io: The output object.
         """
         return MySqlRoutineLoaderWorker(io, config)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def create_routine_wrapper_generator_worker(self, config: ConfigParser, io: StratumStyle) \
+    def create_routine_wrapper_generator_worker(self, config: ConfigParser, io: StratumIO) \
             -> Optional[RoutineWrapperGeneratorWorker]:
         """
         Creates the object that does the actual execution of the routine wrapper generator command for the backend.
 
-        :param ConfigParser config: The settings from the PyStratum configuration file.
-        :param StratumStyle io: The output object.
-
-        :rtype: RoutineWrapperGeneratorWorker|None
+        :param config: The settings from the PyStratum configuration file.
+        :param io: The output object.
         """
         return MySqlRoutineWrapperGeneratorWorker(io, config)
 
