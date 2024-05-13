@@ -170,8 +170,8 @@ class MySqlRoutineLoaderWorker(MySqlWorker, CommonRoutineLoaderWorker):
         """
         CommonRoutineLoaderWorker._read_configuration_file(self)
 
-        self._character_set_client = self._config.get('database', 'character_set_client', fallback='utf-8')
-        self._collation_connection = self._config.get('database', 'collation_connection', fallback='utf8_general_ci')
+        self._character_set_client = self._config.get('database', 'character_set_client', fallback='utf8mb4')
+        self._collation_connection = self._config.get('database', 'collation_connection', fallback='utf8mb4_general_ci')
         self._sql_mode = self._config.get('database', 'sql_mode')
 
 # ----------------------------------------------------------------------------------------------------------------------

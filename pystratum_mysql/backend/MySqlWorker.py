@@ -55,9 +55,9 @@ class MySqlWorker:
                   'password':  self.__get_option(self._config, 'database', 'password'),
                   'database':  self.__get_option(self._config, 'database', 'database'),
                   'port':      int(self.__get_option(self._config, 'database', 'port', fallback='3306')),
-                  'charset':   self.__get_option(self._config, 'database', 'character_set_client', fallback='utf-8'),
+                  'charset':   self.__get_option(self._config, 'database', 'character_set_client', fallback='utf8mb4'),
                   'collation': self.__get_option(self._config, 'database', 'collation_connection',
-                                                 fallback='utf8_general_ci'),
+                                                 fallback='utf8mb4_general_ci'),
                   'sql_mode':  self.__get_option(self._config, 'database', 'sql_mode')
                   }
 
