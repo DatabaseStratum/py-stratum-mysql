@@ -16,9 +16,17 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
+          - "3.9"
           - "3.10"
           - "3.11"
           - "3.12"
+        mysql-version:
+          - "mysql-5.7"
+          - "mysql-8.0"
+          - "mariadb-10.4"
+          - "mariadb-10.5"
+          - "mariadb-10.6"
+          - "mariadb-10.11"
 
     steps:
       - uses: "actions/checkout@v4"
@@ -30,6 +38,17 @@ jobs:
 
       - name: "Display Python version"
         run: "python -c 'import sys; print(sys.version)'"
+
+      - name: "Install MySQL or MariaDB"
+        uses: "shogo82148/actions-setup-mysql@v1"
+        with:
+          mysql-version: "${{ matrix.mysql-version }}"
+
+      - name: "Install timezone info"
+        run:  "mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root -h 127.0.0.1 mysql"
+
+      - name: "Trust function creators (for MySQL 8.x)"
+        run:  "mysql -u root -h 127.0.0.1 -e 'SET GLOBAL log_bin_trust_function_creators = 1'"
 
       - name: "Setup virtual environment"
         run: |
@@ -43,8 +62,12 @@ jobs:
       - name: "Install dependencies"
         run: ./.venv/bin/poetry install --no-root
 
-      - name: "Run unit tests"
+      - name: "Run tests with pytest"
         run: |
+          export PYTHONPATH=.
+          ./test/unit-test.sh
+          ./.venv/bin/pystratum -vv stratum test/etc/stratum.cfg
+          rm test/etc/routines.json
           ./.venv/bin/python -m coverage run -m unittest discover -s test -p *Test.py
           ./.venv/bin/python -m coverage xml
 
