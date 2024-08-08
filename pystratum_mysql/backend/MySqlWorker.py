@@ -1,5 +1,5 @@
 from configparser import ConfigParser
-from typing import Dict, Optional, Union
+from typing import Dict
 
 from pystratum_backend.StratumIO import StratumIO
 
@@ -46,7 +46,7 @@ class MySqlWorker:
         self._dl.disconnect()
 
     # ------------------------------------------------------------------------------------------------------------------
-    def __read_configuration_file(self) -> Dict[str, Union[str, int]]:
+    def __read_configuration_file(self) -> Dict[str, str | int]:
         """
         Reads connections parameters from the configuration file.
         """
@@ -68,7 +68,7 @@ class MySqlWorker:
     def __get_option(config: ConfigParser,
                      section: str,
                      option: str,
-                     fallback: Optional[str] = None) -> str:
+                     fallback: str | None = None) -> str:
         """
         Reads an option for a configuration file.
 

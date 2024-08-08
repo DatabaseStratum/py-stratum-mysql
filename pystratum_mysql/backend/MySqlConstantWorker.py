@@ -1,7 +1,7 @@
 import os
 import re
 from configparser import ConfigParser
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 from pystratum_backend.StratumIO import StratumIO
 from pystratum_common.backend.CommonConstantWorker import CommonConstantWorker
@@ -196,7 +196,7 @@ class MySqlConstantWorker(MySqlWorker, CommonConstantWorker):
 
     # ------------------------------------------------------------------------------------------------------------------
     @staticmethod
-    def derive_field_length(column: Dict[str, Any]) -> Optional[int]:
+    def derive_field_length(column: Dict[str, Any]) -> int | None:
         """
         Returns the width of a field based on column.
 

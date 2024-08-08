@@ -1,6 +1,8 @@
-from typing import Any, Dict, List, Optional, Union
-
+from pystratum_middle.BulkHandler import BulkHandler
 from pystratum_mysql.MySqlDataLayer import MySqlDataLayer
+from typing import Any
+from typing import Dict
+from typing import List
 
 
 class TestDataLayer(MySqlDataLayer):
@@ -9,11 +11,11 @@ class TestDataLayer(MySqlDataLayer):
     """
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_constant01(self) -> Any:
+    def tst_constant01(self) -> Dict[str, Any]:
         """
         Test for constant.
 
-        :rtype: dict[str,*]
+        :rtype: Dict[str, Any]
         """
         return self.execute_sp_row1("call tst_constant01()")
 
@@ -22,7 +24,7 @@ class TestDataLayer(MySqlDataLayer):
         """
         Test for magic constant.
 
-        :rtype: *
+        :rtype: Any
         """
         return self.execute_sp_singleton1("call tst_magic_constant01()")
 
@@ -31,7 +33,7 @@ class TestDataLayer(MySqlDataLayer):
         """
         Test for magic constant.
 
-        :rtype: *
+        :rtype: Any
         """
         return self.execute_sp_singleton1("call tst_magic_constant02()")
 
@@ -40,7 +42,7 @@ class TestDataLayer(MySqlDataLayer):
         """
         Test for magic constant.
 
-        :rtype: *
+        :rtype: Any
         """
         return self.execute_sp_singleton1("call tst_magic_constant03()")
 
@@ -49,12 +51,12 @@ class TestDataLayer(MySqlDataLayer):
         """
         Test for magic constant.
 
-        :rtype: *
+        :rtype: Any
         """
         return self.execute_sp_singleton1("call tst_magic_constant04()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_parameter_types01(self, p_param00: Optional[int], p_param01: Optional[int], p_param02: Optional[int], p_param03: Optional[int], p_param04: Optional[int], p_param05: Optional[float], p_param06: Optional[float], p_param07: Optional[float], p_param08: Optional[int], p_param09: Optional[str], p_param10: Optional[str], p_param11: Optional[str], p_param12: Optional[str], p_param13: Optional[int], p_param14: Optional[str], p_param15: Optional[str], p_param16: Optional[bytes], p_param17: Optional[bytes], p_param26: Optional[str], p_param27: Optional[str]) -> int:
+    def tst_parameter_types01(self, p_param00: int | None, p_param01: int | None, p_param02: int | None, p_param03: int | None, p_param04: int | None, p_param05: float | None, p_param06: float | None, p_param07: float | None, p_param08: int | None, p_param09: str | None, p_param10: str | None, p_param11: str | None, p_param12: str | None, p_param13: int | None, p_param14: str | None, p_param15: str | None, p_param16: bytes | None, p_param17: bytes | None, p_param26: str | None, p_param27: str | None) -> int:
         """
         Test for all possible types of parameters excluding LOB's.
 
@@ -104,7 +106,7 @@ class TestDataLayer(MySqlDataLayer):
         return self.execute_sp_none("call tst_parameter_types01(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", p_param00, p_param01, p_param02, p_param03, p_param04, p_param05, p_param06, p_param07, p_param08, p_param09, p_param10, p_param11, p_param12, p_param13, p_param14, p_param15, p_param16, p_param17, p_param26, p_param27)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_parameter_types02(self, p_param00: Optional[int], p_param01: Optional[int], p_param02: Optional[int], p_param03: Optional[int], p_param04: Optional[int], p_param05: Optional[float], p_param06: Optional[float], p_param07: Optional[float], p_param08: Optional[int], p_param09: Optional[str], p_param10: Optional[str], p_param11: Optional[str], p_param12: Optional[str], p_param13: Optional[int], p_param14: Optional[str], p_param15: Optional[str], p_param16: Optional[bytes], p_param17: Optional[bytes], p_param18: Optional[bytes], p_param19: Optional[bytes], p_param20: Optional[bytes], p_param21: Optional[bytes], p_param22: Optional[str], p_param23: Optional[str], p_param24: Optional[str], p_param25: Optional[str], p_param26: Optional[str], p_param27: Optional[str]) -> int:
+    def tst_parameter_types02(self, p_param00: int | None, p_param01: int | None, p_param02: int | None, p_param03: int | None, p_param04: int | None, p_param05: float | None, p_param06: float | None, p_param07: float | None, p_param08: int | None, p_param09: str | None, p_param10: str | None, p_param11: str | None, p_param12: str | None, p_param13: int | None, p_param14: str | None, p_param15: str | None, p_param16: bytes | None, p_param17: bytes | None, p_param18: bytes | None, p_param19: bytes | None, p_param20: bytes | None, p_param21: bytes | None, p_param22: str | None, p_param23: str | None, p_param24: str | None, p_param25: str | None, p_param26: str | None, p_param27: str | None) -> int:
         """
         Test for all possible types of parameters including LOB's.
 
@@ -170,7 +172,7 @@ class TestDataLayer(MySqlDataLayer):
         return self.execute_sp_none("call tst_parameter_types02(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", p_param00, p_param01, p_param02, p_param03, p_param04, p_param05, p_param06, p_param07, p_param08, p_param09, p_param10, p_param11, p_param12, p_param13, p_param14, p_param15, p_param16, p_param17, p_param18, p_param19, p_param20, p_param21, p_param22, p_param23, p_param24, p_param25, p_param26, p_param27)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_parameter_types03(self, p_param14: Optional[str], p_param15: Optional[str], p_param16: Optional[bytes], p_param17: Optional[bytes]) -> int:
+    def tst_parameter_types03(self, p_param14: str | None, p_param15: str | None, p_param16: bytes | None, p_param17: bytes | None) -> int:
         """
         Test for all possible types of parameters with maximum length.
 
@@ -188,63 +190,63 @@ class TestDataLayer(MySqlDataLayer):
         return self.execute_sp_none("call tst_parameter_types03(%s, %s, %s, %s)", p_param14, p_param15, p_param16, p_param17)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_bulk(self, bulk_handler) -> int:
+    def tst_test_bulk(self, bulk_handler: BulkHandler) -> int:
         """
         Test for designation type bulk.
 
-        :param pystratum.BulkHandler.BulkHandler bulk_handler: The bulk handler for processing the selected rows.
+        :param BulkHandler bulk_handler: The bulk handler for processing the selected rows.
 
         :rtype: int
         """
         return self.execute_sp_bulk(bulk_handler, "call tst_test_bulk()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_find_designation_type01(self) -> Any:
+    def tst_test_find_designation_type01(self) -> Dict[str, Any]:
         """
         Test for designation type.
 
-        :rtype: dict[str,*]
+        :rtype: Dict[str, Any]
         """
         return self.execute_sp_row1("call tst_test_find_designation_type01()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_find_designation_type02(self) -> Any:
+    def tst_test_find_designation_type02(self) -> Dict[str, Any]:
         """
         Test for designation type.
 
-        :rtype: dict[str,*]
+        :rtype: Dict[str, Any]
         """
         return self.execute_sp_row1("call tst_test_find_designation_type02()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_find_designation_type03(self) -> Any:
+    def tst_test_find_designation_type03(self) -> Dict[str, Any]:
         """
         Test for designation type.
 
-        :rtype: dict[str,*]
+        :rtype: Dict[str, Any]
         """
         return self.execute_sp_row1("call tst_test_find_designation_type03()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_find_designation_type04(self) -> Any:
+    def tst_test_find_designation_type04(self) -> Dict[str, Any]:
         """
         Test for designation type.
 
-        :rtype: dict[str,*]
+        :rtype: Dict[str, Any]
         """
         return self.execute_sp_row1("call tst_test_find_designation_type04()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_find_designation_type05(self) -> Any:
+    def tst_test_find_designation_type05(self) -> Dict[str, Any]:
         """
         Test for designation type.
 
-        :rtype: dict[str,*]
+        :rtype: Dict[str, Any]
         """
         return self.execute_sp_row1("call tst_test_find_designation_type05()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_function(self, p_a: Optional[int], p_b: Optional[int]) -> Any:
+    def tst_test_function(self, p_a: int | None, p_b: int | None) -> Any:
         """
         Test for stored function wrapper.
 
@@ -253,7 +255,7 @@ class TestDataLayer(MySqlDataLayer):
         :param int p_b: Parameter B.
                         int(11)
 
-        :rtype: *
+        :rtype: Any
         """
         return self.execute_singleton1("select tst_test_function(%s, %s)", p_a, p_b)
 
@@ -267,14 +269,14 @@ class TestDataLayer(MySqlDataLayer):
         return self.execute_sp_log("call tst_test_log()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_max_allowed_packet(self, p_tmp_blob: Optional[bytes]) -> Any:
+    def tst_test_max_allowed_packet(self, p_tmp_blob: bytes | None) -> Any:
         """
         Test for sending data larger than max_allowed_packet.
 
         :param bytes p_tmp_blob: The BLOB larger than max_allowed_packet.
                                  longblob
 
-        :rtype: *
+        :rtype: Any
         """
         return self.execute_sp_singleton1("call tst_test_max_allowed_packet(%s)", p_tmp_blob)
 
@@ -283,12 +285,12 @@ class TestDataLayer(MySqlDataLayer):
         """
         Test for designation type multi.
 
-        :rtype: list[list[dict[str,*]]]
+        :rtype: List[List[Dict[str, Any]]]
         """
         return self.execute_sp_multi("call tst_test_multi()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_none1(self, p_count: Optional[int]) -> int:
+    def tst_test_none1(self, p_count: int | None) -> int:
         """
         Test for designation type none.
 
@@ -309,7 +311,7 @@ class TestDataLayer(MySqlDataLayer):
         return self.execute_sp_none("call tst_test_none2()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_none_with_lob(self, p_count: Optional[int], p_blob: Optional[bytes]) -> int:
+    def tst_test_none_with_lob(self, p_count: int | None, p_blob: bytes | None) -> int:
         """
         Test for designation type none with BLOB.
 
@@ -327,91 +329,91 @@ class TestDataLayer(MySqlDataLayer):
         """
         Test for stored function with percent symbols.
 
-        :rtype: list[dict[str,*]]
+        :rtype: List[Dict[str, Any]]
         """
         return self.execute_sp_rows("call tst_test_percent_symbol()")
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_row0a(self, p_count: Optional[int]) -> Any:
+    def tst_test_row0a(self, p_count: int | None) -> Any:
         """
         Test for designation type row0.
 
         :param int p_count: The number of rows selected.
                             * 0 For a valid test.
                             * 1 For a valid test.
-                            * 2 For a invalid test.
+                            * 2 For an invalid test.
                             int(11)
 
-        :rtype: None|dict[str,*]
+        :rtype: Any
         """
         return self.execute_sp_row0("call tst_test_row0a(%s)", p_count)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_row0a_with_lob(self, p_count: Optional[int], p_blob: Optional[bytes]) -> Any:
+    def tst_test_row0a_with_lob(self, p_count: int | None, p_blob: bytes | None) -> Any:
         """
         Test for designation type row0 with BLOB.
 
         :param int p_count: The number of rows selected.
                             * 0 For a valid test.
                             * 1 For a valid test.
-                            * 2 For a invalid test.
+                            * 2 For an invalid test.
                             int(11)
         :param bytes p_blob: The BLOB.
                              blob
 
-        :rtype: None|dict[str,*]
+        :rtype: Any
         """
         return self.execute_sp_row0("call tst_test_row0a_with_lob(%s, %s)", p_count, p_blob)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_row1a(self, p_count: Optional[int]) -> Any:
+    def tst_test_row1a(self, p_count: int | None) -> Dict[str, Any]:
         """
         Test for designation type row1.
 
         :param int p_count: The number of rows selected.
-                            * 0 For a invalid test.
+                            * 0 For an invalid test.
                             * 1 For a valid test.
-                            * 2 For a invalid test.
+                            * 2 For an invalid test.
                             int(11)
 
-        :rtype: dict[str,*]
+        :rtype: Dict[str, Any]
         """
         return self.execute_sp_row1("call tst_test_row1a(%s)", p_count)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_row1a_with_lob(self, p_count: Optional[int], p_blob: Optional[bytes]) -> Any:
+    def tst_test_row1a_with_lob(self, p_count: int | None, p_blob: bytes | None) -> Dict[str, Any]:
         """
         Test for designation type row1 with BLOB.
 
         :param int p_count: The number of rows selected.
-                            * 0 For a invalid test.
+                            * 0 For an invalid test.
                             * 1 For a valid test.
-                            * 2 For a invalid test.
+                            * 2 For an invalid test.
                             int(11)
         :param bytes p_blob: The BLOB.
                              blob
 
-        :rtype: dict[str,*]
+        :rtype: Dict[str, Any]
         """
         return self.execute_sp_row1("call tst_test_row1a_with_lob(%s, %s)", p_count, p_blob)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_rows1(self, p_count: Optional[int]) -> List[Dict[str, Any]]:
+    def tst_test_rows1(self, p_count: int | None) -> List[Dict[str, Any]]:
         """
         Test for designation type row1.
 
         :param int p_count: The number of rows selected.
-                            * 0 For a invalid test.
+                            * 0 For an invalid test.
                             * 1 For a valid test.
-                            * 2 For a invalid test.
+                            * 2 For an invalid test.
                             int(11)
 
-        :rtype: list[dict[str,*]]
+        :rtype: List[Dict[str, Any]]
         """
         return self.execute_sp_rows("call tst_test_rows1(%s)", p_count)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_rows1_with_lob(self, p_count: Optional[int], p_blob: Optional[bytes]) -> List[Dict[str, Any]]:
+    def tst_test_rows1_with_lob(self, p_count: int | None, p_blob: bytes | None) -> List[Dict[str, Any]]:
         """
         Test for designation type rows.
 
@@ -420,19 +422,19 @@ class TestDataLayer(MySqlDataLayer):
         :param bytes p_blob: The BLOB.
                              blob
 
-        :rtype: list[dict[str,*]]
+        :rtype: List[Dict[str, Any]]
         """
         return self.execute_sp_rows("call tst_test_rows1_with_lob(%s, %s)", p_count, p_blob)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_rows_with_index1(self, p_count: Optional[int]) -> Dict:
+    def tst_test_rows_with_index1(self, p_count: int | None) -> Dict:
         """
         Test for designation type rows_with_index.
 
         :param int p_count: The number of rows selected.
                             int(11)
 
-        :rtype: dict
+        :rtype: Dict
         """
         ret = {}
         rows = self.execute_sp_rows("call tst_test_rows_with_index1(%s)", p_count)
@@ -448,7 +450,7 @@ class TestDataLayer(MySqlDataLayer):
         return ret
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_rows_with_index1_with_lob(self, p_count: Optional[int], p_blob: Optional[bytes]) -> Dict:
+    def tst_test_rows_with_index1_with_lob(self, p_count: int | None, p_blob: bytes | None) -> Dict:
         """
         Test for designation type rows_with_index with BLOB.
 
@@ -457,7 +459,7 @@ class TestDataLayer(MySqlDataLayer):
         :param bytes p_blob: The BLOB.
                              blob
 
-        :rtype: dict
+        :rtype: Dict
         """
         ret = {}
         rows = self.execute_sp_rows("call tst_test_rows_with_index1_with_lob(%s, %s)", p_count, p_blob)
@@ -473,14 +475,14 @@ class TestDataLayer(MySqlDataLayer):
         return ret
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_rows_with_key1(self, p_count: Optional[int]) -> Dict:
+    def tst_test_rows_with_key1(self, p_count: int | None) -> Dict:
         """
         Test for designation type rows_with_key.
 
         :param int p_count: Number of rows selected.
                             int(11)
 
-        :rtype: dict
+        :rtype: Dict
         """
         ret = {}
         rows = self.execute_sp_rows("call tst_test_rows_with_key1(%s)", p_count)
@@ -499,7 +501,7 @@ class TestDataLayer(MySqlDataLayer):
         return ret
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_rows_with_key1_with_lob(self, p_count: Optional[int], p_blob: Optional[bytes]) -> Dict:
+    def tst_test_rows_with_key1_with_lob(self, p_count: int | None, p_blob: bytes | None) -> Dict:
         """
         Test for designation type rows_with_key with BLOB.
 
@@ -508,7 +510,7 @@ class TestDataLayer(MySqlDataLayer):
         :param bytes p_blob: The BLOB.
                              blob
 
-        :rtype: dict
+        :rtype: Dict
         """
         ret = {}
         rows = self.execute_sp_rows("call tst_test_rows_with_key1_with_lob(%s, %s)", p_count, p_blob)
@@ -527,68 +529,67 @@ class TestDataLayer(MySqlDataLayer):
         return ret
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_singleton0a(self, p_count: Optional[int]) -> Any:
+    def tst_test_singleton0a(self, p_count: int | None) -> Any:
         """
         Test for designation type singleton0.
 
         :param int p_count: The number of rows selected.
                             * 0 For a valid test.
                             * 1 For a valid test.
-                            * 2 For a invalid test.
+                            * 2 For an invalid test.
                             int(11)
 
-        :rtype: *
+        :rtype: Any
         """
         return self.execute_sp_singleton0("call tst_test_singleton0a(%s)", p_count)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_singleton0a_with_lob(self, p_count: Optional[int], p_blob: Optional[bytes]) -> Any:
+    def tst_test_singleton0a_with_lob(self, p_count: int | None, p_blob: bytes | None) -> Any:
         """
         Test for designation type singleton0 with BLOB..
 
         :param int p_count: The number of rows selected.
                             * 0 For a valid test.
                             * 1 For a valid test.
-                            * 2 For a invalid test.
+                            * 2 For an invalid test.
                             int(11)
         :param bytes p_blob: The BLOB.
                              blob
 
-        :rtype: *
+        :rtype: Any
         """
         return self.execute_sp_singleton0("call tst_test_singleton0a_with_lob(%s, %s)", p_count, p_blob)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_singleton1a(self, p_count: Optional[int]) -> Any:
+    def tst_test_singleton1a(self, p_count: int | None) -> Any:
         """
         Test for designation type singleton1.
 
         :param int p_count: The number of rows selected.
-                            * 0 For a invalid test.
+                            * 0 For an invalid test.
                             * 1 For a valid test.
-                            * 2 For a invalid test.
+                            * 2 For an invalid test.
                             int(11)
 
-        :rtype: *
+        :rtype: Any
         """
         return self.execute_sp_singleton1("call tst_test_singleton1a(%s)", p_count)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def tst_test_singleton1a_with_lob(self, p_count: Optional[int], p_blob: Optional[bytes]) -> Any:
+    def tst_test_singleton1a_with_lob(self, p_count: int | None, p_blob: bytes | None) -> Any:
         """
         Test for designation type singleton1 with BLOB.
 
         :param int p_count: The number of rows selected.
-                            * 0 For a invalid test.
+                            * 0 For an invalid test.
                             * 1 For a valid test.
-                            * 2 For a invalid test.
+                            * 2 For an invalid test.
                             int(11)
         :param bytes p_blob: The BLOB.
                              blob
 
-        :rtype: *
+        :rtype: Any
         """
         return self.execute_sp_singleton1("call tst_test_singleton1a_with_lob(%s, %s)", p_count, p_blob)
-
 
 # ----------------------------------------------------------------------------------------------------------------------

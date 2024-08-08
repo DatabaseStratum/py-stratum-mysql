@@ -1,5 +1,5 @@
 from time import gmtime, strftime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from mysql.connector import InterfaceError, MySQLConnection
 from mysql.connector.cursor import MySQLCursor, MySQLCursorBuffered, MySQLCursorBufferedDict, MySQLCursorDict
@@ -26,7 +26,7 @@ class MySqlDataLayer:
         The object for connecting to a MySQL instance.
         """
 
-        self._connection: Optional[MySQLConnection] = None
+        self._connection: MySQLConnection | None = None
         """
         The connection between Python and the MySQL instance.
         """
@@ -253,7 +253,7 @@ class MySqlDataLayer:
         return rowcount
 
     # ------------------------------------------------------------------------------------------------------------------
-    def execute_sp_row0(self, sql: str, *params) -> Optional[Dict[str, Any]]:
+    def execute_sp_row0(self, sql: str, *params) -> Dict[str, Any] | None:
         """
         Executes a stored procedure that selects 0 or 1 row. Returns the selected row or None.
 
@@ -402,7 +402,7 @@ class MySqlDataLayer:
     def start_transaction(self,
                           consistent_snapshot: bool = False,
                           isolation_level: str = 'READ-COMMITTED',
-                          readonly: Optional[bool] = None) -> None:
+                          readonly: bool | None = None) -> None:
         """
         Starts a transaction.
         See https://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlconnection-start-transaction.html

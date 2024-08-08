@@ -1,5 +1,5 @@
 from configparser import ConfigParser
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from pystratum_backend.StratumIO import StratumIO
 from pystratum_common.backend.CommonRoutineLoaderWorker import CommonRoutineLoaderWorker
@@ -42,17 +42,17 @@ class MySqlRoutineLoaderWorker(MySqlWorker, CommonRoutineLoaderWorker):
         MySqlWorker.__init__(self, io, config)
         CommonRoutineLoaderWorker.__init__(self, io, config)
 
-        self._character_set_client: Optional[str] = None
+        self._character_set_client: str | None = None
         """
         The default character set under which the stored routine will be loaded and run.
         """
 
-        self._collation_connection: Optional[str] = None
+        self._collation_connection: str | None = None
         """
         The default collate under which the stored routine will be loaded and run.
         """
 
-        self._sql_mode: Optional[str] = None
+        self._sql_mode: str | None = None
         """
         
         """
@@ -115,8 +115,8 @@ class MySqlRoutineLoaderWorker(MySqlWorker, CommonRoutineLoaderWorker):
     # ------------------------------------------------------------------------------------------------------------------
     def create_routine_loader_helper(self,
                                      routine_name: str,
-                                     pystratum_old_metadata: Optional[Dict],
-                                     rdbms_old_metadata: Optional[Dict]) -> MySqlRoutineLoaderHelper:
+                                     pystratum_old_metadata: Dict | None,
+                                     rdbms_old_metadata: Dict | None) -> MySqlRoutineLoaderHelper:
         """
         Creates a Routine Loader Helper object.
 

@@ -1,5 +1,4 @@
-from typing import Any, Dict
-
+from pystratum_common.BuildContext import BuildContext
 from pystratum_common.wrapper.RowsWithKeyWrapper import RowsWithKeyWrapper
 
 from pystratum_mysql.wrapper.MySqlWrapper import MySqlWrapper
@@ -12,7 +11,13 @@ class MySqlRowsWithKeyWrapper(RowsWithKeyWrapper, MySqlWrapper):
     """
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _write_execute_rows(self, routine: Dict[str, Any]) -> None:
-        self._write_line('rows = self.execute_sp_rows({0!s})'.format(self._generate_command(routine)))
+    def _build_execute_rows(self, context: BuildContext) -> None:
+        """
+        Builds the code for invoking the stored routine.
+
+        :param context: The build context.
+        """
+        context.code_store.append_line(
+                'rows = self.execute_sp_rows({0!s})'.format(self._generate_command(context.routine)))
 
 # ----------------------------------------------------------------------------------------------------------------------

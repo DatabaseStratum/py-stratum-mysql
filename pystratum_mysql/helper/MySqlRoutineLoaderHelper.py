@@ -1,5 +1,5 @@
 import re
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 from mysql import connector
 from pystratum_backend.StratumIO import StratumIO
@@ -22,9 +22,9 @@ class MySqlRoutineLoaderHelper(RoutineLoaderHelper):
                  dl: MySqlMetadataDataLayer,
                  routine_filename: str,
                  routine_file_encoding: str,
-                 pystratum_old_metadata: Optional[Dict],
+                 pystratum_old_metadata: Dict | None,
                  replace_pairs: Dict[str, Any],
-                 rdbms_old_metadata: Optional[Dict],
+                 rdbms_old_metadata: Dict | None,
                  sql_mode: str,
                  character_set: str,
                  collate: str):

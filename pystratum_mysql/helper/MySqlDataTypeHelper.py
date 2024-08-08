@@ -69,14 +69,14 @@ class MySqlDataTypeHelper(DataTypeHelper):
                                            'bigint',
                                            'year',
                                            'bit']:
-            return 'Optional[int]'
+            return 'int | None'
 
         if data_type_info['data_type'] == 'decimal':
-            return 'Optional[int]' if data_type_info['numeric_scale'] == 0 else 'Optional[float]'
+            return 'int | None' if data_type_info['numeric_scale'] == 0 else 'float | None'
 
         if data_type_info['data_type'] in ['float',
                                            'double']:
-            return 'Optional[float]'
+            return 'float | None'
 
         if data_type_info['data_type'] in ['char',
                                            'varchar',
@@ -90,7 +90,7 @@ class MySqlDataTypeHelper(DataTypeHelper):
                                            'text',
                                            'mediumtext',
                                            'longtext']:
-            return 'Optional[str]'
+            return 'str | None'
 
         if data_type_info['data_type'] in ['varbinary',
                                            'binary',
@@ -98,7 +98,7 @@ class MySqlDataTypeHelper(DataTypeHelper):
                                            'blob',
                                            'mediumblob',
                                            'longblob', ]:
-            return 'Optional[bytes]'
+            return 'bytes | None'
 
         raise RuntimeError('Unknown data type {0}'.format(data_type_info['data_type']))
 

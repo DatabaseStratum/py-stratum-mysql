@@ -1,4 +1,4 @@
-from typing import Dict, Optional, Union
+from typing import Dict
 
 from mysql.connector import MySQLConnection
 
@@ -11,19 +11,19 @@ class MySqlDefaultConnector(MySqlConnector):
     """
 
     # ------------------------------------------------------------------------------------------------------------------
-    def __init__(self, params: Dict[str, Union[str, int]]):
+    def __init__(self, params: Dict[str, str | int]):
         """
         Object constructor.
-        
+
         :param params: The connection parameters.
         """
 
-        self._params: Dict[str, Union[str, int]] = params
+        self._params: Dict[str, str | int] = params
         """
         The connection parameters.
         """
 
-        self._connection: Optional[MySQLConnection] = None
+        self._connection: MySQLConnection | None = None
         """
         The connection between Python and the MySQL instance.
         """

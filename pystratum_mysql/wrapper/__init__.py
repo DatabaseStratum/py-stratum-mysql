@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from pystratum_common.BuildContext import BuildContext
 
 from pystratum_mysql.wrapper.MySqlBulkWrapper import MySqlBulkWrapper
 from pystratum_mysql.wrapper.MySqlFunctionsWrapper import MySqlFunctionsWrapper
@@ -12,45 +12,45 @@ from pystratum_mysql.wrapper.MySqlRowsWithKeyWrapper import MySqlRowsWithKeyWrap
 from pystratum_mysql.wrapper.MySqlRowsWrapper import MySqlRowsWrapper
 from pystratum_mysql.wrapper.MySqlSingleton0Wrapper import MySqlSingleton0Wrapper
 from pystratum_mysql.wrapper.MySqlSingleton1Wrapper import MySqlSingleton1Wrapper
-# ----------------------------------------------------------------------------------------------------------------------
 from pystratum_mysql.wrapper.MySqlWrapper import MySqlWrapper
 
 
-def create_routine_wrapper(routine: Dict[str, Any], lob_as_string_flag: bool) -> MySqlWrapper:
+# ----------------------------------------------------------------------------------------------------------------------
+
+def create_routine_wrapper(context: BuildContext) -> MySqlWrapper:
     """
     A factory for creating the appropriate object for generating a wrapper method for a stored routine.
 
-    :param dict[str,str] routine: The metadata of the sored routine.
-    :param bool lob_as_string_flag: If True BLOBs and CLOBs must be treated as strings.
+    :param context: The build context.
 
     :rtype: MySqlWrapper
     """
-    if routine['designation'] == 'bulk':
-        wrapper = MySqlBulkWrapper(routine, lob_as_string_flag)
-    elif routine['designation'] == 'function':
-        wrapper = MySqlFunctionsWrapper(routine, lob_as_string_flag)
-    elif routine['designation'] == 'log':
-        wrapper = MySqlLogWrapper(routine, lob_as_string_flag)
-    elif routine['designation'] == 'multi':
-        wrapper = MySqlMultiWrapper(routine, lob_as_string_flag)
-    elif routine['designation'] == 'none':
-        wrapper = MySqlNoneWrapper(routine, lob_as_string_flag)
-    elif routine['designation'] == 'row0':
-        wrapper = MySqlRow0Wrapper(routine, lob_as_string_flag)
-    elif routine['designation'] == 'row1':
-        wrapper = MySqlRow1Wrapper(routine, lob_as_string_flag)
-    elif routine['designation'] == 'rows_with_index':
-        wrapper = MySqlRowsWithIndexWrapper(routine, lob_as_string_flag)
-    elif routine['designation'] == 'rows_with_key':
-        wrapper = MySqlRowsWithKeyWrapper(routine, lob_as_string_flag)
-    elif routine['designation'] == 'rows':
-        wrapper = MySqlRowsWrapper(routine, lob_as_string_flag)
-    elif routine['designation'] == 'singleton0':
-        wrapper = MySqlSingleton0Wrapper(routine, lob_as_string_flag)
-    elif routine['designation'] == 'singleton1':
-        wrapper = MySqlSingleton1Wrapper(routine, lob_as_string_flag)
+    if context.routine['designation'] == 'bulk':
+        wrapper = MySqlBulkWrapper()
+    elif context.routine['designation'] == 'function':
+        wrapper = MySqlFunctionsWrapper()
+    elif context.routine['designation'] == 'log':
+        wrapper = MySqlLogWrapper()
+    elif context.routine['designation'] == 'multi':
+        wrapper = MySqlMultiWrapper()
+    elif context.routine['designation'] == 'none':
+        wrapper = MySqlNoneWrapper()
+    elif context.routine['designation'] == 'row0':
+        wrapper = MySqlRow0Wrapper()
+    elif context.routine['designation'] == 'row1':
+        wrapper = MySqlRow1Wrapper()
+    elif context.routine['designation'] == 'rows_with_index':
+        wrapper = MySqlRowsWithIndexWrapper()
+    elif context.routine['designation'] == 'rows_with_key':
+        wrapper = MySqlRowsWithKeyWrapper()
+    elif context.routine['designation'] == 'rows':
+        wrapper = MySqlRowsWrapper()
+    elif context.routine['designation'] == 'singleton0':
+        wrapper = MySqlSingleton0Wrapper()
+    elif context.routine['designation'] == 'singleton1':
+        wrapper = MySqlSingleton1Wrapper()
     else:
-        raise Exception("Unknown routine type '{0!s}'.".format(routine['designation']))
+        raise Exception("Unknown routine type '{0!s}'.".format(context.routine['designation']))
 
     return wrapper
 

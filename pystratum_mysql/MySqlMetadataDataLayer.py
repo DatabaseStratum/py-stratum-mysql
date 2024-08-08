@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List
 
 from pystratum_backend.StratumIO import StratumIO
 from pystratum_common.MetadataDataLayer import MetadataDataLayer
@@ -134,20 +134,20 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
         return self.__dl.execute_singleton1(query)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def get_all_table_columns(self) -> List[Dict[str, Union[str, int, None]]]:
+    def get_all_table_columns(self) -> List[Dict[str, str | int | None]]:
         """
         Selects metadata of all columns of all tables.
         """
         sql = """
 (
-  select TABLE_NAME                as  table_name
-  ,      COLUMN_NAME               as  column_name
-  ,      COLUMN_TYPE               as  column_type
-  ,      CHARACTER_SET_NAME        as  character_set_name
-  ,      DATA_TYPE                 as  data_type
-  ,      CHARACTER_MAXIMUM_LENGTH  as  character_maximum_length
-  ,      NUMERIC_PRECISION         as  numeric_precision
-  ,      ORDINAL_POSITION          as  ordinal_position
+  select TABLE_NAME               as table_name
+  ,      COLUMN_NAME              as column_name
+  ,      COLUMN_TYPE              as column_type
+  ,      CHARACTER_SET_NAME       as character_set_name
+  ,      DATA_TYPE                as data_type
+  ,      CHARACTER_MAXIMUM_LENGTH as character_maximum_length
+  ,      NUMERIC_PRECISION        as numeric_precision
+  ,      ORDINAL_POSITION         as ordinal_position
   from   information_schema.COLUMNS
   where  TABLE_SCHEMA = database()
   and    TABLE_NAME  rlike '^[a-zA-Z0-9_]*$'
@@ -199,9 +199,9 @@ union all
         :param regex: The regular expression for columns which we want to use.
         """
         sql = """
-select t1.TABLE_NAME  table_name
-,      t1.COLUMN_NAME id
-,      t2.COLUMN_NAME label
+select t1.TABLE_NAME  as table_name
+,      t1.COLUMN_NAME as id
+,      t2.COLUMN_NAME as label
 from       information_schema.COLUMNS t1
 inner join information_schema.COLUMNS t2 on t1.TABLE_NAME = t2.TABLE_NAME
 where t1.TABLE_SCHEMA = database()
@@ -222,8 +222,8 @@ and   t2.COLUMN_NAME rlike '{0}'""".format(regex)
         :param label_column_name: The name of the column with labels.
         """
         sql = """
-select `{0}`  as `id`
-,      `{1}`  as `label`
+select `{0}` as `id`
+,      `{1}` as `label`
 from   `{2}`
 where   nullif(`{1}`,'') is not null""".format(id_column_name,
                                                label_column_name,
@@ -246,13 +246,13 @@ where   nullif(`{1}`,'') is not null""".format(id_column_name,
         :param routine_name: The name of the routine.
         """
         sql = """
-select t2.PARAMETER_NAME      parameter_name
-,      t2.DATA_TYPE           parameter_type
-,      t2.NUMERIC_PRECISION   numeric_precision
-,      t2.NUMERIC_SCALE       numeric_scale
-,      t2.DTD_IDENTIFIER      column_type
-,      t2.CHARACTER_SET_NAME  character_set_name
-,      t2.COLLATION_NAME      collation
+select t2.PARAMETER_NAME     as parameter_name
+,      t2.DATA_TYPE          as parameter_type
+,      t2.NUMERIC_PRECISION  as numeric_precision
+,      t2.NUMERIC_SCALE      as numeric_scale
+,      t2.DTD_IDENTIFIER     as column_type
+,      t2.CHARACTER_SET_NAME as character_set_name
+,      t2.COLLATION_NAME     as collation
 from            information_schema.ROUTINES   t1
 left outer join information_schema.PARAMETERS t2  on  t2.SPECIFIC_SCHEMA = t1.ROUTINE_SCHEMA and
                                                       t2.SPECIFIC_NAME   = t1.ROUTINE_NAME and
@@ -268,11 +268,11 @@ and   t1.ROUTINE_NAME   = '{0}'""".format(routine_name)
         Selects metadata of all routines in the current schema.
         """
         sql = """
-select ROUTINE_NAME           as routine_name
-,      ROUTINE_TYPE           as routine_type
-,      SQL_MODE               as sql_mode
-,      CHARACTER_SET_CLIENT   as character_set_client
-,      COLLATION_CONNECTION   as collation_connection
+select ROUTINE_NAME         as routine_name
+,      ROUTINE_TYPE         as routine_type
+,      SQL_MODE             as sql_mode
+,      CHARACTER_SET_CLIENT as character_set_client
+,      COLLATION_CONNECTION as collation_connection
 from  information_schema.ROUTINES
 where ROUTINE_SCHEMA = database()
 order by routine_name"""

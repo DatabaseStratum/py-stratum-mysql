@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Any, Dict, List
+from typing import Any, Dict
 
 from pystratum_common.wrapper.Wrapper import Wrapper
 
@@ -8,54 +8,6 @@ class MySqlWrapper(Wrapper, ABC):
     """
     Parent class for wrapper method generators for stored procedures and functions.
     """
-
-    # ------------------------------------------------------------------------------------------------------------------
-    def is_lob_parameter(self, parameters: List[Dict[str, Any]]) -> bool:
-        """
-        Returns True of one of the parameters is a BLOB or CLOB. Otherwise, returns False.
-
-        :param parameters: The parameters of a stored routine.
-        """
-        has_lob = False
-
-        lookup = {'bigint':     False,
-                  'binary':     False,
-                  'bit':        False,
-                  'char':       False,
-                  'date':       False,
-                  'datetime':   False,
-                  'decimal':    False,
-                  'double':     False,
-                  'enum':       False,
-                  'float':      False,
-                  'int':        False,
-                  'mediumint':  False,
-                  'set':        False,
-                  'smallint':   False,
-                  'time':       False,
-                  'timestamp':  False,
-                  'tinyint':    False,
-                  'varbinary':  False,
-                  'varchar':    False,
-                  'year':       False,
-
-                  'blob':       True,
-                  'longblob':   True,
-                  'longtext':   True,
-                  'mediumblob': True,
-                  'mediumtext': True,
-                  'text':       True,
-                  'tinyblob':   True,
-                  'tinytext':   True}
-
-        if parameters:
-            for parameter_info in parameters:
-                if parameter_info['data_type'] in lookup:
-                    has_lob = lookup[parameter_info['data_type']]
-                else:
-                    raise Exception("Unexpected date type '{0!s}'.".format(parameter_info['data_type']))
-
-        return has_lob
 
     # ------------------------------------------------------------------------------------------------------------------
     def _generate_command(self, routine: Dict[str, Any]) -> str:

@@ -1,5 +1,4 @@
-from typing import Any, Dict
-
+from pystratum_common.BuildContext import BuildContext
 from pystratum_common.wrapper.RowsWrapper import RowsWrapper
 
 from pystratum_mysql.wrapper.MySqlWrapper import MySqlWrapper
@@ -11,17 +10,16 @@ class MySqlRowsWrapper(MySqlWrapper, RowsWrapper):
     """
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _return_type_hint(self) -> str:
+    def _build_result_handler(self, context: BuildContext) -> None:
         """
-        Returns the return type hint of the wrapper method.
-        """
-        return 'List[Dict[str, Any]]'
+        Builds the code for calling the stored routine in the wrapper method.
 
-    # ------------------------------------------------------------------------------------------------------------------
-    def _write_result_handler(self, routine: Dict[str, Any]) -> None:
+        :param context: The build context.
+        """
         """
         Generates code for calling the stored routine in the wrapper method.
         """
-        self._write_line('return self.execute_sp_rows({0!s})'.format(self._generate_command(routine)))
+        context.code_store.append_line(
+                'return self.execute_sp_rows({0!s})'.format(self._generate_command(context.routine)))
 
 # ----------------------------------------------------------------------------------------------------------------------

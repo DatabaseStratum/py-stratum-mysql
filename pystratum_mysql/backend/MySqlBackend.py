@@ -1,5 +1,4 @@
 from configparser import ConfigParser
-from typing import Optional
 
 from pystratum_backend.Backend import Backend
 from pystratum_backend.ConstantWorker import ConstantWorker
@@ -18,7 +17,7 @@ class MySqlBackend(Backend):
     """
 
     # ------------------------------------------------------------------------------------------------------------------
-    def create_constant_worker(self, config: ConfigParser, io: StratumIO) -> Optional[ConstantWorker]:
+    def create_constant_worker(self, config: ConfigParser, io: StratumIO) -> ConstantWorker:
         """
         Creates the object that does the actual execution of the constant command for the backend.
 
@@ -28,7 +27,7 @@ class MySqlBackend(Backend):
         return MySqlConstantWorker(io, config)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def create_routine_loader_worker(self, config: ConfigParser, io: StratumIO) -> Optional[RoutineLoaderWorker]:
+    def create_routine_loader_worker(self, config: ConfigParser, io: StratumIO) -> RoutineLoaderWorker:
         """
         Creates the object that does the actual execution of the routine loader command for the backend.
 
@@ -38,8 +37,9 @@ class MySqlBackend(Backend):
         return MySqlRoutineLoaderWorker(io, config)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def create_routine_wrapper_generator_worker(self, config: ConfigParser, io: StratumIO) \
-            -> Optional[RoutineWrapperGeneratorWorker]:
+    def create_routine_wrapper_generator_worker(self,
+                                                config: ConfigParser,
+                                                io: StratumIO) -> RoutineWrapperGeneratorWorker:
         """
         Creates the object that does the actual execution of the routine wrapper generator command for the backend.
 
