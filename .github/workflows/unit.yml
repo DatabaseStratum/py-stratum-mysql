@@ -16,7 +16,6 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - "3.11"
           - "3.12"
         mysql-version:
           - "mysql-5.7"
