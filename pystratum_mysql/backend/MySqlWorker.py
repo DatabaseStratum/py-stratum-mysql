@@ -32,14 +32,14 @@ class MySqlWorker:
         """
 
     # ------------------------------------------------------------------------------------------------------------------
-    def connect(self) -> None:
+    def _connect(self) -> None:
         """
         Connects to the database.
         """
         self._dl.connect()
 
     # ------------------------------------------------------------------------------------------------------------------
-    def disconnect(self) -> None:
+    def _disconnect(self) -> None:
         """
         Disconnects from the database.
         """

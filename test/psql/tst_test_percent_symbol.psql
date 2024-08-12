@@ -3,11 +3,10 @@
  *
  * @type rows
  */
-create procedure tst_test_percent_symbol()
-reads sql data
+create procedure tst_test_percent_symbol ( )
+  reads sql data
 begin
   select *
-  from  TST_FOO2
-  where  tst_c00 like '%'
-  ;
+  from TST_FOO2
+  where tst_c00 like '%' ;
 end;

@@ -1,0 +1,20 @@
+/**
+ *  Test for designation insert_many.
+ *
+ * @type insert_many TST_TEMPO field1,_,_,field4,field5
+ */
+create procedure tst_test_insert_many02 ( )
+  modifies sql data
+begin
+  drop temporary table if exists TST_TEMPO;
+
+  create temporary table TST_TEMPO (
+    tst_col1 int not null,
+    tst_col2 int null,
+    tst_col3 int null,
+    tst_col4 int not null,
+    tst_col5 int not null,
+    primary key (tst_col1)
+  )
+    engine = memory;
+end

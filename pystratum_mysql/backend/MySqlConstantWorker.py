@@ -5,7 +5,7 @@ from typing import Any, Dict
 
 from pystratum_backend.StratumIO import StratumIO
 from pystratum_common.backend.CommonConstantWorker import CommonConstantWorker
-from pystratum_common.Util import Util
+from pystratum_common.helper.Util import Util
 
 from pystratum_mysql.backend.MySqlWorker import MySqlWorker
 

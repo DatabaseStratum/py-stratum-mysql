@@ -3,9 +3,10 @@ from typing import Any, Dict, List
 
 from pystratum_backend.StratumIO import StratumIO
 from pystratum_common.backend.CommonRoutineLoaderWorker import CommonRoutineLoaderWorker
+from pystratum_common.loader.helper.LoaderContext import LoaderContext
 
 from pystratum_mysql.backend.MySqlWorker import MySqlWorker
-from pystratum_mysql.helper.MySqlRoutineLoaderHelper import MySqlRoutineLoaderHelper
+from pystratum_mysql.loader.MySqlRoutineLoader import MySqlRoutineLoader
 
 
 class MySqlRoutineLoaderWorker(MySqlWorker, CommonRoutineLoaderWorker):
@@ -42,19 +43,19 @@ class MySqlRoutineLoaderWorker(MySqlWorker, CommonRoutineLoaderWorker):
         MySqlWorker.__init__(self, io, config)
         CommonRoutineLoaderWorker.__init__(self, io, config)
 
-        self._character_set_client: str | None = None
+        self.__character_set_client: str | None = None
         """
         The default character set under which the stored routine will be loaded and run.
         """
 
-        self._collation_connection: str | None = None
+        self.__collation_connection: str | None = None
         """
         The default collate under which the stored routine will be loaded and run.
         """
 
-        self._sql_mode: str | None = None
+        self.__sql_mode: str | None = None
         """
-        
+        The SQL mode under which the stored routine will run.
         """
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -65,13 +66,13 @@ class MySqlRoutineLoaderWorker(MySqlWorker, CommonRoutineLoaderWorker):
         :param rows: The column types.
         """
         for row in rows:
-            key = row['table_name'] + '.' + row['column_name'] + '%type'
+            hint = row['table_name'] + '.' + row['column_name']
 
             value = row['column_type']
             if row['character_set_name']:
                 value += ' character set ' + row['character_set_name']
 
-            self._add_replace_pair(key, value, False)
+            self._add_type_hint(hint, value)
 
     # ------------------------------------------------------------------------------------------------------------------
     def __save_column_types_max_length(self, rows: List[Dict[str, Any]]) -> None:
@@ -81,28 +82,28 @@ class MySqlRoutineLoaderWorker(MySqlWorker, CommonRoutineLoaderWorker):
         :param rows: The column types.
         """
         for row in rows:
-            key = row['table_name'] + '.' + row['column_name'] + '%max-type'
+            hint = row['table_name'] + '.' + row['column_name'] + '%max'
 
             if row['data_type'] == 'char':
                 value = row['data_type'] + '(' + str(self.MAX_LENGTH_CHAR) + ')'
                 value += ' character set ' + row['character_set_name']
-                self._add_replace_pair(key, value, False)
+                self._add_type_hint(hint, value)
 
             if row['data_type'] == 'varchar':
                 value = row['data_type'] + '(' + str(self.MAX_LENGTH_VARCHAR) + ')'
                 value += ' character set ' + row['character_set_name']
-                self._add_replace_pair(key, value, False)
+                self._add_type_hint(hint, value)
 
             elif row['data_type'] == 'binary':
                 value = row['data_type'] + '(' + str(self.MAX_LENGTH_BINARY) + ')'
-                self._add_replace_pair(key, value, False)
+                self._add_type_hint(hint, value)
 
             elif row['data_type'] == 'varbinary':
                 value = row['data_type'] + '(' + str(self.MAX_LENGTH_VARBINARY) + ')'
-                self._add_replace_pair(key, value, False)
+                self._add_type_hint(hint, value)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _get_column_type(self) -> None:
+    def _fetch_column_types(self) -> None:
         """
         Selects schema, table, column names and the column type from MySQL and saves them as replace pairs.
         """
@@ -113,55 +114,40 @@ class MySqlRoutineLoaderWorker(MySqlWorker, CommonRoutineLoaderWorker):
         self._io.text('Selected {0} column types for substitution'.format(len(rows)))
 
     # ------------------------------------------------------------------------------------------------------------------
-    def create_routine_loader_helper(self,
-                                     routine_name: str,
-                                     pystratum_old_metadata: Dict | None,
-                                     rdbms_old_metadata: Dict | None) -> MySqlRoutineLoaderHelper:
+    def _create_routine_loader(self, context: LoaderContext) -> MySqlRoutineLoader:
         """
-        Creates a Routine Loader Helper object.
+        Creates a Routine Loader object.
 
-        :param routine_name: The name of the routine.
-        :param pystratum_old_metadata: The old metadata of the stored routine from PyStratum.
-        :param rdbms_old_metadata:  The old metadata of the stored routine from MySQL.
+        :param context: The loader context.
         """
-        return MySqlRoutineLoaderHelper(self._io,
-                                        self._dl,
-                                        self._source_file_names[routine_name],
-                                        self._source_file_encoding,
-                                        pystratum_old_metadata,
-                                        self._replace_pairs,
-                                        rdbms_old_metadata,
-                                        self._sql_mode,
-                                        self._character_set_client,
-                                        self._collation_connection)
+        return MySqlRoutineLoader(self._io,
+                                  self._dl,
+                                  self.__sql_mode,
+                                  self.__character_set_client,
+                                  self.__collation_connection)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _get_old_stored_routine_info(self) -> None:
+    def _fetch_rdbms_metadata(self) -> List[Dict[str, Any]]:
         """
         Retrieves information about all stored routines in the current schema.
         """
-        rows = self._dl.get_routines()
-        self._rdbms_old_metadata = {}
-        for row in rows:
-            self._rdbms_old_metadata[row['routine_name']] = row
+        return self._dl.get_routines()
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _get_correct_sql_mode(self) -> None:
+    def _init_rdbms_specific(self) -> None:
         """
         Gets the SQL mode in the order as preferred by MySQL.
         """
-        self._sql_mode = self._dl.get_correct_sql_mode(self._sql_mode)
+        self.__sql_mode = self._dl.get_correct_sql_mode(self.__sql_mode)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _drop_obsolete_routines(self) -> None:
+    def _drop_stored_routine(self, rdbms_metadata: Dict[str, Any]) -> None:
         """
-        Drops obsolete stored routines (i.e. stored routines that exits in the current schema but for
-        which we don't have a source file).
+        Drops a stored routine.
+
+        :param rdbms_metadata: The metadata from the RDBMS of the stored routine to be dropped.
         """
-        for routine_name, values in self._rdbms_old_metadata.items():
-            if routine_name not in self._source_file_names:
-                self._io.text("Dropping {0} <dbo>{1}</dbo>".format(values['routine_type'].lower(), routine_name))
-                self._dl.drop_stored_routine(values['routine_type'], routine_name)
+        self._dl.drop_stored_routine(rdbms_metadata['routine_type'], rdbms_metadata['routine_name'])
 
     # ------------------------------------------------------------------------------------------------------------------
     def _read_configuration_file(self) -> None:
@@ -170,8 +156,18 @@ class MySqlRoutineLoaderWorker(MySqlWorker, CommonRoutineLoaderWorker):
         """
         CommonRoutineLoaderWorker._read_configuration_file(self)
 
-        self._character_set_client = self._config.get('database', 'character_set_client', fallback='utf8mb4')
-        self._collation_connection = self._config.get('database', 'collation_connection', fallback='utf8mb4_general_ci')
-        self._sql_mode = self._config.get('database', 'sql_mode')
+        self.__character_set_client = self._config.get('database', 'character_set_client', fallback='utf8mb4')
+        self.__collation_connection = self._config.get('database',
+                                                       'collation_connection',
+                                                       fallback='utf8mb4_general_ci')
+        self.__sql_mode = self._config.get('database', 'sql_mode')
+
+    # ------------------------------------------------------------------------------------------------------------------
+    @staticmethod
+    def _pystratum_metadata_revision() -> str:
+        """
+        Returns the revision of the format of the metadata of the stored routines.
+        """
+        return CommonRoutineLoaderWorker._pystratum_metadata_revision() + '.1'
 
 # ----------------------------------------------------------------------------------------------------------------------

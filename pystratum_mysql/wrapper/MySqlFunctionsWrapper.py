@@ -1,22 +1,26 @@
-from pystratum_common.BuildContext import BuildContext
-from pystratum_common.wrapper.FunctionsWrapper import FunctionsWrapper
+from pystratum_common.wrapper.CommonFunctionsWrapper import CommonFunctionsWrapper
+from pystratum_common.wrapper.helper import WrapperContext
 
 from pystratum_mysql.wrapper.MySqlWrapper import MySqlWrapper
 
 
-class MySqlFunctionsWrapper(MySqlWrapper, FunctionsWrapper):
+class MySqlFunctionsWrapper(MySqlWrapper, CommonFunctionsWrapper):
     """
     Wrapper method generator for stored functions.
     """
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _build_result_handler(self, context: BuildContext) -> None:
+    def _build_result_handler(self, context: WrapperContext) -> None:
         """
         Builds the code for calling the stored routine in the wrapper method.
 
-        :param context: The build context.
+        :param context: The loader context.
         """
-        context.code_store.append_line(
-                'return self.execute_singleton1({0!s})'.format(self._generate_command(context.routine)))
+        sql = self._generate_command(context.pystratum_metadata)
+        if context.pystratum_metadata['pydoc']['return'] == ['bool']:
+            statement = f"return self.execute_singleton1({sql}) not in [None, '']"
+        else:
+            statement = f'return self.execute_singleton1({sql})'
+        context.code_store.append_line(statement)
 
 # ----------------------------------------------------------------------------------------------------------------------

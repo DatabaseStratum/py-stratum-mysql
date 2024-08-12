@@ -23,7 +23,7 @@ classifiers = ["Development Status :: 5 - Production/Stable",
 python = "^3.11.0"
 mysql-connector-python = "^9.0.0"
 PyStratum-Backend = "^2.0.4"
-PyStratum-Common = "^3.0.0"
+PyStratum-Common = "^3.0.2"
 PyStratum-Middle = "^1.1.1"
 
 [tool.poetry.group.dev.dependencies]

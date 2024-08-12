@@ -3,10 +3,9 @@
  *
  * @type bulk
  */
-create procedure tst_test_bulk()
-reads sql data
+create procedure tst_test_bulk ( )
+  reads sql data
 begin
   select *
-  from   TST_FOO2
-  ;
+  from TST_FOO2 ;
 end

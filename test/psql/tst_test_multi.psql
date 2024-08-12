@@ -3,13 +3,12 @@
  *
  * @type multi
  */
-create procedure tst_test_multi()
-reads sql data
+create procedure tst_test_multi ( )
+  reads sql data
 begin
   select 'Hello, world';
 
   select *
-  from   TST_FOO2
-  limit 0, 2
-  ;
+  from TST_FOO2
+  limit 0, 2;
 end

@@ -1,5 +1,5 @@
 /**
- * Test for designation type singleton0 with BLOB..
+ * Test for designation type singleton0 with BLOB.
  *
  * @param p_count The number of rows selected.
  *                * 0 For a valid test.
@@ -7,14 +7,16 @@
  *                * 2 For an invalid test.
  * @param p_blob  The BLOB.
  *
- * @type singleton0
+ * @type singleton0 int
  */
-create procedure tst_test_singleton0a_with_lob( p_count int,
-                                                p_blob  blob )
-reads sql data
+create procedure tst_test_singleton0a_with_lob
+(
+  p_count int,
+  p_blob  blob
+)
+  reads sql data
 begin
   select 1
-  from   TST_FOO2
-  where  tst_c00 <= p_count
-  ;
+  from TST_FOO2
+  where tst_c00 <= p_count ;
 end

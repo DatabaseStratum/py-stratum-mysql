@@ -1,10 +1,10 @@
 /**
  * Test for magic constant.
  *
- * @type singleton1
+ * @type singleton1 varchar
  */
-create procedure tst_magic_constant01()
-reads sql data
+create procedure tst_magic_constant01 ( )
+  reads sql data
 begin
   select __ROUTINE__;
 end

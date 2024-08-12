@@ -5,21 +5,25 @@
  *
  * @type none
  */
-create procedure tst_test_none1( p_count bigint )
-reads sql data
+create procedure tst_test_none1
+(
+  p_count bigint
+)
+  reads sql data
 begin
- declare l_count bigint default 0;
- 
- drop temporary table if exists TMP_TMP;
- 
- create temporary table TMP_TMP( c bigint );
- 
- while( l_count < p_count )
- do
-   insert into TMP_TMP( c )
-   values( l_count )
-   ;
-   
-   set l_count = l_count +1;
- end while;
+  declare l_count bigint default 0;
+
+  drop temporary table if exists TMP_TMP;
+
+  create temporary table TMP_TMP (
+    c bigint
+  );
+
+  while(l_count < p_count)
+    do
+      insert into TMP_TMP(c)
+      values (l_count);
+
+      set l_count = l_count + 1;
+    end while;
 end

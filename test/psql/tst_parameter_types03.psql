@@ -8,19 +8,21 @@
  *
  * @type none
  */
-create procedure tst_parameter_types03(p_param14 @tst_foo1.tst_c14%max-type@,
-                                       p_param15 @tst_foo1.tst_c15%max-type@,
-                                       p_param16 @tst_foo1.tst_c16%max-type@,
-                                       p_param17 @tst_foo1.tst_c17%max-type@)
-reads sql data
+create procedure tst_parameter_types03
+(
+  p_param14 char(255) character set utf8mb4, --     type: TST_FOO1.tst_c14%max
+  p_param15 varchar(4096) character set utf8mb4, -- type: TST_FOO1.tst_c15%max
+  p_param16 binary(255), --                         type: TST_FOO1.tst_c16%max
+  p_param17 varbinary(4096) --                      type: TST_FOO1.tst_c17%max
+)
+  reads sql data
 begin
   insert into TST_FOO1( tst_c14
-  ,                     tst_c15
-  ,                     tst_c16
-  ,                     tst_c17 )
-  values( p_param14
-  ,       p_param15
-   ,      p_param16
-  ,       p_param17 )
-  ;
+                      , tst_c15
+                      , tst_c16
+                      , tst_c17)
+  values ( p_param14
+         , p_param15
+         , p_param16
+         , p_param17);
 end 

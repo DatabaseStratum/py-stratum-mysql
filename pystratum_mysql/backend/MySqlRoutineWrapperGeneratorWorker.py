@@ -2,7 +2,7 @@ from configparser import ConfigParser
 
 from pystratum_backend.StratumIO import StratumIO
 from pystratum_common.backend.CommonRoutineWrapperGeneratorWorker import CommonRoutineWrapperGeneratorWorker
-from pystratum_common.BuildContext import BuildContext
+from pystratum_common.wrapper.helper import WrapperContext
 
 from pystratum_mysql.backend.MySqlWorker import MySqlWorker
 from pystratum_mysql.wrapper import create_routine_wrapper
@@ -24,11 +24,11 @@ class MySqlRoutineWrapperGeneratorWorker(MySqlWorker, CommonRoutineWrapperGenera
         CommonRoutineWrapperGeneratorWorker.__init__(self, io, config)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def _build_routine_wrapper(self, context: BuildContext) -> None:
+    def _build_routine_wrapper(self, context: WrapperContext) -> None:
         """
         Builds a complete wrapper method for a stored routine.
 
-        :param context: The build context.
+        :param context: The loader context.
         """
         wrapper = create_routine_wrapper(context)
         wrapper.build(context)

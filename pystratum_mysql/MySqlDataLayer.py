@@ -1,5 +1,5 @@
 from time import gmtime, strftime
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 
 from mysql.connector import InterfaceError, MySQLConnection
 from mysql.connector.cursor import MySQLCursor, MySQLCursorBuffered, MySQLCursorBufferedDict, MySQLCursorDict
@@ -93,6 +93,23 @@ class MySqlDataLayer:
         for _ in cursor.execute(sql, multi=True):
             pass
         cursor.close()
+
+    # ------------------------------------------------------------------------------------------------------------------
+    def execute_many(self, sql: str, rows: List[Tuple]) -> int:
+        """
+        Executes a multi insert query.
+
+        :param sql: The SQL statement.
+        :param rows: The rows.
+        """
+        self._last_sql = sql
+
+        cursor = MySQLCursor(self._connection)
+        cursor.executemany(sql, rows)
+        rowcount = cursor.rowcount
+        cursor.close()
+
+        return rowcount
 
     # ------------------------------------------------------------------------------------------------------------------
     def execute_none(self, sql: str, *params) -> int:

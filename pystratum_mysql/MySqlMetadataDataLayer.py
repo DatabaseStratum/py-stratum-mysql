@@ -1,13 +1,13 @@
 from typing import Any, Dict, List
 
 from pystratum_backend.StratumIO import StratumIO
-from pystratum_common.MetadataDataLayer import MetadataDataLayer
+from pystratum_common.helper.CommonMetadataDataLayer import CommonMetadataDataLayer
 
 from pystratum_mysql.MySqlConnector import MySqlConnector
 from pystratum_mysql.MySqlDataLayer import MySqlDataLayer
 
 
-class MySqlMetadataDataLayer(MetadataDataLayer):
+class MySqlMetadataDataLayer(CommonMetadataDataLayer):
     """
     Data layer for retrieving metadata and loading stored routines.
     """
@@ -38,19 +38,19 @@ class MySqlMetadataDataLayer(MetadataDataLayer):
         return self.execute_none(sql)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def check_table_exists(self, table_name: str) -> int:
+    def check_table_exists(self, table_name: str) -> bool:
         """
         Checks if a table exists in the current schema.
 
         :param table_name: The name of the table.
         """
         sql = """
-select 1 from
+select count(*) from
 information_schema.TABLES
 where TABLE_SCHEMA = database()
 and   TABLE_NAME   = '{0}'""".format(table_name)
 
-        return self.execute_none(sql)
+        return self.execute_singleton1(sql) == 1
 
     # ------------------------------------------------------------------------------------------------------------------
     def connect(self) -> None:
@@ -82,7 +82,7 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
         """
         Drops a stored routine if it exists.
 
-        :param routine_type: The type of the routine (i.e. PROCEDURE or FUNCTION).
+        :param routine_type: The type of the routine (i.e., procedure or function).
         :param routine_name: The name of the routine.
         """
         sql = 'drop {0} if exists `{1}`'.format(routine_type, routine_name)
@@ -114,7 +114,8 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
     # ------------------------------------------------------------------------------------------------------------------
     def execute_rows(self, query: str) -> List[Dict[str, Any]]:
         """
-        Executes a query that selects 0 or more rows. Returns the selected rows (an empty list if no rows are selected).
+        Executes a query that selects zero or more rows. Returns the selected rows (an empty list if no rows are
+        selected).
 
         :param query: The query.
         """
@@ -125,7 +126,7 @@ and   TABLE_NAME   = '{0}'""".format(table_name)
     # ------------------------------------------------------------------------------------------------------------------
     def execute_singleton1(self, query: str) -> Any:
         """
-        Executes SQL statement that selects 1 row with 1 column. Returns the value of the selected column.
+        Executes SQL statement that selects one row with one column. Returns the value of the selected column.
 
         :param query: The query.
         """
@@ -181,7 +182,7 @@ union all
     # ------------------------------------------------------------------------------------------------------------------
     def get_correct_sql_mode(self, sql_mode: str) -> str:
         """
-        Selects the SQL mode in the order as preferred by MySQL.
+        Selects the SQL mode in the order as preferred by MySQL/MariaDB.
 
         :param sql_mode: The SQL mode.
         """
@@ -241,7 +242,7 @@ where   nullif(`{1}`,'') is not null""".format(id_column_name,
     # ------------------------------------------------------------------------------------------------------------------
     def get_routine_parameters(self, routine_name: str) -> List[Dict[str, Any]]:
         """
-        Selects metadata of the parameters of a stored routine.
+        Selects the metadata of the parameters of a stored routine.
 
         :param routine_name: The name of the routine.
         """
@@ -285,7 +286,7 @@ order by routine_name"""
         Sets the default character set and collate.
 
         :param character_set: The name of the character set.
-        :param collate: The name of collate.
+        :param collate: The name of the character set collation.
         """
         sql = "set names '{0}' collate '{1}'".format(character_set, collate)
 

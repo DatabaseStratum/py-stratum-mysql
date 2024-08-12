@@ -1,6 +1,7 @@
 **/__pycache__/
 /.coverage
 /.idea/
+/.venv/
 /bin/phing
 /build/
 /composer.lock
@@ -12,4 +13,3 @@
 /test/etc/routines.json
 /test/html/
 /vendor/
-/venv/

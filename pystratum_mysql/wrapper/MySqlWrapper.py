@@ -1,10 +1,10 @@
 from abc import ABC
 from typing import Any, Dict
 
-from pystratum_common.wrapper.Wrapper import Wrapper
+from pystratum_common.wrapper.CommonWrapper import CommonWrapper
 
 
-class MySqlWrapper(Wrapper, ABC):
+class MySqlWrapper(CommonWrapper, ABC):
     """
     Parent class for wrapper method generators for stored procedures and functions.
     """
@@ -20,7 +20,7 @@ class MySqlWrapper(Wrapper, ABC):
         placeholders = ''
 
         execute = 'call'
-        if routine['designation'] == 'function':
+        if routine['designation']['type'] == 'function':
             execute = 'select'
 
         i = 0

@@ -4,12 +4,14 @@
  * @param p_a Parameter A.
  * @param p_b Parameter B.
  *
- * @type function
+ * @type function int
  */
-create function tst_test_function( p_a int,
-                                   p_b int )
-returns int
-no sql
+create function tst_test_function
+(
+  p_a int,
+  p_b int
+) returns int
+  no sql
 begin
   return p_a + p_b;
 end

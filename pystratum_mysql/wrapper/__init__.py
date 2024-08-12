@@ -1,7 +1,8 @@
-from pystratum_common.BuildContext import BuildContext
+from pystratum_common.wrapper.helper import WrapperContext
 
 from pystratum_mysql.wrapper.MySqlBulkWrapper import MySqlBulkWrapper
 from pystratum_mysql.wrapper.MySqlFunctionsWrapper import MySqlFunctionsWrapper
+from pystratum_mysql.wrapper.MySqlInsertManyWrapper import MySqlInsertManyWrapper
 from pystratum_mysql.wrapper.MySqlLogWrapper import MySqlLogWrapper
 from pystratum_mysql.wrapper.MySqlMultiWrapper import MySqlMultiWrapper
 from pystratum_mysql.wrapper.MySqlNoneWrapper import MySqlNoneWrapper
@@ -17,40 +18,44 @@ from pystratum_mysql.wrapper.MySqlWrapper import MySqlWrapper
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-def create_routine_wrapper(context: BuildContext) -> MySqlWrapper:
+def create_routine_wrapper(context: WrapperContext) -> MySqlWrapper:
     """
     A factory for creating the appropriate object for generating a wrapper method for a stored routine.
 
-    :param context: The build context.
+    :param context: The loader context.
 
     :rtype: MySqlWrapper
     """
-    if context.routine['designation'] == 'bulk':
+    designation_type = context.pystratum_metadata['designation']['type']
+
+    if designation_type == 'bulk':
         wrapper = MySqlBulkWrapper()
-    elif context.routine['designation'] == 'function':
+    elif designation_type == 'insert_many':
+        wrapper = MySqlInsertManyWrapper()
+    elif designation_type == 'function':
         wrapper = MySqlFunctionsWrapper()
-    elif context.routine['designation'] == 'log':
+    elif designation_type == 'log':
         wrapper = MySqlLogWrapper()
-    elif context.routine['designation'] == 'multi':
+    elif designation_type == 'multi':
         wrapper = MySqlMultiWrapper()
-    elif context.routine['designation'] == 'none':
+    elif designation_type == 'none':
         wrapper = MySqlNoneWrapper()
-    elif context.routine['designation'] == 'row0':
+    elif designation_type == 'row0':
         wrapper = MySqlRow0Wrapper()
-    elif context.routine['designation'] == 'row1':
+    elif designation_type == 'row1':
         wrapper = MySqlRow1Wrapper()
-    elif context.routine['designation'] == 'rows_with_index':
+    elif designation_type == 'rows_with_index':
         wrapper = MySqlRowsWithIndexWrapper()
-    elif context.routine['designation'] == 'rows_with_key':
+    elif designation_type == 'rows_with_key':
         wrapper = MySqlRowsWithKeyWrapper()
-    elif context.routine['designation'] == 'rows':
+    elif designation_type == 'rows':
         wrapper = MySqlRowsWrapper()
-    elif context.routine['designation'] == 'singleton0':
+    elif designation_type == 'singleton0':
         wrapper = MySqlSingleton0Wrapper()
-    elif context.routine['designation'] == 'singleton1':
+    elif designation_type == 'singleton1':
         wrapper = MySqlSingleton1Wrapper()
     else:
-        raise Exception("Unknown routine type '{0!s}'.".format(context.routine['designation']))
+        raise Exception("Unknown routine type '{0!s}'.".format(designation_type))
 
     return wrapper
 
