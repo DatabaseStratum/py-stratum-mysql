@@ -13,7 +13,8 @@ create procedure tst_test_max_allowed_packet
 begin
   drop temporary table if exists TMP_TMP;
 
-  create temporary table TMP_TMP (
+  create temporary table TMP_TMP
+  (
     tmp_blob longblob
   )
     engine = myisam;

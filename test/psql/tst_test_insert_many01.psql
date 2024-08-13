@@ -8,7 +8,8 @@ create procedure tst_test_insert_many01 ( )
 begin
   drop temporary table if exists TST_TEMPO;
 
-  create temporary table TST_TEMPO (
+  create temporary table TST_TEMPO
+  (
     tst_int        int(11),                           -- type: TST_FOO1.tst_c00
     tst_smallint   smallint(6),                       -- type: TST_FOO1.tst_c01
     tst_tinyint    tinyint(4),                        -- type: TST_FOO1.tst_c02
