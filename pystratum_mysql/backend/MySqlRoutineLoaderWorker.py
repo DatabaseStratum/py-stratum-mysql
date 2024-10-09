@@ -15,7 +15,7 @@ class MySqlRoutineLoaderWorker(MySqlWorker, CommonRoutineLoaderWorker):
     """
     MAX_LENGTH_CHAR = 255
     """
-    Maximum length of a varchar.
+    Maximum length of a char.
     """
 
     MAX_LENGTH_VARCHAR = 4096
@@ -25,7 +25,7 @@ class MySqlRoutineLoaderWorker(MySqlWorker, CommonRoutineLoaderWorker):
 
     MAX_LENGTH_BINARY = 255
     """
-    Maximum length of a varbinary.
+    Maximum length of a binary.
     """
 
     MAX_LENGTH_VARBINARY = 4096
@@ -59,13 +59,13 @@ class MySqlRoutineLoaderWorker(MySqlWorker, CommonRoutineLoaderWorker):
         """
 
     # ------------------------------------------------------------------------------------------------------------------
-    def __save_column_types_exact(self, rows: List[Dict[str, Any]]) -> None:
+    def __save_column_types_exact(self, columns: List[Dict[str, Any]]) -> None:
         """
-        Saves the exact column types as replace pairs.
+        Saves the exact column types as type hints.
 
-        :param rows: The column types.
+        :param columns: The details of all table columns.
         """
-        for row in rows:
+        for row in columns:
             hint = row['table_name'] + '.' + row['column_name']
 
             value = row['column_type']
@@ -75,31 +75,31 @@ class MySqlRoutineLoaderWorker(MySqlWorker, CommonRoutineLoaderWorker):
             self._add_type_hint(hint, value)
 
     # ------------------------------------------------------------------------------------------------------------------
-    def __save_column_types_max_length(self, rows: List[Dict[str, Any]]) -> None:
+    def __save_column_types_max_length(self, columns: List[Dict[str, Any]]) -> None:
         """
-        Saves the column types with maximum length as replace pairs.
+        Saves the column types with maximum length as type hints.
 
-        :param rows: The column types.
+        :param columns: The details of all table columns.
         """
-        for row in rows:
+        for row in columns:
             hint = row['table_name'] + '.' + row['column_name'] + '%max'
+            value = None
 
             if row['data_type'] == 'char':
                 value = row['data_type'] + '(' + str(self.MAX_LENGTH_CHAR) + ')'
                 value += ' character set ' + row['character_set_name']
-                self._add_type_hint(hint, value)
 
             if row['data_type'] == 'varchar':
                 value = row['data_type'] + '(' + str(self.MAX_LENGTH_VARCHAR) + ')'
                 value += ' character set ' + row['character_set_name']
-                self._add_type_hint(hint, value)
 
             elif row['data_type'] == 'binary':
                 value = row['data_type'] + '(' + str(self.MAX_LENGTH_BINARY) + ')'
-                self._add_type_hint(hint, value)
 
             elif row['data_type'] == 'varbinary':
                 value = row['data_type'] + '(' + str(self.MAX_LENGTH_VARBINARY) + ')'
+
+            if value:
                 self._add_type_hint(hint, value)
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -107,11 +107,11 @@ class MySqlRoutineLoaderWorker(MySqlWorker, CommonRoutineLoaderWorker):
         """
         Selects schema, table, column names and the column type from MySQL and saves them as replace pairs.
         """
-        rows = self._dl.get_all_table_columns()
-        self.__save_column_types_exact(rows)
-        self.__save_column_types_max_length(rows)
+        columns = self._dl.get_all_table_columns()
+        self.__save_column_types_exact(columns)
+        self.__save_column_types_max_length(columns)
 
-        self._io.text('Selected {0} column types for substitution'.format(len(rows)))
+        self._io.text('Selected {0} column types for substitution'.format(len(columns)))
 
     # ------------------------------------------------------------------------------------------------------------------
     def _create_routine_loader(self, context: LoaderContext) -> MySqlRoutineLoader:

@@ -100,7 +100,7 @@ class MySqlRoutineLoader(CommonRoutineLoader):
     # ------------------------------------------------------------------------------------------------------------------
     def _extract_name(self, context: LoaderContext) -> None:
         """
-        Extracts the name of the stored routine and the stored routine type (i.e. procedure or function) source.
+        Extracts the name of the stored routine and the stored routine type (i.e., procedure or function) source.
 
         :param context: The loader context.
         """
@@ -162,10 +162,8 @@ class MySqlRoutineLoader(CommonRoutineLoader):
                                                           context.stored_routine.name))
 
         self._drop_stored_routine(context)
-
         self._dl.set_sql_mode(self._sql_mode)
         self._dl.set_character_set(self._character_set, self._collate)
-
         self._dl.execute_none(self._routine_source_code)
 
     # ------------------------------------------------------------------------------------------------------------------
